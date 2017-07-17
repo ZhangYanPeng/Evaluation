@@ -1,4 +1,4 @@
-package cn.edu.xjtu;
+package cn.edu.xjtu.evaluation.controller;
 
 import java.text.DateFormat;
 import java.util.Date;
