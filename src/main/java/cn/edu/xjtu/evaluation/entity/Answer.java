@@ -1,5 +1,72 @@
 package cn.edu.xjtu.evaluation.entity;
 
-public class Answer {
+import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
+
+@Entity
+@Table( name = "t_answer" )
+public class Answer {
+	@Id
+	@GeneratedValue( generator = "answergenerator")
+	@GenericGenerator( name = "answergenerator" , strategy = "increment" )
+	private long id;
+	
+	@OneToMany( fetch = FetchType.LAZY )
+	@JoinColumn( name = "answer_id" )
+	private List<Record> records;
+	
+	@OneToOne
+	private Student student;
+	
+	@ManyToOne
+	private Test test;
+
+	public Answer() {
+		super();
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public List<Record> getRecords() {
+		return records;
+	}
+
+	public void setRecords(List<Record> records) {
+		this.records = records;
+	}
+
+	public Student getStudent() {
+		return student;
+	}
+
+	public void setStudent(Student student) {
+		this.student = student;
+	}
+
+	public Test getTest() {
+		return test;
+	}
+
+	public void setTest(Test test) {
+		this.test = test;
+	}
+	
+	
 }
