@@ -1,4 +1,4 @@
-package cn.edu.xjtu.evluation.dao;
+package cn.edu.xjtu.evaluation.dao;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
@@ -7,7 +7,7 @@ import cn.edu.xjtu.evaluation.support.PageResults;
 import cn.edu.xjtu.evaluation.support.RowMapper;
 
 
-public interface BaseDAO<T, ID extends Serializable> {
+public interface IBaseDAO<T, ID extends Serializable> {
 	/**
 	 * <保存实体> <完整保存实体>
 	 * 

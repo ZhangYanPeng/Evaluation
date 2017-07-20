@@ -1,9 +1,11 @@
 package cn.edu.xjtu.evaluation.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -20,6 +22,7 @@ public class Intervention {
 	
 	private String text;
 	private String audio_path;
+	private int level;
 	
 	private double deScore;
 	
@@ -54,13 +57,6 @@ public class Intervention {
 		this.audio_path = audio_path;
 	}
 
-	public Question getQuestion() {
-		return question;
-	}
-
-	public void setQuestion(Question question) {
-		this.question = question;
-	}
 
 	public double getDeScore() {
 		return deScore;
@@ -68,6 +64,22 @@ public class Intervention {
 
 	public void setDeScore(double deScore) {
 		this.deScore = deScore;
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
+	}
+
+	public Question getQuestion() {
+		return question;
+	}
+
+	public void setQuestion(Question question) {
+		this.question = question;
 	}
 	
 	

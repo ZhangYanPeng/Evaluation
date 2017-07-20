@@ -1,12 +1,15 @@
 package cn.edu.xjtu.evaluation.entity;
 
 import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -25,9 +28,13 @@ public class Exercise {
 	private String text;
 	private int type;
 	
-	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name = "exercise_id")
-	private List<Question> questions;
+	@OneToMany(fetch = FetchType.EAGER)
+	@JoinColumn( name = "exercise_id")
+	private Set<Question> questions;
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinColumn( name = "exercise_id" )
+	private Set<Test> tests;
 
 	public Exercise() {
 		super();
@@ -65,12 +72,20 @@ public class Exercise {
 		this.type = type;
 	}
 
-	public List<Question> getQuestions() {
+	public Set<Question> getQuestions() {
 		return questions;
 	}
 
-	public void setQuestions(List<Question> questions) {
+	public void setQuestions(Set<Question> questions) {
 		this.questions = questions;
+	}
+
+	public Set<Test> getTests() {
+		return tests;
+	}
+
+	public void setTests(Set<Test> tests) {
+		this.tests = tests;
 	}
 	
 	

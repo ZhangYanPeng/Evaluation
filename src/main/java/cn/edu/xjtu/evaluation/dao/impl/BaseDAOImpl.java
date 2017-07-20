@@ -1,4 +1,4 @@
-package cn.edu.xjtu.evluation.dao.impl;
+package cn.edu.xjtu.evaluation.dao.impl;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
@@ -21,13 +21,13 @@ import org.hibernate.SessionFactory;
 import org.hibernate.jdbc.Work;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import cn.edu.xjtu.evaluation.dao.IBaseDAO;
 import cn.edu.xjtu.evaluation.support.PageResults;
 import cn.edu.xjtu.evaluation.support.RowMapper;
-import cn.edu.xjtu.evluation.dao.BaseDAO;
 
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
-public class BaseDAOImpl<T, ID extends Serializable> implements BaseDAO<T, ID> {
+public class BaseDAOImpl<T, ID extends Serializable> implements IBaseDAO<T, ID> {
 
 	@Autowired
 	private SessionFactory sessionFactory;

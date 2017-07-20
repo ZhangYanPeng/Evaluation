@@ -1,7 +1,9 @@
 package cn.edu.xjtu.evaluation.entity;
 
 import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -29,11 +31,11 @@ public class Question {
 	private int answer;
 	private Double score;
 	
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.EAGER)
 	@JoinColumn( name = "question_id" )
-	private List<Intervention> interventions;
+	private Set<Intervention> interventions;
 	
-	@ManyToOne( fetch = FetchType.LAZY )
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Exercise exercise;
 	
 	public Question() {
@@ -76,19 +78,11 @@ public class Question {
 	public void setAnswer(int answer) {
 		this.answer = answer;
 	}
-	public List<Intervention> getInterventions() {
+	public Set<Intervention> getInterventions() {
 		return interventions;
 	}
-	public void setInterventions(List<Intervention> interventions) {
+	public void setInterventions(Set<Intervention> interventions) {
 		this.interventions = interventions;
-	}
-
-	public Exercise getExercise() {
-		return exercise;
-	}
-
-	public void setExercise(Exercise exercise) {
-		this.exercise = exercise;
 	}
 
 	public Double getScore() {
@@ -98,5 +92,14 @@ public class Question {
 	public void setScore(Double score) {
 		this.score = score;
 	}
+
+	public Exercise getExercise() {
+		return exercise;
+	}
+
+	public void setExercise(Exercise exercise) {
+		this.exercise = exercise;
+	}
+	
 	
 }
