@@ -30,7 +30,7 @@ public class Exercise {
 	@JoinColumn( name = "exercise_id")
 	private Set<Question> questions;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn( name = "exercise_id" )
 	private Set<Part> parts;
 

@@ -28,7 +28,7 @@ public class Test {
 	private String Description;
 	private String remarks;
 	
-	@ManyToOne( fetch = FetchType.EAGER , cascade = CascadeType.ALL )
+	@OneToMany( fetch = FetchType.EAGER , cascade = CascadeType.ALL )
 	@JoinColumn( name = "test_id" )
 	private Set<Part> parts;
 	

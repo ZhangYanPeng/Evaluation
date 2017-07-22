@@ -2,6 +2,7 @@ package cn.edu.xjtu.evaluation.entity;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -22,7 +23,7 @@ public class Answer {
 	@GenericGenerator( name = "answergenerator" , strategy = "increment" )
 	private long id;
 	
-	@OneToMany( fetch = FetchType.LAZY )
+	@OneToMany( fetch = FetchType.EAGER, cascade = CascadeType.ALL )
 	@JoinColumn( name = "answer_id" )
 	private List<Record> records;
 	

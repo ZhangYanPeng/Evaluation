@@ -26,7 +26,9 @@ public class Student {
 	private int gender;
 	private String grade;
 	private int age;
+	private String username;
 	private String student_no;
+	private String password;
 	private String major;
 	private String school;
 	
@@ -111,6 +113,30 @@ public class Student {
 
 	public void setAnswers(List<Answer> answers) {
 		this.answers = answers;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	
 	
