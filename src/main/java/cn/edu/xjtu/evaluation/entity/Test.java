@@ -3,12 +3,14 @@ package cn.edu.xjtu.evaluation.entity;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -26,9 +28,9 @@ public class Test {
 	private String Description;
 	private String remarks;
 	
-	@ManyToMany( fetch = FetchType.EAGER)
+	@ManyToOne( fetch = FetchType.EAGER , cascade = CascadeType.ALL )
 	@JoinColumn( name = "test_id" )
-	private Set<Exercise> exercises;
+	private Set<Part> parts;
 	
 	@OneToMany( fetch = FetchType.LAZY)
 	@JoinColumn( name = "test_id")
@@ -70,19 +72,19 @@ public class Test {
 		this.remarks = remarks;
 	}
 
-	public List<Exercise> getExercises() {
-		return exercises;
+	public Set<Part> getParts() {
+		return parts;
 	}
 
-	public void setExercises(List<Exercise> exercises) {
-		this.exercises = exercises;
+	public void setParts(Set<Part> parts) {
+		this.parts = parts;
 	}
 
-	public List<Answer> getAnswers() {
+	public Set<Answer> getAnswers() {
 		return answers;
 	}
 
-	public void setAnswers(List<Answer> answers) {
+	public void setAnswers(Set<Answer> answers) {
 		this.answers = answers;
 	}
 	

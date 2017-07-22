@@ -2,6 +2,7 @@ package cn.edu.xjtu.evaluation.entity;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -29,7 +30,9 @@ public class Student {
 	private String major;
 	private String school;
 	
-	@OneToMany(fetch = FetchType.LAZY)
+	private int status;
+	
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "student_id")
 	public List<Answer> answers;
 	

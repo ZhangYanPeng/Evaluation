@@ -1,15 +1,13 @@
 package cn.edu.xjtu.evaluation.entity;
 
-import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -32,9 +30,9 @@ public class Exercise {
 	@JoinColumn( name = "exercise_id")
 	private Set<Question> questions;
 	
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn( name = "exercise_id" )
-	private Set<Test> tests;
+	private Set<Part> parts;
 
 	public Exercise() {
 		super();
@@ -80,12 +78,12 @@ public class Exercise {
 		this.questions = questions;
 	}
 
-	public Set<Test> getTests() {
-		return tests;
+	public Set<Part> getTests() {
+		return parts;
 	}
 
-	public void setTests(Set<Test> tests) {
-		this.tests = tests;
+	public void setTests(Set<Part> parts) {
+		this.parts = parts;
 	}
 	
 	
