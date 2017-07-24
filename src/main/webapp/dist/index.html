@@ -12,7 +12,8 @@
 <link rel="stylesheet" href="css/framework7.ios.colors.min.css">
 <!-- Path to your custom app styles-->
 <link rel="stylesheet" href="css/my-app.css">
-<script type="text/javascript" src="./lib/jquery/jquery.js" charset="UTF-8"></script>
+<script type="text/javascript" src="./lib/jquery/jquery.js"
+	charset="UTF-8"></script>
 </head>
 <body>
 	<!-- Status bar overlay for fullscreen mode-->
@@ -105,46 +106,6 @@
 					</div>
 				</div>
 			</div>
-			
-			<!-- log in modal -->
-			<div class="login-screen modal-in">
-				<div class="view">
-					<div class="page">
-						<div class="page-content login-screen-content">
-							<div class="login-screen-title">请您先登录</div>
-							<form>
-								<div class="list-block">
-									<ul>
-										<li class="item-content">
-											<div class="item-inner">
-												<div class="item-title label">用户名或学号</div>
-												<div class="item-input">
-													<input type="text" name="username" id="username"
-														placeholder="请输入。。。">
-												</div>
-											</div>
-										</li>
-										<li class="item-content">
-											<div class="item-inner">
-												<div class="item-title label">密码</div>
-												<div class="item-input">
-													<input type="password" name="password" id="password"
-														placeholder="请输入。。。">
-												</div>
-											</div>
-										</li>
-									</ul>
-								</div>
-								<div class="list-block">
-									<ul>
-										<li><a href="#" class="item-link list-button" id="log-in-button">登陆</a></li>
-									</ul>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
 
 			<!-- Bottom Toolbar-->
 			<div class="toolbar">
@@ -155,6 +116,49 @@
 			</div>
 		</div>
 	</div>
+
+	<!-- log in modal -->
+	<div class="login-screen">
+		<div class="view">
+			<div class="page">
+				<div class="page-content login-screen-content">
+					<div class="login-screen-title">请您先登录</div>
+					<form>
+						<div class="list-block">
+							<ul>
+								<li class="item-content">
+									<div class="item-inner">
+										<div class="item-title label">用户名或学号</div>
+										<div class="item-input">
+											<input type="text" name="username" id="username"
+												placeholder="请输入。。。">
+										</div>
+									</div>
+								</li>
+								<li class="item-content">
+									<div class="item-inner">
+										<div class="item-title label">密码</div>
+										<div class="item-input">
+											<input type="password" name="password" id="password"
+												placeholder="请输入。。。">
+										</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="list-block">
+							<ul>
+								<li><a href="#" class="item-link list-button"
+									id="log-in-button">登陆</a></li>
+								<li><a href="./register.html" class="item-link list-button close-login-screen">注册</a></li>
+							</ul>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<!-- Path to Framework7 Library JS-->
 	<script type="text/javascript" src="js/framework7.min.js"></script>
 	<!-- Path to your app js-->

@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -106,7 +107,8 @@ public class Student {
 	public void setSchool(String school) {
 		this.school = school;
 	}
-
+	
+	@JsonIgnore
 	public List<Answer> getAnswers() {
 		return answers;
 	}
