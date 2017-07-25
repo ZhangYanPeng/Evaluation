@@ -33,6 +33,10 @@ public class Student {
 	private String major;
 	private String school;
 	
+	private int english_level;
+	private int father_level;
+	private int mother_level;
+	
 	private int status;
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -139,6 +143,30 @@ public class Student {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public int getEnglish_level() {
+		return english_level;
+	}
+
+	public void setEnglish_level(int english_level) {
+		this.english_level = english_level;
+	}
+
+	public int getFather_level() {
+		return father_level;
+	}
+
+	public void setFather_level(int father_level) {
+		this.father_level = father_level;
+	}
+
+	public int getMother_level() {
+		return mother_level;
+	}
+
+	public void setMother_level(int mother_level) {
+		this.mother_level = mother_level;
 	}
 	
 	

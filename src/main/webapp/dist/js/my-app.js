@@ -13,6 +13,10 @@ getUserIdentification();
 var baseUrl=getRootPath();
 
 // Add view
+var leftView = myApp.addView('.view-left', {
+    // Because we use fixed-through navbar we can enable dynamic navbar
+    dynamicNavbar: true
+});
 var mainView = myApp.addView('.view-main', {
     // Because we use fixed-through navbar we can enable dynamic navbar
     dynamicNavbar: true
@@ -56,6 +60,14 @@ $$(document).on('click', function (e) {
 			myApp.closeModal('.login-screen');
 		}
 	}
+	
+	//check for registering
+	if (element.id === 'register-button'){
+		//log in
+		register();
+		login("zhang","123");
+		mainView.router.loadPage("index.html");
+	}
 });
 
 
@@ -65,6 +77,13 @@ $('#login-screen').on('open',function(){
 		myApp.closeModal($('#login-screen'));
 	}
 });
+
+
+
+//register
+function register(){
+	
+}
 
 //for student logging in
 function login(username,password){
