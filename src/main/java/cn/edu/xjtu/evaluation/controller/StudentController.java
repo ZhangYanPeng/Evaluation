@@ -10,6 +10,7 @@ import cn.edu.xjtu.evaluation.entity.Student;
 import cn.edu.xjtu.evaluation.service.IStudentService;
 
 @Controller
+@RequestMapping("/student")
 public class StudentController {
 	@Autowired
 	IStudentService studentService;

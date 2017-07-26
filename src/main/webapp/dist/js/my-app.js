@@ -7,6 +7,7 @@ var $$ = Dom7;
 //cache user's identification
 var userId; //equals -1 before logging
 var user;
+var userType;
 //check if logged before
 getUserIdentification();
 //base url
@@ -21,16 +22,17 @@ var mainView = myApp.addView('.view-main', {
     // Because we use fixed-through navbar we can enable dynamic navbar
     dynamicNavbar: true
 });
+//update user info in status bar
+initBar();
 
 
 //handler for all initiations fo pages
 $$(document).on('pageInit', function (e) {
-	getUserIdentification();
 	var page = e.detail.page;
+	initBar();
 	
 	//check for logging in except registering
 	if( userId < 0 && page.name != 'register'){
-		console.log("log in");
 		myApp.loginScreen();
 	}
 	else{
@@ -39,7 +41,7 @@ $$(document).on('pageInit', function (e) {
 	    
 	    // Code for index page
 	    if (page.name === 'index') {
-	        
+
 	    }
 	    
 	    //register
@@ -55,7 +57,7 @@ $$(document).on('click', function (e) {
 	var element = e.srcElement;
 	if (element.id === 'log-in-button'){
 		//log in
-		login($$("#username").val(),$$("#password").val());
+		login($$("#username").val(),$$("#password").val(),$$('#userType').val());
 		if( userId > 0 ){
 			myApp.closeModal('.login-screen');
 		}
@@ -65,8 +67,16 @@ $$(document).on('click', function (e) {
 	if (element.id === 'register-button'){
 		//log in
 		register();
-		login("zhang","123");
+		login("zhang","123","student");
 		mainView.router.loadPage("index.html");
+	}
+	
+	if (element.id === 'logout'){
+		//log in
+		userId=-1;
+		storeUserIdentification(null,userId,"");
+		console.log("logout");
+		initBar();
 	}
 });
 
@@ -86,14 +96,20 @@ function register(){
 }
 
 //for student logging in
-function login(username,password){
+function login(username,password,type){
+	var url = baseUrl;
+	if( type === "student"){
+		url += "student/login";
+	}else{
+		url += "teacher/login";
+	}
 	$$.ajax({
 		async : false,
 		cache : false,
 		type : 'POST',
 		crossDomain : true,
-        url: baseUrl+"login",
-        data: {username:username, password},
+        url: url,
+        data: {username:username, password:password},
         dataType: "json",
         error: function(e){
         	console.log(e);
@@ -101,9 +117,11 @@ function login(username,password){
         },
         success: function(data){
         	if(data.id>=0){
-        		storeUserIdentification(data,data.id)
-        		userId=data.id;
+        		storeUserIdentification(data,data.id,type)
+        		userId = data.id;
         		user = data;
+        		userType = type;
+        		initBar();
         	}else{
         		myApp.alert("用户名或密码错误，请检查后重试");
         	}
@@ -112,14 +130,12 @@ function login(username,password){
 }
 
 //local storage the identification
-function storeUserIdentification(userinfo,id){
+function storeUserIdentification(userinfo,id,type){
 	var storage = window.localStorage;
 	var identification = JSON.stringify(userinfo);
-	console.log(identification);
-	if( id >=0 ){
-		storage["userId"] = id;
-		storage["identification"] = identification;
-	}
+	storage["userId"] = id;
+	storage["identification"] = identification;
+	storage["userType"] = type;
 }
 
 //get the identification from local storage or set it null
@@ -127,15 +143,47 @@ function getUserIdentification(){
 	var storage = window.localStorage;
 	userId = storage["userId"];
 	if(userId != null){
-		var user = null;
+		user = null;
 		if( userId >= 0 ){
-			user = storage["userId"];
+			user = JSON.parse(storage["identification"]);
+			userType = storage["userType"];
 		}
-		return user;
 	}else{
 		userId=-1;
 		storage["userId"] = userId;
 		user = null;
+	}
+}
+
+function initBar() {
+	var barString = "你好,";
+	if( userId <0 ){
+		barString += "<a href='index.html'>请先登录</a>";
+	}else{
+		barString += "<a href='#' >"+
+			user.name +
+			"</a>";
+	}
+	$$('#bar_right').html(barString);
+	
+	//left view init
+	if(userId <0){
+		$$('#user_name').html("你好,<a href='index.html'>请先登录</a>");
+	}
+	else{
+		$$('#user_name').text("你好！    "+user.name);
+		var tmpstr = "身份：";
+		if(userType === "student"){
+			tmpstr += "学生";
+			$$("#stu_func_list").show(); 
+			$$("#tea_func_list").hide();
+		}
+		else{
+			tmpstr += "教师";
+			$$("#tea_func_list").hide(); 
+			$$("#stu_func_list").show(); 
+		}
+		$$('#user_type').text(tmpstr);
 	}
 }
 
