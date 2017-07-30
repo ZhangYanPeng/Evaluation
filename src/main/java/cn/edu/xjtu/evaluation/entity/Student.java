@@ -8,6 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -41,8 +42,10 @@ public class Student {
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "student_id")
-	public List<Answer> answers;
+	private List<Answer> answers;
 	
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Unit unit;
 	
 	public Student() {
 		super();
@@ -167,6 +170,14 @@ public class Student {
 
 	public void setMother_level(int mother_level) {
 		this.mother_level = mother_level;
+	}
+
+	public Unit getUnit() {
+		return unit;
+	}
+
+	public void setUnit(Unit unit) {
+		this.unit = unit;
 	}
 	
 	

@@ -1,10 +1,15 @@
 package cn.edu.xjtu.evaluation.entity;
 
+
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -20,9 +25,21 @@ public class Part {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Test test;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	private Exercise exercise;
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinColumn(name = "part_id")
+	private Set<Exercise> exercises;
 	
+	@ManyToOne(fetch = FetchType.LAZY)
+	private ExerciseType exerciseType;
+	
+	public Set<Exercise> getExercises() {
+		return exercises;
+	}
+
+	public void setExercises(Set<Exercise> exercises) {
+		this.exercises = exercises;
+	}
+
 	private int no;
 
 	public Part() {
@@ -51,6 +68,14 @@ public class Part {
 
 	public void setTest(Test test) {
 		this.test = test;
+	}
+
+	public ExerciseType getExerciseType() {
+		return exerciseType;
+	}
+
+	public void setExerciseType(ExerciseType exerciseType) {
+		this.exerciseType = exerciseType;
 	}
 	
 	
