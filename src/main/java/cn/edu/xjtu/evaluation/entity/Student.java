@@ -8,9 +8,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -32,12 +34,18 @@ public class Student {
 	private String major;
 	private String school;
 	
+	private int english_level;
+	private int father_level;
+	private int mother_level;
+	
 	private int status;
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "student_id")
-	public List<Answer> answers;
+	private List<Answer> answers;
 	
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Unit unit;
 	
 	public Student() {
 		super();
@@ -106,7 +114,8 @@ public class Student {
 	public void setSchool(String school) {
 		this.school = school;
 	}
-
+	
+	@JsonIgnore
 	public List<Answer> getAnswers() {
 		return answers;
 	}
@@ -137,6 +146,38 @@ public class Student {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public int getEnglish_level() {
+		return english_level;
+	}
+
+	public void setEnglish_level(int english_level) {
+		this.english_level = english_level;
+	}
+
+	public int getFather_level() {
+		return father_level;
+	}
+
+	public void setFather_level(int father_level) {
+		this.father_level = father_level;
+	}
+
+	public int getMother_level() {
+		return mother_level;
+	}
+
+	public void setMother_level(int mother_level) {
+		this.mother_level = mother_level;
+	}
+
+	public Unit getUnit() {
+		return unit;
+	}
+
+	public void setUnit(Unit unit) {
+		this.unit = unit;
 	}
 	
 	

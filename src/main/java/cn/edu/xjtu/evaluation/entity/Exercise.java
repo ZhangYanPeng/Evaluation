@@ -24,7 +24,9 @@ public class Exercise {
 	
 	private String audio_path;
 	private String text;
-	private int type;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	private ExerciseType exerciseType;
 	
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinColumn( name = "exercise_id")
@@ -61,15 +63,6 @@ public class Exercise {
 	public void setText(String text) {
 		this.text = text;
 	}
-
-	public int getType() {
-		return type;
-	}
-
-	public void setType(int type) {
-		this.type = type;
-	}
-
 	public Set<Question> getQuestions() {
 		return questions;
 	}
@@ -78,14 +71,21 @@ public class Exercise {
 		this.questions = questions;
 	}
 
-	public Set<Part> getTests() {
+	public ExerciseType getExerciseType() {
+		return exerciseType;
+	}
+
+	public void setExerciseType(ExerciseType exerciseType) {
+		this.exerciseType = exerciseType;
+	}
+
+	public Set<Part> getParts() {
 		return parts;
 	}
 
-	public void setTests(Set<Part> parts) {
+	public void setParts(Set<Part> parts) {
 		this.parts = parts;
 	}
-	
 	
 	
 }

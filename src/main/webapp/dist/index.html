@@ -11,8 +11,11 @@
 <link rel="stylesheet" href="css/framework7.ios.min.css">
 <link rel="stylesheet" href="css/framework7.ios.colors.min.css">
 <!-- Path to your custom app styles-->
+<link rel="stylesheet"
+	href="./lib/font-awesome/css/font-awesome.min.css">
 <link rel="stylesheet" href="css/my-app.css">
-<script type="text/javascript" src="./lib/jquery/jquery.js" charset="UTF-8"></script>
+<script type="text/javascript" src="lib/jquery/jquery.js"
+	charset="UTF-8"></script>
 </head>
 <body>
 	<!-- Status bar overlay for fullscreen mode-->
@@ -20,7 +23,7 @@
 	<!-- Panels overlay-->
 	<div class="panel-overlay"></div>
 	<!-- Left panel with reveal effect-->
-	<div class="panel panel-left panel-reveal">
+	<div class="panel panel-left panel-cover">
 		<div class="content-block">
 			<p>Left panel content goes here</p>
 		</div>
@@ -28,42 +31,114 @@
 	<!-- Right panel with cover effect-->
 	<div class="panel panel-right panel-cover">
 		<div class="content-block">
-			<p>Right panel content goes here</p>
+			<p>干预文本</p>
+			<audio controls="controls">
+				<source src="song.ogg" type="audio/ogg" />
+				<source src="song.mp3" type="audio/mpeg" />
+			</audio>
 		</div>
 	</div>
 	<!-- Views-->
 	<div class="views">
-		<!-- Your main view, should have "view-main" class-->
-		<div class="view view-main">
-			<!-- Top Navbar-->
+		<!-- Left view-->
+		<div class="view view-left navbar-through">
 			<div class="navbar">
 				<div class="navbar-inner">
-					<!-- We have home navbar without left link-->
-					<div class="center sliding">请您先登陆</div>
-					<div class="right">
-						<!-- Right link contains only icon - additional "icon-only" class-->
-						<a href="#" class="link icon-only open-panel"> <i
-							class="icon icon-bars"></i></a>
+					<div class="center sliding"></div>
+				</div>
+			</div>
+			<div class="pages">
+				<div data-page="index-left" class="page">
+					<div class="page-content">
+						<div class="card">
+							<div class="card-header">个人中心</div>
+							<div class="card-content">
+								<div class="card-content-inner">
+									<p id="user_name"></p>
+									<p id="user_type"></p>
+									<p class="buttons-row">
+										<a href="#" class="button">编辑个人信息</a> <a href="#"
+											class="button" id="logout">注销</a>
+									</p>
+								</div>
+							</div>
+						</div>
+						<!-- for student -->
+						<div class="list-block accordion-list" id="stu_func_list">
+							<ul>
+								<li class="accordion-item"><a href="#"
+									class="item-content item-link">
+										<div class="item-inner">
+											<div class="item-title">视听</div>
+										</div>
+								</a>
+									<div class="accordion-item-content">
+										<div class="list-block">
+											<ul>
+												<li><a href="test.html" data-view=".view-main"
+													class="item-link">
+														<div class="item-content">
+															<div class="item-inner">
+																<div class="item-title">视听诊断</div>
+															</div>
+														</div>
+												</a></li>
+												<li><a href="test.html" data-view=".view-main"
+													class="item-link">
+														<div class="item-content">
+															<div class="item-inner">
+																<div class="item-title">视听干预诊断</div>
+															</div>
+														</div>
+												</a></li>
+											</ul>
+										</div>
+									</div></li>
+							</ul>
+						</div>
+
+						<!-- for teacher -->
+						<div class="list-block accordion-list" id="tea_func_list">
+							<ul>
+								<li class="accordion-item"><a href="#"
+									class="item-content item-link">
+										<div class="item-inner">
+											<div class="item-title">tea</div>
+										</div>
+								</a>
+									<div class="accordion-item-content">
+										<div class="content-block">
+											<p>tea func</p>
+										</div>
+									</div></li>
+							</ul>
+						</div>
 					</div>
 				</div>
 			</div>
-			<!-- Pages, because we need fixed-through navbar and toolbar, it has additional appropriate classes-->
-			<div class="pages navbar-through toolbar-through">
+		</div>
+		<!-- Right view, it is main view-->
+		<div class="view view-main navbar-through">
+			<div class="navbar">
+				<div class="navbar-inner">
+					<div class="center sliding">首页</div>
+					<div class="right" id="bar_right"></div>
+				</div>
+			</div>
+			<!-- Pages-->
+			<div class="pages">
 				<!-- Page, data-page contains page name-->
-				<div data-page="index" class="page">
+				<div data-page="index-1" class="page">
 					<!-- Scrollable page content-->
 					<div class="page-content">
-						<div class="content-block-title">Welcome To My Awesome App</div>
+						<div class="content-block-title">你好</div>
 						<div class="content-block">
 							<div class="content-block-inner">
-								<p>Couple of worlds here because my app is so awesome!</p>
-								<p>Duis sed erat ac eros ultrices pharetra id ut tellus.
-									Praesent rhoncus enim ornare ipsum aliquet ultricies.
-									Pellentesque sodales erat quis elementum sagittis.</p>
+								<p>This is an example of split view application layout,
+									commonly used on iPad apps. The main approach of such kind of
+									layout is that you can see different views at the same time.</p>
 							</div>
 						</div>
-						<div class="content-block-title">What about simple
-							navigation?</div>
 						<div class="list-block">
 							<ul>
 								<li><a href="about.html" class="item-link">
@@ -80,81 +155,77 @@
 											</div>
 										</div>
 								</a></li>
-								<li><a href="form.html" class="item-link">
-										<div class="item-content">
-											<div class="item-inner">
-												<div class="item-title">Form</div>
-											</div>
-										</div>
-								</a></li>
 							</ul>
 						</div>
-						<div class="content-block-title">Side panels</div>
-						<div class="content-block">
-							<div class="row">
-								<div class="col-50">
-									<a href="#" data-panel="left" class="button open-panel">Left
-										Panel</a>
-								</div>
-								<div class="col-50">
-									<a href="#" data-panel="right" class="button open-panel">Right
-										Panel</a>
-								</div>
-							</div>
-						</div>
 					</div>
-				</div>
-			</div>
-			
-			<!-- log in modal -->
-			<div class="login-screen modal-in">
-				<div class="view">
-					<div class="page">
-						<div class="page-content login-screen-content">
-							<div class="login-screen-title">请您先登录</div>
-							<form>
-								<div class="list-block">
-									<ul>
-										<li class="item-content">
-											<div class="item-inner">
-												<div class="item-title label">用户名或学号</div>
-												<div class="item-input">
-													<input type="text" name="username" id="username"
-														placeholder="请输入。。。">
-												</div>
-											</div>
-										</li>
-										<li class="item-content">
-											<div class="item-inner">
-												<div class="item-title label">密码</div>
-												<div class="item-input">
-													<input type="password" name="password" id="password"
-														placeholder="请输入。。。">
-												</div>
-											</div>
-										</li>
-									</ul>
-								</div>
-								<div class="list-block">
-									<ul>
-										<li><a href="#" class="item-link list-button" id="log-in-button">登陆</a></li>
-									</ul>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- Bottom Toolbar-->
-			<div class="toolbar">
-				<div class="toolbar-inner">
-					<a href="#" class="link">Link 1</a><a href="#" class="link">Link
-						2</a>
 				</div>
 			</div>
 		</div>
 	</div>
+
+	<!-- log in modal -->
+	<div class="login-screen">
+		<div class="view">
+			<div class="page">
+				<div class="page-content login-screen-content">
+					<div class="login-screen-title">请您先登录</div>
+					<form>
+						<div class="list-block">
+							<ul>
+								<li class="item-content">
+									<div class="item-media">
+										<i class="fa fa-user"></i>
+									</div>
+									<div class="item-inner">
+										<div class="item-title label">账户类型</div>
+										<div class="item-input">
+											<select name="userType" id="userType">
+												<option value="student" selected="selected">学生</option>
+												<option value="teacher">教师</option>
+											</select>
+										</div>
+									</div>
+								</li>
+								<li class="item-content">
+									<div class="item-media">
+										<i class="fa fa-user"></i>
+									</div>
+									<div class="item-inner">
+										<div class="item-title label">用户名</div>
+										<div class="item-input">
+											<input type="text" name="username" id="username"
+												placeholder="请输入。。。">
+										</div>
+									</div>
+								</li>
+								<li class="item-content">
+									<div class="item-media">
+										<i class="fa fa-lock"></i>
+									</div>
+									<div class="item-inner">
+										<div class="item-title label">密码</div>
+										<div class="item-input">
+											<input type="password" name="password" id="password"
+												placeholder="请输入。。。">
+										</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="list-block">
+							<ul>
+								<li><a href="#" class="item-link list-button"
+									id="log-in-button">登陆</a></li>
+								<li><a href="./register.html"
+									class="item-link list-button close-login-screen">注册</a></li>
+							</ul>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<!-- Path to Framework7 Library JS-->
 	<script type="text/javascript" src="js/framework7.min.js"></script>
 	<!-- Path to your app js-->
