@@ -46,3 +46,9 @@ Network Trash Folder
 Temporary Items
 .apdisk
 /target/
+.settings/org.eclipse.core.resources.prefs
+.settings/org.eclipse.core.resources.prefs
+.settings/org.eclipse.wst.common.component
+target/m2e-wtp/web-resources/META-INF/maven/cn.edu/xjtu/pom.properties
+.settings/org.eclipse.core.resources.prefs
+.settings/org.eclipse.core.resources.prefs
