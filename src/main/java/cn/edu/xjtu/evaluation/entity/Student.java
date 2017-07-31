@@ -45,7 +45,7 @@ public class Student {
 	private List<Answer> answers;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	private Unit unit;
+	private Organization unit;
 	
 	public Student() {
 		super();
@@ -172,11 +172,11 @@ public class Student {
 		this.mother_level = mother_level;
 	}
 
-	public Unit getUnit() {
+	public Organization getUnit() {
 		return unit;
 	}
 
-	public void setUnit(Unit unit) {
+	public void setUnit(Organization unit) {
 		this.unit = unit;
 	}
 	

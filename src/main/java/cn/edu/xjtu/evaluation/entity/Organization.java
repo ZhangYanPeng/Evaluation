@@ -14,12 +14,12 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name = "t_unit")
-public class Unit {
+@Table(name = "t_organization")
+public class Organization {
 	
 	@Id
-	@GeneratedValue(generator = "unitgenerator")
-	@GenericGenerator(name = "unitgenerator", strategy = "increment")
+	@GeneratedValue(generator = "organizationgenerator")
+	@GenericGenerator(name = "organizationgenerator", strategy = "increment")
 	private long id;
 	
 	private String className;
@@ -31,7 +31,7 @@ public class Unit {
 	@ManyToOne( fetch = FetchType.LAZY)
 	private Teacher teacher;
 
-	public Unit() {
+	public Organization() {
 		super();
 	}
 

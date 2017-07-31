@@ -30,7 +30,7 @@ public class Teacher {
 	
 	@OneToMany( fetch = FetchType.LAZY)
 	@JoinColumn( name = "teacher_id")
-	private Set<Unit> units;
+	private Set<Organization> units;
 
 	public Teacher() {
 		super();
@@ -92,11 +92,11 @@ public class Teacher {
 		this.gender = gender;
 	}
 
-	public Set<Unit> getUnits() {
+	public Set<Organization> getUnits() {
 		return units;
 	}
 
-	public void setUnits(Set<Unit> units) {
+	public void setUnits(Set<Organization> units) {
 		this.units = units;
 	}
 	
