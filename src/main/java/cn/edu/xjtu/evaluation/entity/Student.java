@@ -34,9 +34,9 @@ public class Student {
 	private String major;
 	private String school;
 	
-	private int english_level;
-	private int father_level;
-	private int mother_level;
+	private int english_level;// -1：未知 0：未通过四级 1：通过4级 2：通过六级 
+	private int father_level;//-1：未知 0：高中以下 1：大专本科 2：硕士 3：博士
+	private int mother_level;//同上
 	
 	private int status;
 	

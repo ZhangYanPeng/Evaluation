@@ -19,22 +19,23 @@ public class TeacherController {
 
 	@Autowired
 	ITeacherService teacherService;
-	
+
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public @ResponseBody Teacher login(String username, String password) {
 		Teacher teacher = new Teacher();
 		teacher.setUsername(username);
 		teacher.setPassword(password);
 		teacher = teacherService.login(teacher);
-		if( teacher == null ) {
+		if (teacher == null) {
 			teacher = new Teacher();
 			teacher.setId(-1);
 		}
 		return teacher;
 	}
-	
+
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public @ResponseBody Teacher register(String username, String password, String gender, String name, String school, String major, String title) {
+	public @ResponseBody Teacher register(String username, String password, String gender, String name, String school,
+			String major, String title) {
 		Teacher teacher = new Teacher();
 		System.out.println(name);
 		teacher.setGender(gender);
@@ -46,10 +47,10 @@ public class TeacherController {
 		teacher.setMajor(major);
 		teacher.setUnits(null);
 		int status = teacherService.register(teacher);
-		if( status == 1 ){
+		if (status == 1) {
 			teacher = teacherService.login(teacher);
 			return teacher;
-		}else{
+		} else {
 			teacher = new Teacher();
 			teacher.setId(-1);
 			return teacher;
