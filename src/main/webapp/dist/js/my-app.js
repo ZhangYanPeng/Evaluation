@@ -4,13 +4,13 @@ var myApp = new Framework7();
 // Export selectors engine
 var $$ = Dom7;
 
-//cache user's identification
-var userId; //equals -1 before logging
+// cache user's identification
+var userId; // equals -1 before logging
 var user;
 var userType;
-//check if logged before
+// check if logged before
 getUserIdentification();
-//base url
+// base url
 var baseUrl = getRootPath();
 
 // Add view
@@ -22,38 +22,35 @@ var mainView = myApp.addView('.view-main', {
 	// Because we use fixed-through navbar we can enable dynamic navbar
 	dynamicNavbar : true
 });
-//update user info in status bar
+// update user info in status bar
 initBar();
 
-//handler for all initiations fo pages
+// handler for all initiations fo pages
 $$(document).on('pageInit', function(e) {
 	var page = e.detail.page;
 
-	//check for logging in except registering
+	// check for logging in except registering
 	if (userId < 0 && page.name != 'register') {
 		myApp.loginScreen();
 	} else {
-		//prevent from the logging modal
+		// prevent from the logging modal
 		myApp.closeModal($('#login-screen'));
 
 		// Code for index page
 		if (page.name === 'index') {
 		}
 
-		//register
-		if (page.name === 'register') {
-		}
 	}
 });
 
-//handler for all button
+// handler for all button
 $$(document).on(
 		'click',
 		function(e) {
-			//check for logging in
+			// check for logging in
 			var element = e.srcElement;
 			if (element.id === 'log-in-button') {
-				//log in
+				// log in
 				login($$("#username").val(), $$("#password").val(), $$(
 						'#userType').val());
 				if (userId > 0) {
@@ -61,41 +58,114 @@ $$(document).on(
 				}
 			}
 
-			//check for registering
+			// check for registering
 			if (element.id === 'register-button') {
-				//log in
+				// log in
 				register();
 			}
 
 			if (element.id === 'logout') {
-				//log in
+				// log in
 				userId = -1;
 				storeUserIdentification(null, userId, "");
 				initBar();
 			}
 		});
 
-//if logged, close the log in modal
+// if logged, close the log in modal
 $('#login-screen').on('open', function() {
 	if (userId >= 0) {
-		myApp.closeModal($('#login-screen'));
+		myApp.closeModal('.login-screen');
 	}
 });
 
-//if register open, close log in
+// if register open, close log in
 $('.popup-register').on('open', function() {
-	myApp.closeModal($('#login-screen'));
+	myApp.closeModal('.login-screen');
 });
 
-//register
+// switch input content between teacher and student in register page
+$('#type').on('change', function() {
+	if ($('#type').val() == 'student') {
+		$('.stu_info').show();
+		$('.tea_info').hide();
+	} else {
+		$('.stu_info').hide();
+		$('.tea_info').show();
+	}
+});
+
+// register
 function register() {
-	login("zhang", "123", "student");
-	myApp.closeModal($$('.popup-register'));
-	myApp.closeModal($$('.login-screen'));
-	initBar();
+	if (validate_register_info() == 1) {
+		myApp.alert("两次输入的密码不一致", "错误");
+		return;
+	}
+	var url = baseUrl;
+	var data_input = null;
+	if ($('#type').val() == "student") {
+		url += "student/register";
+		data_input = {
+			username : $('#r-username').val(),
+			password : $('#r-password').val(),
+			name : $('#name').val(),
+			gender : $('#gender').val(),
+			school : $('#school').val(),
+			major : $('#major').val(),
+			grade : $('#grade').val(),
+			student_no : $('#student_no').val(),
+			english_level : $('#english_level').val(),
+			father_level : $('#father_level').val(),
+			mother_level : $('#mother_level').val()
+		};
+	} else {
+		url += "teacher/register";
+		data_input = {
+			username : $('#r-username').val(),
+			password : $('#r-password').val(),
+			name : $('#name').val(),
+			gender : $('#gender').val(),
+			school : $('#school').val(),
+			major : $('#major').val(),
+			title : $('#title').val()
+		};
+	}
+	$$.ajax({
+		async : false,
+		cache : false,
+		type : 'POST',
+		crossDomain : true,
+		url : url,
+		data : data_input,
+		dataType : "json",
+		contentType:"application/x-www-form-urlencoded; charset=utf-8",
+		error : function(e) {
+			console.log(e);
+			myApp.alert("注册失败，请重试", "抱歉");
+		},
+		success : function(data) {
+			if (data.id >= 0) {
+				storeUserIdentification(data, data.id, type)
+				userId = data.id;
+				user = data;
+				userType = $('#type').val();
+				myApp.closeModal('.login-screen');
+				myApp.closeModal($('.popup-register'));
+				initBar();
+			} else {
+				myApp.alert("注册失败，请检查后重试", "抱歉");
+			}
+		}
+	});
 }
 
-//for student logging in
+function validate_register_info() {
+	if ($('#repassword').val() != $('#r-password').val())
+		return 1;
+	return 0;
+}
+
+// for student logging in
 function login(username, password, type) {
 	var url = baseUrl;
 	if (type === "student") {
@@ -115,7 +185,7 @@ function login(username, password, type) {
 		},
 		dataType : "json",
 		error : function(e) {
-			myApp.alert("登陆失败，请重试");
+			myApp.alert("登陆失败，请重试", "抱歉");
 		},
 		success : function(data) {
 			if (data.id >= 0) {
@@ -125,13 +195,13 @@ function login(username, password, type) {
 				userType = type;
 				initBar();
 			} else {
-				myApp.alert("用户名或密码错误，请检查后重试");
+				myApp.alert("用户名或密码错误，请检查后重试", "抱歉");
 			}
 		}
 	});
 }
 
-//local storage the identification
+// local storage the identification
 function storeUserIdentification(userinfo, id, type) {
 	var storage = window.localStorage;
 	var identification = JSON.stringify(userinfo);
@@ -140,7 +210,7 @@ function storeUserIdentification(userinfo, id, type) {
 	storage["userType"] = type;
 }
 
-//get the identification from local storage or set it null
+// get the identification from local storage or set it null
 function getUserIdentification() {
 	var storage = window.localStorage;
 	userId = storage["userId"];
@@ -167,7 +237,7 @@ function initBar() {
 	}
 	$$('#bar_right').html(barString);
 
-	//left view init
+	// left view init
 	if (userId < 0) {
 		$$('#user_name').html(
 				"你好,<a href='#'  class='open-login-screen' >请先登录</a>");
@@ -186,22 +256,22 @@ function initBar() {
 		} else {
 			tmpstr += "教师";
 			$$("#personal_func").show();
-			$$("#tea_func_list").hide();
-			$$("#stu_func_list").show();
+			$$("#tea_func_list").show();
+			$$("#stu_func_list").hide();
 		}
 		$$('#user_type').html(tmpstr);
 	}
 }
 
 function getRootPath() {
-	//获取当前网址，如： http://localhost:8080/ems/Pages/Basic/Person.jsp
+	// 获取当前网址，如： http://localhost:8080/ems/Pages/Basic/Person.jsp
 	var curWwwPath = window.document.location.href;
-	//获取主机地址之后的目录，如： /ems/Pages/Basic/Person.jsp
+	// 获取主机地址之后的目录，如： /ems/Pages/Basic/Person.jsp
 	var pathName = window.document.location.pathname;
 	var pos = curWwwPath.indexOf(pathName);
-	//获取主机地址，如： http://localhost:8080
+	// 获取主机地址，如： http://localhost:8080
 	var localhostPath = curWwwPath.substring(0, pos);
-	//获取带"/"的项目名，如：/ems
+	// 获取带"/"的项目名，如：/ems
 	var projectName = pathName
 			.substring(0, pathName.substr(1).indexOf('/') + 1);
 	return (localhostPath + projectName + "/");

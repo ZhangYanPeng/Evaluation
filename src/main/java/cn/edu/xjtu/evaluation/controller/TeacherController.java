@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.edu.xjtu.evaluation.entity.Student;
 import cn.edu.xjtu.evaluation.entity.Teacher;
 import cn.edu.xjtu.evaluation.service.ITeacherService;
 
@@ -33,21 +34,25 @@ public class TeacherController {
 	}
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public @ResponseBody Teacher register(@RequestBody Map map) {
+	public @ResponseBody Teacher register(String username, String password, String gender, String name, String school, String major, String title) {
 		Teacher teacher = new Teacher();
-		teacher.setAge((String)map.get("age"));
-		teacher.setGender((String)map.get("gender"));
-		teacher.setName((String)map.get("name"));
-		teacher.setPassword((String)map.get("password"));
-		teacher.setUsername((String)map.get("username"));
-		teacher.setTitle((String)map.get("title"));
+		System.out.println(name);
+		teacher.setGender(gender);
+		teacher.setName(name);
+		teacher.setPassword(password);
+		teacher.setUsername(username);
+		teacher.setTitle(title);
+		teacher.setSchool(school);
+		teacher.setMajor(major);
 		teacher.setUnits(null);
 		int status = teacherService.register(teacher);
 		if( status == 1 ){
 			teacher = teacherService.login(teacher);
 			return teacher;
 		}else{
-			return null;
+			teacher = new Teacher();
+			teacher.setId(-1);
+			return teacher;
 		}
 	}
 }

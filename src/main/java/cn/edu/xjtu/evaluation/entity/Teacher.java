@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -25,9 +26,12 @@ public class Teacher {
 	private String password;
 	private String name;
 	private String age;
+	private String major;
+	private String school;
 	private String title;
 	private String gender;
 	
+	@JsonIgnore
 	@OneToMany( fetch = FetchType.LAZY)
 	@JoinColumn( name = "teacher_id")
 	private Set<Organization> units;
@@ -98,6 +102,22 @@ public class Teacher {
 
 	public void setUnits(Set<Organization> units) {
 		this.units = units;
+	}
+
+	public String getMajor() {
+		return major;
+	}
+
+	public void setMajor(String major) {
+		this.major = major;
+	}
+
+	public String getSchool() {
+		return school;
+	}
+
+	public void setSchool(String school) {
+		this.school = school;
 	}
 	
 	
