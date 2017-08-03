@@ -39,12 +39,12 @@ $$(document).on('pageInit', function(e) {
 		// Code for index page
 		if (page.name === 'index') {
 		}
-		
+
 		if (page.name === 'edit_exercise') {
 			var exercise_id = page.query.exercise_id;
-			if(exercise_id == -1){
+			if (exercise_id == -1) {
 				$('.pagetitle').html('新增试题');
-			}else{
+			} else {
 				$('.pagetitle').html('编辑试题');
 			}
 		}
@@ -68,15 +68,24 @@ $$(document).on(
 
 			// check for registering
 			if (element.id === 'register-button') {
-				// log in
 				register();
 			}
 
 			if (element.id === 'logout') {
-				// log in
+				// log out
 				userId = -1;
 				storeUserIdentification(null, userId, "");
 				initBar();
+			}
+
+			if (element.id === 'open-popup-edit-quesition') {
+				//edit quesition
+				initEditQuestion(element.title);
+			}
+
+			if (element.id === 'save-quesition') {
+				// save quesition
+				saveQuestion();
 			}
 		});
 
@@ -146,7 +155,7 @@ function register() {
 		url : url,
 		data : data_input,
 		dataType : "json",
-		contentType:"application/x-www-form-urlencoded; charset=utf-8",
+		contentType : "application/x-www-form-urlencoded; charset=utf-8",
 		error : function(e) {
 			console.log(e);
 			myApp.alert("注册失败，请重试", "抱歉");
@@ -235,8 +244,8 @@ function getUserIdentification() {
 	}
 }
 
+//init left view and top bar information
 function initBar() {
-
 	var barString = "你好,";
 	if (userId < 0) {
 		barString += "<a href='#' class='open-login-screen' >请先登录</a>";
@@ -271,6 +280,50 @@ function initBar() {
 	}
 }
 
+//init edit quesition popup
+function initEditQuestion(id) {
+	if (id == '-1') {
+		myApp.popup('.popup-edit-question');
+	} else {
+		console.log(id);
+	}
+}
+
+//save question
+function saveQuesition() {
+	var url = baseUrl;
+	var data_input = null;
+	if ($$("#q_id").val() == "-1") {
+		url += "teacher/add_quesition";
+	} else {
+		url += "teacher/edit_quesition";
+	}
+	data_input = {
+		q_id : $('#r-q_id').val(),
+		q_text : $('#q_text').val(),
+		q_option : $('#q_option').val(),
+		qi_text : $('#qi_text').val(),
+		qi_audio : $('#qi_audio').val(),
+		q_answer : $('#q_answer').val(),
+	};
+	$$.ajax({
+		async : false,
+		cache : false,
+		type : 'POST',
+		crossDomain : true,
+		url : url,
+		data : data_input,
+		dataType : "json",
+		contentType : "application/x-www-form-urlencoded; charset=utf-8",
+		error : function(e) {
+			myApp.alert("提交失败，请重试", "抱歉");
+		},
+		success : function(data) {
+			
+		}
+	});
+}
+
 function getRootPath() {
 	// 获取当前网址，如： http://localhost:8080/ems/Pages/Basic/Person.jsp
 	var curWwwPath = window.document.location.href;
@@ -286,8 +339,10 @@ function getRootPath() {
 }
 
 // url parameter
-function getQueryString(name) { 
-	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); 
-	var r = window.location.search.substr(1).match(reg); 
-	if (r != null) return unescape(r[2]); return null; 
-	} 
+function getQueryString(name) {
+	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+	var r = window.location.search.substr(1).match(reg);
+	if (r != null)
+		return unescape(r[2]);
+	return null;
+}
