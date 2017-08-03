@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import cn.edu.xjtu.evaluation.common.Constants;
 import cn.edu.xjtu.evaluation.dao.impl.ExerciseDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.InterventionDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.QuestionDAOImpl;
@@ -15,6 +16,7 @@ import cn.edu.xjtu.evaluation.entity.Exercise;
 import cn.edu.xjtu.evaluation.entity.Intervention;
 import cn.edu.xjtu.evaluation.entity.Question;
 import cn.edu.xjtu.evaluation.service.IExerciseService;
+import cn.edu.xjtu.evaluation.support.PageResults;
 
 @Service
 public class ExerciseServiceImpl implements IExerciseService {
@@ -109,6 +111,15 @@ public class ExerciseServiceImpl implements IExerciseService {
 		// TODO Auto-generated method stub
 		String hql = "from Exercise";
 		return exerciseDAO.getListByHQL(hql, null);
+	}
+
+	@Override
+	public PageResults<Exercise> getPageList(Integer page, String type) {
+		// TODO Auto-generated method stub
+		String hql = "from Exercise e where e.exerciseType.description = ? ";
+		String countHql = "select count(*) from Exercise";
+		String[] values = {type};
+		return exerciseDAO.findPageByFetchedHql(hql, countHql, page, Constants.PAGE_SIZE, values);
 	}
 
 

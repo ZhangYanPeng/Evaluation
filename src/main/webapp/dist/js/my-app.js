@@ -39,7 +39,15 @@ $$(document).on('pageInit', function(e) {
 		// Code for index page
 		if (page.name === 'index') {
 		}
-
+		
+		if (page.name === 'edit_exercise') {
+			var exercise_id = page.query.exercise_id;
+			if(exercise_id == -1){
+				$('.pagetitle').html('新增试题');
+			}else{
+				$('.pagetitle').html('编辑试题');
+			}
+		}
 	}
 });
 
@@ -276,3 +284,10 @@ function getRootPath() {
 			.substring(0, pathName.substr(1).indexOf('/') + 1);
 	return (localhostPath + projectName + "/");
 }
+
+// url parameter
+function getQueryString(name) { 
+	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); 
+	var r = window.location.search.substr(1).match(reg); 
+	if (r != null) return unescape(r[2]); return null; 
+	} 

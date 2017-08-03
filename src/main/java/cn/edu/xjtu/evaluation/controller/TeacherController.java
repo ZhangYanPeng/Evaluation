@@ -1,5 +1,6 @@
 package cn.edu.xjtu.evaluation.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.edu.xjtu.evaluation.entity.Exercise;
 import cn.edu.xjtu.evaluation.entity.Student;
 import cn.edu.xjtu.evaluation.entity.Teacher;
+import cn.edu.xjtu.evaluation.service.IExerciseService;
 import cn.edu.xjtu.evaluation.service.ITeacherService;
+import cn.edu.xjtu.evaluation.support.PageResults;
 
 @Controller
 @RequestMapping("/teacher")
@@ -19,6 +23,8 @@ public class TeacherController {
 
 	@Autowired
 	ITeacherService teacherService;
+	@Autowired
+	IExerciseService exerciseService;
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public @ResponseBody Teacher login(String username, String password) {
@@ -37,7 +43,6 @@ public class TeacherController {
 	public @ResponseBody Teacher register(String username, String password, String gender, String name, String school,
 			String major, String title) {
 		Teacher teacher = new Teacher();
-		System.out.println(name);
 		teacher.setGender(gender);
 		teacher.setName(name);
 		teacher.setPassword(password);
@@ -56,4 +61,11 @@ public class TeacherController {
 			return teacher;
 		}
 	}
+	
+	@RequestMapping(value = "/get_exercises", method = RequestMethod.POST)
+	public @ResponseBody PageResults<Exercise> getExercises(String page, String type) {
+		return exerciseService.getPageList(Integer.valueOf(page), type);
+	}
+	
+	
 }
