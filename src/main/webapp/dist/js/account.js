@@ -88,7 +88,6 @@ function login(username, password, type) {
 		},
 		dataType : "json",
 		error : function(e) {
-			console.log(e);
 			myApp.alert("登陆失败，请重试", "抱歉");
 		},
 		success : function(data) {
@@ -97,6 +96,9 @@ function login(username, password, type) {
 				userId = data.id;
 				user = data;
 				userType = type;
+				if (userId > 0) {
+					myApp.closeModal('.login-screen');
+				}
 				initBar();
 			} else {
 				myApp.alert("用户名或密码错误，请检查后重试", "抱歉");
@@ -123,6 +125,7 @@ function getUserIdentification() {
 		if (userId >= 0) {
 			user = JSON.parse(storage["identification"]);
 			userType = storage["userType"];
+			myApp.closeModal('.login-screen');
 		}
 	} else {
 		userId = -1;

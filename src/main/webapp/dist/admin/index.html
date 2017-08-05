@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title>大学英语听力评估</title>
+<!-- Path to Framework7 Library CSS-->
+<link rel="stylesheet" href="../css/framework7.ios.min.css">
+<link rel="stylesheet" href="../css/framework7.ios.colors.min.css">
+<!-- Path to your custom app styles-->
+<link rel="stylesheet"
+	href="../lib/font-awesome/css/font-awesome.min.css">
+<script type="text/javascript" src="../lib/jquery/jquery.js"
+	charset="UTF-8"></script>
+</head>
+<body>
+	<!-- Status bar overlay for fullscreen mode-->
+	<div class="statusbar-overlay"></div>
+	<!-- Panels overlay-->
+	<div class="panel-overlay"></div>
+	<!-- Views-->
+	<div class="views">
+		<div class="view view-main navbar-through">
+			<div class="navbar">
+				<div class="navbar-inner">
+					<div class="center sliding">首页</div>
+					<div class="right" id="bar_right"></div>
+				</div>
+			</div>
+			<!-- Pages-->
+			<div class="pages">
+				<!-- Page, data-page contains page name-->
+				<div data-page="index-right" class="page">
+					<!-- Scrollable page content-->
+					<div class="page-content">
+						<div class="content-block-title">你好</div>
+						<div class="content-block">
+							<div class="content-block-inner">
+								<p>This is an example of split view application layout,
+									commonly used on iPad apps. The main approach of such kind of
+									layout is that you can see different views at the same time.</p>
+							</div>
+						</div>
+						<div class="list-block">
+							<ul>
+								<li><a href="about.html" class="item-link">
+										<div class="item-content">
+											<div class="item-inner">
+												<div class="item-title">About</div>
+											</div>
+										</div>
+								</a></li>
+								<li><a href="services.html" class="item-link">
+										<div class="item-content">
+											<div class="item-inner">
+												<div class="item-title">Services</div>
+											</div>
+										</div>
+								</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- log in modal -->
+	<div class="login-screen modal-in">
+		<div class="view">
+			<div class="page">
+				<div class="page-content login-screen-content">
+					<div class="login-screen-title">请您先登录</div>
+					<form>
+						<div class="list-block">
+							<ul>
+								<li class="item-content">
+									<div class="item-media">
+										<i class="fa fa-user"></i>
+									</div>
+									<div class="item-inner">
+										<div class="item-title label">用户名</div>
+										<div class="item-input">
+											<input type="text" name="username" id="username"
+												placeholder="请输入。。。">
+										</div>
+									</div>
+								</li>
+								<li class="item-content">
+									<div class="item-media">
+										<i class="fa fa-lock"></i>
+									</div>
+									<div class="item-inner">
+										<div class="item-title label">密码</div>
+										<div class="item-input">
+											<input type="password" name="password" id="password"
+												placeholder="请输入。。。">
+										</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="list-block">
+							<ul>
+								<li><a href="#" class="item-link list-button"
+									id="log-in-button">登陆</a></li>
+								<li><a href="#" data-popup=".popup-register"
+									class="open-popup list-button">注册</a></li>
+							</ul>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Path to Framework7 Library JS-->
+	<script type="text/javascript" src="../js/framework7.min.js"></script>
+	<!-- Path to your app js-->
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/admin.js"></script>
+	<script type="text/javascript" src="js/my-app.js"></script>
+</body>
+</html>

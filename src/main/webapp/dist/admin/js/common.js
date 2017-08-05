@@ -1,7 +1,16 @@
-// cache user's identification
-var userId; // equals -1 before logging
-var user;
-var userType;
+// Initialize your app
+var myApp = new Framework7();
+
+// Export selectors engine
+var $$ = Dom7;
+
+var baseUrl = getRootPath();
+
+var mainView = myApp.addView('.view-main', {
+	// Because we use fixed-through navbar we can enable dynamic navbar
+	dynamicNavbar : true
+});
+
 
 function getRootPath() {
 	// 获取当前网址，如： http://localhost:8080/ems/Pages/Basic/Person.jsp
@@ -16,7 +25,3 @@ function getRootPath() {
 			.substring(0, pathName.substr(1).indexOf('/') + 1);
 	return (localhostPath + projectName + "/");
 }
-
-// base url
-var baseUrl = getRootPath();
-
