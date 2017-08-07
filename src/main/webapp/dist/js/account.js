@@ -1,3 +1,6 @@
+// check if logged before
+getUserIdentification();
+
 // register
 function register() {
 	if (validate_register_info() == 1) {

@@ -5,7 +5,7 @@ $$(document).on('pageInit', function(e) {
 	var page = e.detail.page;
 
 	// check for logging in except registering
-	if (userId < 0 && page.name != 'register') {
+	if (adminId < 0) {
 		myApp.loginScreen();
 	} else {
 		// prevent from the logging modal

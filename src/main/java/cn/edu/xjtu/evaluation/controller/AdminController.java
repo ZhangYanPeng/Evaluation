@@ -1,5 +1,11 @@
 package cn.edu.xjtu.evaluation.controller;
 
+import java.io.UnsupportedEncodingException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.json.HTTP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,8 +30,15 @@ public class AdminController {
 		return admin;
 	}
 	
-	@RequestMapping(value = "/")
-	public String login() {
+	@RequestMapping(value = "/index")
+	public String login(HttpServletRequest request,HttpServletResponse response) {
+		try {
+			request.setCharacterEncoding("utf-8");
+			response.setContentType("text/html;charset=utf-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return "/admin/index";
 	}
 }
