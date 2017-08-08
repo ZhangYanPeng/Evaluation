@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import cn.edu.xjtu.evaluation.common.Constants;
 import cn.edu.xjtu.evaluation.dao.impl.AdminDAOImpl;
 import cn.edu.xjtu.evaluation.entity.Admin;
 import cn.edu.xjtu.evaluation.service.IAdminService;
+import cn.edu.xjtu.evaluation.support.PageResults;
 
 @Service
 public class AdminServiceImpl implements IAdminService {
@@ -54,10 +56,26 @@ public class AdminServiceImpl implements IAdminService {
 
 	@Override
 	@Transactional
-	public List<Admin> list() {
+	public PageResults<Admin> list( String username, int page) {
 		// TODO Auto-generated method stub
-		String hql = "from Admin";
-		return adminDAO.getListByHQL(hql, null);
+		String hql = "from Admin where username like ? ";
+		String countHql = "select count(*) from Admin where username like ?";
+		String[] values = { username };
+		return adminDAO.findPageByFetchedHql(hql, countHql, page, Constants.PAGE_SIZE, values);
+	}
+
+	@Override
+	@Transactional
+	public Admin load(long id) {
+		// TODO Auto-generated method stub
+		return adminDAO.get(id);
+	}
+
+	@Override
+	@Transactional
+	public boolean delete(long id) {
+		// TODO Auto-generated method stub
+		return adminDAO.deleteById(id);
 	}
 
 }

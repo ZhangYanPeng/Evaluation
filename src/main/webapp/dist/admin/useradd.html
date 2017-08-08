@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>添加用户</title>
+<link rel="stylesheet" type="text/css" href="css/css.css" />
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript">
+	var aid = getQueryString("id");
+	if (aid != "-1") {
+		$.ajax({
+			sync : false,
+			cache : false,
+			type : 'POST',
+			crossDomain : true,
+			url : "./load_admin",
+			data : {
+				id : aid
+			},
+			dataType : "json",
+			contentType : "application/x-www-form-urlencoded;charset=utf-8",
+			error : function(e) {
+				alert("网络错误，请重试");
+			},
+			success : function(data) {
+				$("#username").val(data.username);
+				$("#password").val(data.password);
+				$("#repassword").val(data.password);
+				$("#id").val(data.id);
+			}
+		});
+	}
+	
+	function save(){
+		if( $("#password").val() != $("#repassword").val() ){
+			alert("两次密码不一致，请检查！");
+			return;
+		}
+		$.ajax({
+			sync : false,
+			cache : false,
+			type : 'POST',
+			crossDomain : true,
+			url : "./edit_admin",
+			data : {
+				id : $("#id").val(),
+				username: $("#username").val(),
+				password: $("#password").val(),
+			},
+			dataType : "json",
+			contentType : "application/x-www-form-urlencoded;charset=utf-8",
+			error : function(e) {
+				alert("网络错误，请重试");
+			},
+			success : function(data) {
+				if( data==1 )
+					alert("更改成功！");
+			}
+		});
+	}
+</script>
+</head>
+<body>
+	<div id="pageAll">
+		<div class="pageTop">
+			<div class="page">
+				<img src="img/coin02.png" /><span><a href="#">首页</a>&nbsp;-&nbsp;<a
+					href="#">网站管理</a>&nbsp;-</span>&nbsp;管理员编辑
+			</div>
+		</div>
+		<div class="page ">
+			<!-- 会员注册页面样式 -->
+			<div class="banneradd bor">
+				<div class="baTopNo">
+					<span>管理员编辑</span>
+				</div>
+				<div class="baBody">
+					<input id="id" type="hidden" class="input3" />
+					<div class="bbD">
+						&nbsp;&nbsp;&nbsp;&nbsp;用户名：<input id="username" type="text"
+							class="input3" />
+					</div>
+					<div class="bbD">
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;密码：<input id="password"
+							type="password" class="input3" />
+					</div>
+					<div class="bbD">
+						重复密码：<input id="repassword"
+							type="password" class="input3" />
+					</div>
+					<div class="bbD">
+						<p class="bbDP">
+							<button class="btn_ok btn_yes" href="#" onclick="javascript:save();">提交</button>
+							<a class="btn_ok btn_no" href="user.html">取消</a>
+						</p>
+					</div>
+				</div>
+			</div>
+
+			<!-- 会员注册页面样式end -->
+		</div>
+	</div>
+</body>
+</html>
