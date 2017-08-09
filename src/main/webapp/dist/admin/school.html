@@ -4,128 +4,201 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>学院管理</title>
 <link rel="stylesheet" type="text/css" href="css/css.css" />
+<link rel="stylesheet" href="./css/jqpagination.css" />
 <script type="text/javascript" src="js/jquery.min.js"></script>
-<!-- <script type="text/javascript" src="js/page.js" ></script> -->
+<script src="./js/jquery.jqpagination.js"></script>
 <script type="text/javascript" src="js/init.js"></script>
 <script type="text/javascript" src="js/common.js"></script>
 <script type="text/javascript">
-		$.ajax({
-					sync : false,
-					cache : false,
-					type : 'POST',
-					crossDomain : true,
-					url : "./list_admin",
-					data : {
-						username : un,
-						page : p
-					},
-					dataType : "json",
-					contentType : "application/x-www-form-urlencoded; charset=utf-8",
-					error : function(e) {
-						alert("网络错误，请重试");
-					},
-					success : function(data) {
-						$.each(
-										data.results,
-										function(index, value) {
-											var td_id = $('<td></td>').append(
-													value.id);
-											var td_un = $('<td></td>').append(
-													value.username);
-											var td_pd = $('<td></td>').append(
-													value.password);
-											var a_edit = $('<a></a>').attr(
-													'href',
-													"useradd.html?id="
-															+ value.id);
-											a_edit
-													.append("<img class='operation' src='img/update.png'></a>");
-											var td_op = $('<td></td>')
-													.append(a_edit)
-													.append(
-															"<img class='operation delban' src='img/delete.png' onclick='javascript:removeAdmin("
-																	+ value.id
-																	+ ");' /></td>");
-											var tr = $('<tr></tr>').attr(
-													'height', "40px");
-											tr.append(td_id).append(td_un)
-													.append(td_pd)
-													.append(td_op);
-											$("#adminlist").append(tr);
-										});
-					}
-				});
-	}
-	
-	function save() {
-		if ($("#password").val() != $("#repassword").val()) {
-			alert("两次密码不一致，请检查！");
-			return;
-		}
-		$.ajax({
-			sync : false,
-			cache : false,
-			type : 'POST',
-			crossDomain : true,
-			url : "./add_admin",
-			data : {
-				username : $("#nun").val(),
-				password : $("#npd").val(),
-			},
-			dataType : "json",
-			contentType : "application/x-www-form-urlencoded;charset=utf-8",
-			error : function(e) {
-				alert("网络错误，请重试");
-			},
-			success : function(data) {
-				if (data == 1) {
-					alert("添加成功！");
-					jump("/admin/user");
-				}
-			}
+		var page_num = 1;
+		var total_num = 0;
+		var loaded=0;
+		$(document).ready(function() {
+			loadUniversity();
+			list(1);
 		});
-	}
-</script>
+
+		function loadUniversity() {
+			if($("#p_u").html()!="")
+				return;
+			var default_op = "<option selected='selected' value='-1'>----------请选择学校----------</option>";
+			$("#p_u").html(default_op);
+			$.ajax({
+				sync : false,
+				cache : false,
+				type : 'POST',
+				crossDomain : true,
+				url : "./get_all_university",
+				data : {},
+				dataType : "json",
+				contentType : "application/x-www-form-urlencoded;charset=utf-8",
+				error : function(e) {
+					alert("网络错误，请重试");
+				},
+				success : function(data) {
+					$.each(data, function(index, value) {
+						var op = $('<option></option>').attr('value', value.id)
+						.append(value.name);
+						$("#p_u").append(op);
+					});
+				}
+			});
+		}
+
+		function list(p) {
+			$.ajax({
+				sync : false,
+				cache : false,
+				type : 'POST',
+				crossDomain : true,
+				url : "./list_school",
+				data : {
+					page : p,
+					university : $("#p_u").val()
+				},
+				dataType : "json",
+				contentType : "application/x-www-form-urlencoded; charset=utf-8",
+				error : function(e) {
+					alert("网络错误，请重试");
+				},
+				success : function(data) {
+					total_num = data.pageCount;
+					page_num=p;
+					$("#page_num").val(p);
+					var tab_title = "<tr>"
+					+ "<td width='66px' class='tdColor tdC'>序号</td>"
+					+ "<td width='730px' class='tdColor'>学校名</td>"
+					+ "<td width='730px' class='tdColor'>学院名</td>"
+					+ "<td width='130px' class='tdColor'>操作</td>"
+					+ "	</tr>";
+					$("#schoollist").html(tab_title);
+					$.each(data.results,function(index, value) {
+							var td_id = $('<td></td>').append(
+								value.id);
+							var td_n = $('<td></td>').append(
+								value.name);
+							var td_u = $('<td></td>').append(
+								value.university.name);
+							var a_edit = $('<a></a>').attr(
+								'href',
+								"schooladd.html?id="
+								+ value.id);
+							a_edit.append("<img class='operation' src='img/update.png'></a>");
+							var td_op = $('<td></td>')
+							.append(a_edit)
+							.append(
+								"<img class='operation delban' src='img/delete.png' onclick='javascript:removeschool("
+								+ value.id
+								+ ");' /></td>");
+							var tr = $('<tr></tr>').attr(
+								'height', "40px");
+							tr.append(td_id).append(td_n).append(td_u).append(td_op);
+							$("#schoollist").append(tr);
+						});
+				}
+			});
+		}
+
+		function removeschool(sid) {
+			$.ajax({
+				sync : false,
+				cache : false,
+				type : 'POST',
+				crossDomain : true,
+				url : "./remove_school",
+				data : {
+					id : sid,
+				},
+				dataType : "json",
+				contentType : "application/x-www-form-urlencoded;charset=utf-8",
+				error : function(e) {
+					alert("网络错误，请重试");
+				},
+				success : function(data) {
+					if (data == 1) {
+						list(1);
+						page_num = 1;
+					}
+					if (data == 0) {
+						alert("网络错误，请重试");
+					}
+					if (data == -1) {
+						alert("该学院有关联班级，不能删除！");
+					}
+				}
+			});
+		}
+
+		function first() {
+			if (page_num == 1)
+				return;
+			page_num = 1;
+			list(1);
+		}
+
+		function previous() {
+			if (page_num == 1)
+				return;
+			page_num = page_num - 1;
+			list(page_num);
+		}
+
+		function next() {
+			if (page_num == total_num)
+				return;
+			page_num = page_num + 1;
+			list(page_num);
+		}
+
+		function last() {
+			if (page_num == total_num)
+				return;
+			page_num = total_num;
+			list(page_num);
+		}
+	</script>
 </head>
 
 <body>
 	<div id="pageAll">
 		<div class="pageTop">
 			<div class="page">
-				<img src="img/coin02.png" /><span><a href="#">首页</a>&nbsp;-&nbsp;-</span>&nbsp;管理员管理
+				<img src="img/coin02.png" /><span><a href="#">首页</a>&nbsp;-&nbsp;-</span>&nbsp;用户管理
 			</div>
 		</div>
 
 		<div class="page">
 			<!-- user页面样式 -->
 			<div class="connoisseur">
-				<div class="conform">
-					<form>
-						<div class="cfD">
-							<input class="userinput" id="nun" type="text" placeholder="输入学院名" />&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;
-							<button class="userbtn" onclick="javascript:save();">添加</button>
-						</div>
-					</form>
+				<div class="cfD">
+					<select class="userinput" id="p_u"></select>&nbsp;-&nbsp;&nbsp;&nbsp;
+					<a href="javascript:list(1);"><button class="userbtn"
+							disabled="disabled">搜索</button></a>
 				</div>
-				<!-- user 表格 显示 -->
-				<div class="conShow">
-					<table id="adminlist" border="1" cellspacing="0" cellpadding="0">
-						<tr>
-							<td width="66px" class="tdColor tdC">序号</td>
-							<td width="730px" class="tdColor">学院名</td>
-							<td width="130px" class="tdColor">操作</td>
-						</tr>
-					</table>
-				</div>
-				<div class="paging">
-					<ul class="pager">
-						<li><a href="#">Previous</a></li>
-						<li><a href="#">Next</a></li>
-					</ul></div>
 			</div>
-			<!-- user 表格 显示 end-->
+			<!-- user 表格 显示 -->
+			<div class="conShow">
+				<table id="schoollist" border="1" cellspacing="0" cellpadding="0">
+				</table>
+			</div>
+			<div class="cfD">
+				<a href="schooladd.html?id=-1"><button class="userbtn"
+						disabled="disabled">新增学院</button></a>
+			</div>
+
+			<div class="paging">
+				<div class="pagination">
+					<a href="#" class="first" onclick="javascript:first();">&laquo;</a>
+					<a href="#" class="previous" onclick="javascript:previous();">&lsaquo;</a>
+					<input id="page_num" type="text" readonly="readonly" /> <a
+						href="#" class="next" onclick="javascript:next();">&rsaquo;</a> <a
+						href="#" class="last" onclick="javascript:last();">&raquo;</a>
+				</div>
+			</div>
 		</div>
-		<!-- user页面样式end -->
+		<!-- user 表格 显示 end-->
+	</div>
+	<!-- user页面样式end -->
 	</div>
 
 	<!-- 删除弹出框  end-->

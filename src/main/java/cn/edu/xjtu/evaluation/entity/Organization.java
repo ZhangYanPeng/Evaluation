@@ -25,8 +25,11 @@ public class Organization {
 	private String className;
 	
 	@OneToMany( fetch = FetchType.LAZY)
-	@JoinColumn( name = "unit_id")
+	@JoinColumn( name = "organization_id")
 	private Set<Student> students;
+	
+	@ManyToOne( fetch = FetchType.LAZY)
+	private School school;
 	
 	@ManyToOne( fetch = FetchType.LAZY)
 	private Teacher teacher;
@@ -65,6 +68,14 @@ public class Organization {
 
 	public void setTeacher(Teacher teacher) {
 		this.teacher = teacher;
+	}
+
+	public School getSchool() {
+		return school;
+	}
+
+	public void setSchool(School school) {
+		this.school = school;
 	}
 	
 	

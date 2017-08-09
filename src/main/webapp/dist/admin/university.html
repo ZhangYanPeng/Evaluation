@@ -2,30 +2,28 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>管理员管理</title>
+<title>学校管理</title>
 <link rel="stylesheet" type="text/css" href="css/css.css" />
 <link rel="stylesheet" href="./css/jqpagination.css" />
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script src="./js/jquery.jqpagination.js"></script>
-<!-- <script type="text/javascript" src="js/page.js" ></script> -->
 <script type="text/javascript" src="js/init.js"></script>
 <script type="text/javascript" src="js/common.js"></script>
 <script type="text/javascript">
 	var page_num = 1;
-	var total_num = 0;$(document).ready(function(){
-		list("%", 1);
+	var total_num = 0;
+	$(document).ready(function() {
+		list(1);
 	});
-	
-	function list(un, p) {
+	function list(p) {
 		$
 				.ajax({
 					sync : false,
 					cache : false,
 					type : 'POST',
 					crossDomain : true,
-					url : "./list_admin",
+					url : "./list_university",
 					data : {
-						username : un,
 						page : p
 					},
 					dataType : "json",
@@ -37,62 +35,51 @@
 						total_num = data.pageCount;
 						page_num=p;
 						$("#page_num").val(p);
-
 						var tab_title = "<tr>"
 								+ "<td width='66px' class='tdColor tdC'>序号</td>"
-								+ "<td width='730px' class='tdColor'>用户名</td>"
-								+ "<td width='730px' class='tdColor'>密码</td>"
+								+ "<td width='730px' class='tdColor'>学校名</td>"
 								+ "<td width='130px' class='tdColor'>操作</td>"
 								+ "	</tr>";
-						$("#adminlist").html(tab_title);
-						
+						$("#universitylist").html(tab_title);
 						$
 								.each(
 										data.results,
 										function(index, value) {
 											var td_id = $('<td></td>').append(
 													value.id);
-											var td_un = $('<td></td>').append(
-													value.username);
-											var td_pd = $('<td></td>').append(
-													value.password);
+											var td_n = $('<td></td>').append(
+													value.name);
 											var a_edit = $('<a></a>').attr(
 													'href',
-													"useradd.html?id="
+													"universityadd.html?id="
 															+ value.id);
 											a_edit
 													.append("<img class='operation' src='img/update.png'></a>");
 											var td_op = $('<td></td>')
 													.append(a_edit)
 													.append(
-															"<img class='operation delban' src='img/delete.png' onclick='javascript:removeAdmin("
+															"<img class='operation delban' src='img/delete.png' onclick='javascript:removeUniversity("
 																	+ value.id
 																	+ ");' /></td>");
 											var tr = $('<tr></tr>').attr(
 													'height', "40px");
-											tr.append(td_id).append(td_un)
-													.append(td_pd)
+											tr.append(td_id).append(td_n)
 													.append(td_op);
-											$("#adminlist").append(tr);
+											$("#universitylist").append(tr);
 										});
 					}
 				});
 	}
 
 	function save() {
-		if ($("#password").val() != $("#repassword").val()) {
-			alert("两次密码不一致，请检查！");
-			return;
-		}
 		$.ajax({
 			sync : false,
 			cache : false,
 			type : 'POST',
 			crossDomain : true,
-			url : "./add_admin",
+			url : "./add_university",
 			data : {
-				username : $("#nun").val(),
-				password : $("#npd").val(),
+				name : $("#nu").val(),
 			},
 			dataType : "json",
 			contentType : "application/x-www-form-urlencoded;charset=utf-8",
@@ -102,26 +89,22 @@
 			success : function(data) {
 				if (data == 1) {
 					alert("添加成功！");
-					jump("/admin/user");
+					jump("/admin/university");
 					page_num = 1;
 				}
 			}
 		});
 	}
 
-	function removeAdmin(aid) {
-		if (aid == '1') {
-			alert("超级管理员无法删除！");
-			return;
-		}
+	function removeUniversity(uid) {
 		$.ajax({
 			sync : false,
 			cache : false,
 			type : 'POST',
 			crossDomain : true,
-			url : "./delete_admin",
+			url : "./remove_university",
 			data : {
-				id : aid
+				id : uid,
 			},
 			dataType : "json",
 			contentType : "application/x-www-form-urlencoded;charset=utf-8",
@@ -129,9 +112,15 @@
 				alert("网络错误，请重试");
 			},
 			success : function(data) {
-				if (data == true) {
-					list(1);
+				if (data == 1) {
+					list(1);;
 					page_num = 1;
+				}
+				if (data == 0) {
+					alert("网络错误，请重试");
+				}
+				if (data == -1) {
+					alert("该学校有关联学院，不能删除！");
 				}
 			}
 		});
@@ -141,28 +130,28 @@
 		if (page_num == 1)
 			return;
 		page_num = 1;
-		list("%", 1);
+		list(1);
 	}
 
 	function previous() {
 		if (page_num == 1)
 			return;
 		page_num = page_num - 1;
-		list("%", page_num);
+		list(page_num);
 	}
 
 	function next() {
 		if (page_num == total_num)
 			return;
 		page_num = page_num + 1;
-		list("%", page_num);
+		list(page_num);
 	}
 
 	function last() {
 		if (page_num == total_num)
 			return;
 		page_num = total_num;
-		list("%", page_num);
+		list(page_num);
 	}
 </script>
 </head>
@@ -171,7 +160,7 @@
 	<div id="pageAll">
 		<div class="pageTop">
 			<div class="page">
-				<img src="img/coin02.png" /><span><a href="#">首页</a>&nbsp;-&nbsp;-</span>&nbsp;管理员管理
+				<img src="img/coin02.png" /><span><a href="#">首页</a>&nbsp;-&nbsp;-</span>&nbsp;学校管理
 			</div>
 		</div>
 
@@ -181,16 +170,15 @@
 				<div class="conform">
 					<form>
 						<div class="cfD">
-							<input class="userinput" id="nun" type="text" placeholder="输入用户名" />&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;
-							<input class="userinput" id="npd" type="password"
-								placeholder="输入 密码" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<input class="userinput" id="nu" type="text" placeholder="输入学院名" />&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;
 							<button class="userbtn" onclick="javascript:save();">添加</button>
 						</div>
 					</form>
 				</div>
 				<!-- user 表格 显示 -->
 				<div class="conShow">
-					<table id="adminlist" border="1" cellspacing="0" cellpadding="0">
+					<table id="universitylist" border="1" cellspacing="0"
+						cellpadding="0">
 					</table>
 				</div>
 				<div class="paging">
