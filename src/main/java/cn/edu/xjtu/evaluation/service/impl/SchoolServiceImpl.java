@@ -1,5 +1,7 @@
 package cn.edu.xjtu.evaluation.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -84,6 +86,15 @@ public class SchoolServiceImpl implements ISchoolService {
 	public School load(Long id) {
 		// TODO Auto-generated method stub
 		return schoolDAO.get(id);
+	}
+
+	@Override
+	@Transactional
+	public List getAll(long u_id) {
+		// TODO Auto-generated method stub
+		String hqlString = "from School where university.id = ?";
+		Object[] values = {u_id};
+		return schoolDAO.getListByHQL(hqlString, values);
 	}
 
 }

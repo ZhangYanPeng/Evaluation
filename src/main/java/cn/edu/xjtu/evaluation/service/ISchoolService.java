@@ -1,5 +1,7 @@
 package cn.edu.xjtu.evaluation.service;
 
+import java.util.List;
+
 import cn.edu.xjtu.evaluation.entity.School;
 import cn.edu.xjtu.evaluation.support.PageResults;
 
@@ -9,4 +11,5 @@ public interface ISchoolService {
 	public PageResults<School> list(int page, long unviersity);
 	public int edit(School school);
 	public School load(Long id);
+	public List getAll(long u_id);
 }

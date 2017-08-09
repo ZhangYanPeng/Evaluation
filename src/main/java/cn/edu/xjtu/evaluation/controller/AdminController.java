@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.edu.xjtu.evaluation.entity.Admin;
+import cn.edu.xjtu.evaluation.entity.Organization;
 import cn.edu.xjtu.evaluation.entity.School;
 import cn.edu.xjtu.evaluation.entity.University;
 import cn.edu.xjtu.evaluation.service.IAdminService;
+import cn.edu.xjtu.evaluation.service.IOrganizationService;
 import cn.edu.xjtu.evaluation.service.ISchoolService;
 import cn.edu.xjtu.evaluation.service.IUniversityService;
 import cn.edu.xjtu.evaluation.support.PageResults;
@@ -30,6 +32,8 @@ public class AdminController {
 	IUniversityService universityService;
 	@Autowired
 	ISchoolService schoolService;
+	@Autowired
+	IOrganizationService organizationService;
 	
 	//common
 	@RequestMapping(value = "/jump")
@@ -142,9 +146,7 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value = "/list_school")
-	public @ResponseBody PageResults<School> getAllUniversity(int page, String university) {
-		System.out.println(university);
-		System.out.println(schoolService.list(page,Long.valueOf(university)).getResults().size());
+	public @ResponseBody PageResults<School> listSchool(int page, String university) {
 		return schoolService.list(page,Long.valueOf(university));
 	}
 
@@ -164,12 +166,42 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value = "/load_school")
-	public @ResponseBody School getAllUniversity(String id) {
+	public @ResponseBody School loadSchool(String id) {
 		return schoolService.load(Long.valueOf(id));
 	}
 	
 	@RequestMapping(value = "/remove_school")
 	public @ResponseBody int removSchool(String id) {
 		return schoolService.delete(Long.valueOf(id));
+	}
+	
+	//class manage
+	@RequestMapping(value = "/get_all_school")
+	public @ResponseBody List getAllSchool( String university) {
+		return schoolService.getAll(Long.valueOf(university));
+	}
+	
+	@RequestMapping(value = "/edit_class")
+	public @ResponseBody int editClass(String id,String name, String school) {
+		Long cid = Long.valueOf(id);
+		Organization organization = new Organization();
+		organization.setClassName(name);
+		organization.setSchool(schoolService.load(Long.valueOf(school)));
+		if(cid==-1){
+			return organizationService.add(organization);
+		}else{
+			organization.setId(cid);
+			return organizationService.edit(organization);
+		}
+	}
+	
+	@RequestMapping(value = "/list_class")
+	public @ResponseBody PageResults<Organization> getAllUniversity(int page, String school) {
+		return organizationService.list(page,Long.valueOf(school));
+	}
+	
+	@RequestMapping(value = "/load_class")
+	public @ResponseBody Organization loadClass(String id) {
+		return organizationService.load(Long.valueOf(id));
 	}
 }

@@ -75,10 +75,10 @@
 					$.each(data.results,function(index, value) {
 							var td_id = $('<td></td>').append(
 								value.id);
-							var td_n = $('<td></td>').append(
-								value.name);
 							var td_u = $('<td></td>').append(
 								value.university.name);
+							var td_n = $('<td></td>').append(
+								value.name);
 							var a_edit = $('<a></a>').attr(
 								'href',
 								"schooladd.html?id="
@@ -92,7 +92,7 @@
 								+ ");' /></td>");
 							var tr = $('<tr></tr>').attr(
 								'height', "40px");
-							tr.append(td_id).append(td_n).append(td_u).append(td_op);
+							tr.append(td_id).append(td_u).append(td_n).append(td_op);
 							$("#schoollist").append(tr);
 						});
 				}

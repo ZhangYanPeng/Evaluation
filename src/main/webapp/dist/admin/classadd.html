@@ -7,41 +7,46 @@
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/common.js"></script>
 <script type="text/javascript">
-	$(document).ready(function(){
-		loadUniversity();
-		var sid = getQueryString("id");
-		if (sid != "-1") {
-			$.ajax({
-				sync : false,
-				cache : false,
-				type : 'POST',
-				crossDomain : true,
-				url : "./load_school",
-				data : {
-					id : sid
-				},
-				dataType : "json",
-				contentType : "application/x-www-form-urlencoded;charset=utf-8",
-				error : function(e) {
-					alert("网络错误，请重试");
-				},
-				success : function(data) {
-					$("#name").val(data.name);
-					$("#university").val(data.university.id);
-					$("#id").val(data.id);
-				}
-			});
-		} else {
-			$("#id").val(sid);
-			$("#university").val(-1);
-		}
-	});
-	
+	$(document)
+			.ready(
+					function() {
+						loadUniversity();
+						var cid = getQueryString("id");
+						if (cid != "-1") {
+							$
+									.ajax({
+										async : false,
+										cache : false,
+										type : 'POST',
+										crossDomain : true,
+										url : "./load_class",
+										data : {
+											id : cid
+										},
+										dataType : "json",
+										contentType : "application/x-www-form-urlencoded;charset=utf-8",
+										error : function(e) {
+											alert("网络错误，请重试");
+										},
+										success : function(data) {
+											$("#name").val(data.className);
+											$("#university").val(data.school.university.id);
+											loadSchool();
+											$("#school").val(data.school.id);
+											$("#id").val(data.id);
+										}
+									});
+						} else {
+							$("#id").val(sid);
+							$("#university").val(-1);
+						}
+					});
+
 	function loadUniversity() {
 		var default_op = "<option selected='selected' value='-1'>----------请选择学校----------</option>";
 		$("#university").html(default_op);
 		$.ajax({
-			sync : false,
+			async : false,
 			cache : false,
 			type : 'POST',
 			crossDomain : true,
@@ -61,11 +66,40 @@
 			}
 		});
 	}
-	
+
+	function loadSchool() {
+		if($("#university").val()=='-1'){
+			var default_op = "<option selected='selected' value='-1'>----------请先选择学校----------</option>";
+			$("#school").html(default_op);
+			return;
+		}
+		var default_op = "<option selected='selected' value='-1'>----------请选择学院----------</option>";
+		$("#school").html(default_op);
+		$.ajax({
+			async : false,
+			cache : false,
+			type : 'POST',
+			crossDomain : true,
+			url : "./get_all_school",
+			data : {university:$("#university").val()},
+			dataType : "json",
+			contentType : "application/x-www-form-urlencoded;charset=utf-8",
+			error : function(e) {
+				alert("网络错误，请重试");
+			},
+			success : function(data) {
+				$.each(data, function(index, value) {
+					var op = $('<option></option>').attr('value', value.id)
+							.append(value.name);
+					$("#school").append(op);
+				});
+			}
+		});
+	}
 
 	function save() {
-		if( $("#university").val() == '-1'){
-			alert("请选择学校！");
+		if ($("#school").val() == '-1') {
+			alert("请选择学院！");
 			return;
 		}
 		$.ajax({
@@ -73,11 +107,11 @@
 			cache : false,
 			type : 'POST',
 			crossDomain : true,
-			url : "./edit_school",
+			url : "./edit_class",
 			data : {
 				id : $("#id").val(),
 				name : $("#name").val(),
-				university : $("#university").val(),
+				school : $("#school").val(),
 			},
 			dataType : "json",
 			contentType : "application/x-www-form-urlencoded;charset=utf-8",
@@ -111,11 +145,17 @@
 				<div class="baBody">
 					<input id="id" type="hidden" class="input3" />
 					<div class="bbD">
-						&nbsp;&nbsp;&nbsp;&nbsp;学校名：<select class="input3" id="university">
-							</select>
+						&nbsp;&nbsp;&nbsp;&nbsp;学校名：<select class="input3" id="university"
+							onchange="javascript:loadSchool();">
+						</select>
 					</div>
 					<div class="bbD">
-						&nbsp;&nbsp;&nbsp;&nbsp;学院名：<input id="name" type="text"
+						&nbsp;&nbsp;&nbsp;&nbsp;学院名：<select class="input3" id="school"><option
+								selected='selected' value='-1'>----------请先选择学校----------</option>
+						</select>
+					</div>
+					<div class="bbD">
+						&nbsp;&nbsp;&nbsp;&nbsp;班级名：<input id="name" type="text"
 							class="input3" />
 					</div>
 					<div class="bbD">

@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -26,12 +27,14 @@ public class Organization {
 	
 	@OneToMany( fetch = FetchType.LAZY)
 	@JoinColumn( name = "organization_id")
+	@JsonIgnore
 	private Set<Student> students;
 	
-	@ManyToOne( fetch = FetchType.LAZY)
+	@ManyToOne( fetch = FetchType.EAGER)
 	private School school;
 	
 	@ManyToOne( fetch = FetchType.LAZY)
+	@JsonIgnore
 	private Teacher teacher;
 
 	public Organization() {
