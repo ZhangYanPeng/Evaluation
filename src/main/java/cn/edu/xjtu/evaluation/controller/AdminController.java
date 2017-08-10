@@ -217,8 +217,8 @@ public class AdminController {
 			String originalFilename = stu_list.getOriginalFilename();
 			String genePath = request.getSession().getServletContext().getRealPath("/upload/stu_list/");
 			FileUtils.copyInputStreamToFile(stu_list.getInputStream(), new File(genePath,originalFilename));
-			DealExcel.loadInStudentInfo(Long.valueOf(id),genePath+originalFilename);
 			System.out.println(genePath);
+			DealExcel.loadInStudentInfo(Long.valueOf(id),genePath+originalFilename);
 			return 1;
 		} catch (Exception e) {
 			// TODO: handle exception
