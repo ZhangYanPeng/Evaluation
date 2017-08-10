@@ -46,7 +46,7 @@ public class OrganizationServiceImpl implements IOrganizationService{
 
 	@Override
 	@Transactional
-	public PageResults<Organization> list(int page, long sid) {
+	public PageResults<Organization> list(int page, long uid, long sid) {
 		// TODO Auto-generated method stub
 		String hql = "from Organization ";
 		String countHql = "select count(*) from Organization ";
@@ -55,7 +55,14 @@ public class OrganizationServiceImpl implements IOrganizationService{
 			countHql += "where school.id = ?";
 			Object[] values = {sid};
 			return organizationDAO.findPageByFetchedHql(hql, countHql, page, Constants.PAGE_SIZE, values);
-		}else{
+		}else if(uid>=0){
+			hql += "where school.university.id = ?";
+			countHql += "where school.university.id = ?";
+			Object[] values = {uid};
+			return organizationDAO.findPageByFetchedHql(hql, countHql, page, Constants.PAGE_SIZE, values);
+		
+		}
+		else{
 			Object[] values = {};
 			return organizationDAO.findPageByFetchedHql(hql, countHql, page, Constants.PAGE_SIZE, values);
 		}

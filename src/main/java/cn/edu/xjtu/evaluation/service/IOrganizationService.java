@@ -10,7 +10,7 @@ public interface IOrganizationService {
 
 	int edit(Organization organization);
 
-	PageResults<Organization> list(int page, long sid);
+	PageResults<Organization> list(int page, long uid, long sid);
 
 	Organization load(long id);
 

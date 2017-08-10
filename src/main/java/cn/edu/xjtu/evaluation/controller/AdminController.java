@@ -1,17 +1,20 @@
 package cn.edu.xjtu.evaluation.controller;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.HTTP;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import cn.edu.xjtu.evaluation.entity.Admin;
 import cn.edu.xjtu.evaluation.entity.Organization;
@@ -21,6 +24,7 @@ import cn.edu.xjtu.evaluation.service.IAdminService;
 import cn.edu.xjtu.evaluation.service.IOrganizationService;
 import cn.edu.xjtu.evaluation.service.ISchoolService;
 import cn.edu.xjtu.evaluation.service.IUniversityService;
+import cn.edu.xjtu.evaluation.support.DealExcel;
 import cn.edu.xjtu.evaluation.support.PageResults;
 
 @Controller
@@ -196,12 +200,31 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value = "/list_class")
-	public @ResponseBody PageResults<Organization> getAllUniversity(int page, String school) {
-		return organizationService.list(page,Long.valueOf(school));
+	public @ResponseBody PageResults<Organization> listClass(int page,String university, String school) {
+		return organizationService.list(page,Long.valueOf(university),Long.valueOf(school));
 	}
 	
 	@RequestMapping(value = "/load_class")
 	public @ResponseBody Organization loadClass(String id) {
 		return organizationService.load(Long.valueOf(id));
+	}
+	
+	@RequestMapping(value = "/upload_students_list")
+	public @ResponseBody int uploadStudentsList (@RequestParam String id, @RequestParam MultipartFile stu_list, HttpServletRequest request) {
+		if(stu_list.isEmpty())
+			return -1;
+		try {
+			String originalFilename = stu_list.getOriginalFilename();
+			String genePath = request.getSession().getServletContext().getRealPath("/upload/stu_list/");
+			FileUtils.copyInputStreamToFile(stu_list.getInputStream(), new File(genePath,originalFilename));
+			DealExcel.loadInStudentInfo(Long.valueOf(id),genePath+originalFilename);
+			System.out.println(genePath);
+			return 1;
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return -2;
+		}
+		
 	}
 }
