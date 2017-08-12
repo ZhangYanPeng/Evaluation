@@ -10,4 +10,5 @@ public interface ITeacherService {
 	Teacher get(Long id);
 	int add(Teacher teacher);
 	int edit(Teacher teacher);
+	int remove(long id);
 }

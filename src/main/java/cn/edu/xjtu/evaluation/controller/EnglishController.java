@@ -43,4 +43,9 @@ public class EnglishController {
 		}
 		
 	}
+	
+	@RequestMapping(value = "/delete_teacher")
+	public @ResponseBody int removeTeacher(String id) {
+		return teacherService.remove(Long.valueOf(id));
+	}
 }

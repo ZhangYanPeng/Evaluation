@@ -13,10 +13,10 @@
 <script type="text/javascript">
 	var page_num = 1;
 	var total_num = 0;$(document).ready(function(){
-		list("%", 1);
+		list( 1);
 	});
 	
-	function list(un, p) {
+	function list( p) {
 		$
 				.ajax({
 					sync : false,
@@ -25,7 +25,6 @@
 					crossDomain : true,
 					url : "./list_teacher",
 					data : {
-						username : un,
 						page : p
 					},
 					dataType : "json",
@@ -83,7 +82,7 @@
 	}
 
 	
-	function removeTeacher(aid) {
+	function removeTeacher(tid) {
 		$.ajax({
 			sync : false,
 			cache : false,
@@ -91,7 +90,7 @@
 			crossDomain : true,
 			url : "./delete_teacher",
 			data : {
-				id : aid
+				id : tid
 			},
 			dataType : "json",
 			contentType : "application/x-www-form-urlencoded;charset=utf-8",

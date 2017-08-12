@@ -89,4 +89,18 @@ public class TeacherServiceImpl implements ITeacherService{
 		}
 		return 1;
 	}
+
+	@Override
+	@Transactional
+	public int remove(long id) {
+		// TODO Auto-generated method stub
+		try {
+			teacherDAO.deleteById(id);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return 0;
+		}
+		return 1;
+	}
 }
