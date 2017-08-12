@@ -1,8 +1,14 @@
 package cn.edu.xjtu.evaluation.support;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -10,44 +16,54 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-public class DealExcel {
-	public static void main(String[] args) {
-		try {
-			loadInStudentInfo((long) 1,"F:\\Workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\Evaluation\\upload\\stu_list\\2110.xlsx");
-		} catch (BiffException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+import cn.edu.xjtu.evaluation.entity.Student;
 
-	public static void loadInStudentInfo(Long cid, String filepath) throws BiffException, IOException {
+public class DealExcel {
+
+	public static List loadInStudentInfo(Long cid, String filepath) throws IOException {
 		// TODO Auto-generated method stub
-		File xlsFile = new File(filepath);
-		// 获得工作簿对象
-		XSSFWorkbook  workbook = Workbook.getWorkbook(xlsFile);
-		// 获得所有工作表
-		Sheet[] sheets = workbook.getSheets();
-		// 遍历工作表
-		if (sheets != null) {
-			for (Sheet sheet : sheets) {
-				// 获得行数
-				int rows = sheet.getRows();
-				// 获得列数
-				int cols = sheet.getColumns();
-				// 读取数据
-				for (int row = 0; row < rows; row++) {
-					for (int col = 0; col < cols; col++) {
-						System.out.printf("%10s", sheet.getCell(col, row).getContents());
-					}
-					System.out.println();
+		InputStream stream = new FileInputStream(filepath);
+		Workbook wb = null;
+		if (filepath.split("\\.")[1].equals("xls")) {
+			wb = new HSSFWorkbook(stream);
+		} else if (filepath.split("\\.")[1].equals("xlsx")) {
+			wb = new XSSFWorkbook(stream);
+		} else {
+			System.out.println("您输入的excel格式不正确");
+		}
+		
+		List s_info = new ArrayList();
+		
+		Sheet sheet = wb.getSheetAt(0);
+		int i = 0 ;
+		for (Row row : sheet) {
+			if( i==0 ){
+				i++;
+				continue;
+			}
+			int j = 0 ;
+			String[] s = new String[5];
+			for(Cell cell : row){
+				if( i==0 ){
+					i++;
+					continue;
 				}
+				s_info.add(s);
 			}
 		}
-		workbook.close();
-
+		return s_info;
 	}
+
+	public static String getCellCotent(Cell cell){
+		try {
+			return cell.getStringCellValue();
+		} catch (Exception e) {
+			// TODO: handle exception
+			double value = cell.getNumericCellValue();
+			Integer v_int = (int) value;
+			return v_int.toString();
+		}
+	}
+		
 
 }
