@@ -29,6 +29,11 @@ public class University {
 	@JsonIgnore
 	private Set<School> schools;
 	
+	@OneToMany( fetch = FetchType.LAZY)
+	@JoinColumn( name = "university_id")
+	@JsonIgnore
+	private Set<EngClass> engclass;
+	
 	public University() {
 		super();
 	}
@@ -55,6 +60,14 @@ public class University {
 
 	public void setSchools(Set<School> schools) {
 		this.schools = schools;
+	}
+
+	public Set<EngClass> getEngclass() {
+		return engclass;
+	}
+
+	public void setEngclass(Set<EngClass> engclass) {
+		this.engclass = engclass;
 	}
 
 	

@@ -7,7 +7,6 @@
 <link rel="stylesheet" href="./css/jqpagination.css" />
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script src="./js/jquery.jqpagination.js"></script>
-<script src="./js/ajaxfileupload.js"></script>
 <script type="text/javascript" src="js/init.js"></script>
 <script type="text/javascript" src="js/common.js"></script>
 <script type="text/javascript">
@@ -102,10 +101,9 @@
 						$("#page_num").val(p);
 						var tab_title = "<tr>"
 								+ "<td width='66px' class='tdColor tdC'>序号</td>"
-								+ "<td width='200px' class='tdColor'>学校名</td>"
-								+ "<td width='200px' class='tdColor'>学院名</td>"
-								+ "<td width='200px' class='tdColor'>班级名</td>"
-								+ "<td width='800px' class='tdColor'>学生</td>"
+								+ "<td width='500px' class='tdColor'>学校名</td>"
+								+ "<td width='500px' class='tdColor'>学院名</td>"
+								+ "<td width='500px' class='tdColor'>班级名</td>"
 								+ "<td width='130px' class='tdColor'>操作</td>"
 								+ "	</tr>";
 						$("#classlist").html(tab_title);
@@ -123,25 +121,6 @@
 											var td_n = $('<td></td>').append(
 													value.className);
 											var td_st = $('<td></td>');
-											if (value.students == null) {
-												td_st.append("尚未导入学生");
-												td_st
-														.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='file' id='file"+value.id +"' name='stu_list' class='file' />");
-												td_st
-														.append("&nbsp;&nbsp;&nbsp;<a href='javascript:upload("
-																+ value.id
-																+ ");'>导入</a>");
-											} else {
-												td_st.append("共有<a href='#'>"
-														+ value.students.size
-														+ "</a>名学生");
-												td_st
-														.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='file' id='file"+value.id +"' name='stu_list' class='file' />");
-												td_st
-														.append("&nbsp;&nbsp;&nbsp;<a href='javascript:upload("
-																+ value.id
-																+ ");'>导入</a>");
-											}
 
 											var a_edit = $('<a></a>').attr(
 													'href',
@@ -159,7 +138,6 @@
 													'height', "40px");
 											tr.append(td_id).append(td_u)
 													.append(td_s).append(td_n)
-													.append(td_st)
 													.append(td_op);
 											$("#classlist").append(tr);
 										});
@@ -192,31 +170,6 @@
 				}
 			}
 		});
-	}
-
-	function upload(cid) {
-		$.ajaxFileUpload({
-			type : 'post',
-			url : './upload_students_list', //用于文件上传的服务器端请求地址
-			secureuri : false, //是否需要安全协议，一般设置为false
-			fileElementId : 'file' + cid, //文件上传域的ID
-			data : {
-				id : cid
-			},//要传到后台的参数，没有可以不写  
-			async : false,
-			dataType : 'json',
-			processData : false,
-			contentType : false,
-			success : function(data) //服务器成功响应处理函数
-			{
-				console.log(data);
-				console.log("upload");
-			},
-			error : function(data, status, e)//服务器响应失败处理函数
-			{
-				alert(e);
-			}
-		})
 	}
 
 	function first() {

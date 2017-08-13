@@ -1,5 +1,7 @@
 package cn.edu.xjtu.evaluation.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -73,5 +75,14 @@ public class OrganizationServiceImpl implements IOrganizationService{
 	public Organization load(long id) {
 		// TODO Auto-generated method stub
 		return organizationDAO.get(id);
+	}
+
+	@Override
+	@Transactional
+	public List<Organization> getAllClass(long school) {
+		// TODO Auto-generated method stub
+		String hql = "from Organization where school.id = ?";
+		Object[] values = {school};
+		return organizationDAO.getListByHQL(hql, values);
 	}
 }

@@ -208,24 +208,10 @@ public class AdminController {
 	public @ResponseBody Organization loadClass(String id) {
 		return organizationService.load(Long.valueOf(id));
 	}
-	
-	@RequestMapping(value = "/upload_students_list")
-	public @ResponseBody int uploadStudentsList (@RequestParam String id, @RequestParam MultipartFile stu_list, HttpServletRequest request) {
-		if(stu_list.isEmpty())
-			return -1;
-		try {
-			String originalFilename = stu_list.getOriginalFilename();
-			String genePath = request.getSession().getServletContext().getRealPath("/upload/stu_list/");
-			FileUtils.copyInputStreamToFile(stu_list.getInputStream(), new File(genePath,originalFilename));
-			System.out.println(genePath);
-			List s_info = DealExcel.loadInStudentInfo(Long.valueOf(id),genePath+originalFilename);
-			
-			return 1;
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-			return -2;
-		}
-		
+
+	@RequestMapping(value = "/get_all_class")
+	public @ResponseBody List<Organization> getAllClass(String school) {
+		return organizationService.getAllClass(Long.valueOf(school));
 	}
+	
 }

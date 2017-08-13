@@ -1,5 +1,7 @@
 package cn.edu.xjtu.evaluation.service;
 
+import java.util.List;
+
 import cn.edu.xjtu.evaluation.entity.Organization;
 import cn.edu.xjtu.evaluation.entity.School;
 import cn.edu.xjtu.evaluation.support.PageResults;
@@ -13,5 +15,7 @@ public interface IOrganizationService {
 	PageResults<Organization> list(int page, long uid, long sid);
 
 	Organization load(long id);
+
+	List<Organization> getAllClass(long school);
 
 }

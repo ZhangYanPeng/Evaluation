@@ -32,7 +32,6 @@ public class Student {
 	private String student_no;
 	private String password;
 	private String major;
-	private String school;
 	
 	private int english_level;// -1：未知 0：未通过四级 1：通过4级 2：通过六级 
 	private int father_level;//-1：未知 0：高中以下 1：大专本科 2：硕士 3：博士
@@ -42,13 +41,15 @@ public class Student {
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "student_id")
+	@JsonIgnore
 	private List<Answer> answers;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	private Organization unit;
+	@ManyToOne(fetch = FetchType.EAGER)
+	private Organization organization;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	private EngClass engClass;
+
 	
 	public Student() {
 		super();
@@ -109,14 +110,6 @@ public class Student {
 	public void setMajor(String major) {
 		this.major = major;
 	}
-
-	public String getSchool() {
-		return school;
-	}
-
-	public void setSchool(String school) {
-		this.school = school;
-	}
 	
 	@JsonIgnore
 	public List<Answer> getAnswers() {
@@ -175,12 +168,12 @@ public class Student {
 		this.mother_level = mother_level;
 	}
 
-	public Organization getUnit() {
-		return unit;
+	public Organization getOrganization() {
+		return organization;
 	}
 
-	public void setUnit(Organization unit) {
-		this.unit = unit;
+	public void setOrganization(Organization organization) {
+		this.organization = organization;
 	}
 
 	public EngClass getEngClass() {
@@ -190,7 +183,5 @@ public class Student {
 	public void setEngClass(EngClass engClass) {
 		this.engClass = engClass;
 	}
-	
-	
 	
 }

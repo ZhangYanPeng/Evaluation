@@ -8,20 +8,20 @@
 <script type="text/javascript" src="js/common.js"></script>
 <script type="text/javascript">
 	$(document)
-			.ready(
-					function() {
+			.ready(function(){
 						loadUniversity();
-						var cid = getQueryString("id");
-						if (cid != "-1") {
+						loadEngClass();
+						var sid = getQueryString("id");
+						if (sid != "-1") {
 							$
 									.ajax({
 										async : false,
 										cache : false,
 										type : 'POST',
 										crossDomain : true,
-										url : "./load_class",
+										url : "./load_student",
 										data : {
-											id : cid
+											id : sid
 										},
 										dataType : "json",
 										contentType : "application/x-www-form-urlencoded;charset=utf-8",
@@ -29,18 +29,24 @@
 											alert("网络错误，请重试");
 										},
 										success : function(data) {
-											$("#name").val(data.className);
-											$("#university").val(data.school.university.id);
+											$("#name").val(data.name);
+											$("#university").val(data.organization.school.university.id);
 											loadSchool();
-											$("#school").val(data.school.id);
+											$("#school").val(data.organization.school.id);
+											loadClass();
+											$("#class").val(data.organization.id);
 											$("#id").val(data.id);
+											$("#student_no").val(data.student_no);
+											$("#engClass").val(data.engClass.id);
+											$("#password").val(data.password);
 										}
 									});
 						} else {
-							$("#id").val(cid);
+							$("#id").val(sid);
 							$("#university").val(-1);
+							$("#password").val("s111111");
 						}
-					});
+			});
 
 	function loadUniversity() {
 		var default_op = "<option selected='selected' value='-1'>----------请选择学校----------</option>";
@@ -96,10 +102,69 @@
 			}
 		});
 	}
+	
+	function loadClass() {
+		if($("#school").val()=='-1'){
+			var default_op = "<option selected='selected' value='-1'>----------请先选择学院----------</option>";
+			$("#class").html(default_op);
+			return;
+		}
+		var default_op = "<option selected='selected' value='-1'>----------请选择班级----------</option>";
+		$("#class").html(default_op);
+		$.ajax({
+			async : false,
+			cache : false,
+			type : 'POST',
+			crossDomain : true,
+			url : "./get_all_class",
+			data : {school:$("#school").val()},
+			dataType : "json",
+			contentType : "application/x-www-form-urlencoded;charset=utf-8",
+			error : function(e) {
+				alert("网络错误，请重试");
+			},
+			success : function(data) {
+				$.each(data, function(index, value) {
+					var op = $('<option></option>').attr('value', value.id)
+							.append(value.className);
+					$("#class").append(op);
+				});
+			}
+		});
+	}
+	
+	function loadEngClass() {
+		var default_op = "<option selected='selected' value='-1'>---------请选择英语班级---------</option>";
+		$("#engClass").html(default_op);
+		$.ajax({
+			async : false,
+			cache : false,
+			type : 'POST',
+			crossDomain : true,
+			url : "./get_all_engclass",
+			data : {},
+			dataType : "json",
+			contentType : "application/x-www-form-urlencoded;charset=utf-8",
+			error : function(e) {
+				alert("网络错误，请重试");
+			},
+			success : function(data) {
+				$.each(data, function(index, value) {
+					var op = $('<option></option>').attr('value', value.id)
+							.append(value.name);
+					$("#engClass").append(op);
+				});
+			}
+		});
+	}
 
 	function save() {
-		if ($("#school").val() == '-1') {
+		if ($("#class").val() == '-1') {
 			alert("请选择学院！");
+			return;
+		}
+		if ($("#engClass").val() == '-1') {
+			alert("请选择英语班级！");
 			return;
 		}
 		$.ajax({
@@ -107,11 +172,14 @@
 			cache : false,
 			type : 'POST',
 			crossDomain : true,
-			url : "./edit_class",
+			url : "./edit_student",
 			data : {
 				id : $("#id").val(),
 				name : $("#name").val(),
-				school : $("#school").val(),
+				organization : $("#class").val(),
+				engClass : $("#engClass").val(),
+				student_no : $("#student_no").val(),
+				password : $("#password").val()
 			},
 			dataType : "json",
 			contentType : "application/x-www-form-urlencoded;charset=utf-8",
@@ -145,24 +213,44 @@
 				<div class="baBody">
 					<input id="id" type="hidden" class="input3" />
 					<div class="bbD">
-						&nbsp;&nbsp;&nbsp;&nbsp;学校名：<select class="input3" id="university"
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;学校名：<select
+							class="input3" id="university"
 							onchange="javascript:loadSchool();">
 						</select>
 					</div>
 					<div class="bbD">
-						&nbsp;&nbsp;&nbsp;&nbsp;学院名：<select class="input3" id="school"><option
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;学院名：<select
+							class="input3" id="school" onchange="javascript:loadClass();"><option
 								selected='selected' value='-1'>----------请先选择学校----------</option>
 						</select>
 					</div>
 					<div class="bbD">
-						&nbsp;&nbsp;&nbsp;&nbsp;班级名：<input id="name" type="text"
-							class="input3" />
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;班级名：<select
+							class="input3" id="class"><option selected='selected'
+								value='-1'>----------请先选择班级----------</option>
+						</select>
+					</div>
+					<div class="bbD">
+						英语班级名：<select class="input3" id="engClass">
+						</select>
+					</div>
+					<div class="bbD">
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;学号：<input
+							id="student_no" type="text" class="input3" />
+					</div>
+					<div class="bbD">
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;密码：<input
+							id="password" type="text" class="input3" />
+					</div>
+					<div class="bbD">
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;姓名：<input
+							id="name" type="text" class="input3" />
 					</div>
 					<div class="bbD">
 						<p class="bbDP">
 							<button class="btn_ok btn_yes" href="#"
 								onclick="javascript:save();">提交</button>
-							<a class="btn_ok btn_no" href="class.html">取消</a>
+							<a class="btn_ok btn_no" href="student.html">取消</a>
 						</p>
 					</div>
 				</div>

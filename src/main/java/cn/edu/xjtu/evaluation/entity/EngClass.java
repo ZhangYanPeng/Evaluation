@@ -24,7 +24,7 @@ public class EngClass {
 	private long id;
 	
 	String name;
-	
+	int stu_num;
 
 	@JsonIgnore
 	@OneToMany( fetch = FetchType.LAZY )
@@ -34,7 +34,10 @@ public class EngClass {
 	@ManyToOne
 	@JsonIgnore
 	private Teacher teacher;
-
+	
+	@ManyToOne( fetch = FetchType.EAGER)
+	private University university;
+	
 	public long getId() {
 		return id;
 	}
@@ -66,7 +69,21 @@ public class EngClass {
 	public void setTeacher(Teacher teacher) {
 		this.teacher = teacher;
 	}
-	
-	
+
+	public University getUniversity() {
+		return university;
+	}
+
+	public void setUniversity(University university) {
+		this.university = university;
+	}
+
+	public int getStu_num() {
+		return stu_num;
+	}
+
+	public void setStu_num(int stu_num) {
+		this.stu_num = stu_num;
+	}
 	
 }

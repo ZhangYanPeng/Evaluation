@@ -7,16 +7,46 @@
 <link rel="stylesheet" href="./css/jqpagination.css" />
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script src="./js/jquery.jqpagination.js"></script>
+<script src="./js/ajaxfileupload.js"></script>
 <!-- <script type="text/javascript" src="js/page.js" ></script> -->
 <script type="text/javascript" src="js/init.js"></script>
 <script type="text/javascript" src="js/common.js"></script>
 <script type="text/javascript">
 	var page_num = 1;
-	var total_num = 0;$(document).ready(function(){
-		list( 1);
+	var total_num = 0;
+	$(document).ready(function() {
+		loadUniversity();
+		list(1);
 	});
 	
-	function list( p) {
+	function loadUniversity() {
+		if($("#p_u").html()!="")
+			return;
+		var default_op = "<option selected='selected' value='-1'>----------请选择学校----------</option>";
+		$("#p_u").html(default_op);
+		$.ajax({
+			sync : false,
+			cache : false,
+			type : 'POST',
+			crossDomain : true,
+			url : "./get_all_university",
+			data : {},
+			dataType : "json",
+			contentType : "application/x-www-form-urlencoded;charset=utf-8",
+			error : function(e) {
+				alert("网络错误，请重试");
+			},
+			success : function(data) {
+				$.each(data, function(index, value) {
+					var op = $('<option></option>').attr('value', value.id)
+					.append(value.name);
+					$("#p_u").append(op);
+				});
+			}
+		});
+	}
+
+	function list(p) {
 		$
 				.ajax({
 					sync : false,
@@ -34,27 +64,48 @@
 					},
 					success : function(data) {
 						total_num = data.pageCount;
-						page_num=p;
+						page_num = p;
 						$("#page_num").val(p);
 
 						var tab_title = "<tr>"
 								+ "<td width='66px' class='tdColor tdC'>序号</td>"
+								+ "<td width='730px' class='tdColor'>学校</td>"
 								+ "<td width='730px' class='tdColor'>班级</td>"
 								+ "<td width='730px' class='tdColor'>人员</td>"
 								+ "<td width='130px' class='tdColor'>操作</td>"
 								+ "	</tr>";
 						$("#engclasslist").html(tab_title);
-						
+
 						$
 								.each(
 										data.results,
 										function(index, value) {
 											var td_id = $('<td></td>').append(
 													value.id);
+											var td_u = $('<td></td>').append(
+													value.university.name);
 											var td_n = $('<td></td>').append(
 													value.name);
-											var td_s = $('<td></td>').append(
-													value.password);
+											var td_st = $('<td></td>');
+											if (value.stu_num == 0) {
+												td_st.append("尚未导入学生");
+												td_st
+														.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='file' id='file"+value.id +"' name='stu_list' class='file' />");
+												td_st
+														.append("&nbsp;&nbsp;&nbsp;<a href='javascript:upload("
+																+ value.id
+																+ ");'>导入</a>");
+											} else {
+												td_st.append("共有<a href='#'>"
+														+ value.stu_num
+														+ "</a>名学生");
+												td_st
+														.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='file' id='file"+value.id +"' name='stu_list' class='file' />");
+												td_st
+														.append("&nbsp;&nbsp;&nbsp;<a href='javascript:upload("
+																+ value.id
+																+ ");'>导入</a>");
+											}
 											var td_op = $('<td></td>')
 													.append(
 															"<img class='operation delban' src='img/delete.png' onclick='javascript:removeEngClass("
@@ -62,14 +113,20 @@
 																	+ ");' /></td>");
 											var tr = $('<tr></tr>').attr(
 													'height', "40px");
-											tr.append(td_id).append(td_n).append(td_s).append(td_op);
+											tr.append(td_id).append(td_u).append(td_n)
+													.append(td_st)
+													.append(td_op);
 											$("#engclasslist").append(tr);
 										});
 					}
 				});
 	}
 
-	function add(){
+	function add() {
+		if ( $('#p_u').val() == "-1"){
+			alert("请选择学校！");
+			return;
+		}
 		$.ajax({
 			sync : false,
 			cache : false,
@@ -77,7 +134,8 @@
 			crossDomain : true,
 			url : "./add_engclass",
 			data : {
-				name : $('#cname').val()
+				name : $('#cname').val(),
+				university : $('#p_u').val()
 			},
 			dataType : "json",
 			contentType : "application/x-www-form-urlencoded;charset=utf-8",
@@ -92,7 +150,39 @@
 			}
 		});
 	}
-	
+
+	function upload(cid) {
+		$.ajaxFileUpload({
+			type : 'post',
+			url : './upload_students_list', //用于文件上传的服务器端请求地址
+			secureuri : false, //是否需要安全协议，一般设置为false
+			fileElementId : 'file' + cid, //文件上传域的ID
+			data : {
+				id : cid
+			},//要传到后台的参数，没有可以不写  
+			async : false,
+			dataType : 'json',
+			processData : false,
+			contentType : false,
+			success : function(data) //服务器成功响应处理函数
+			{
+				if (data == '-1')
+					alert("导入学生与班级不匹配，请检查！");
+				if (data == '-2')
+					alert("导入学生班级学院不存在，请检查");
+				if (data == '0')
+					alert("导入失败，请重试");
+				if (data == '1')
+					alert("导入成功");
+				list(1);
+			},
+			error : function(data, status, e)//服务器响应失败处理函数
+			{
+				alert(e);
+			}
+		})
+	}
+
 	function removeEngClass(eid) {
 		$.ajax({
 			sync : false,
@@ -121,28 +211,28 @@
 		if (page_num == 1)
 			return;
 		page_num = 1;
-		list("%", 1);
+		list( 1);
 	}
 
 	function previous() {
 		if (page_num == 1)
 			return;
 		page_num = page_num - 1;
-		list("%", page_num);
+		list( page_num);
 	}
 
 	function next() {
 		if (page_num == total_num)
 			return;
 		page_num = page_num + 1;
-		list("%", page_num);
+		list( page_num);
 	}
 
 	function last() {
 		if (page_num == total_num)
 			return;
 		page_num = total_num;
-		list("%", page_num);
+		list(page_num);
 	}
 </script>
 </head>
@@ -162,6 +252,7 @@
 				<div class="conform">
 					<form>
 						<div class="cfD">
+							<select class="userinput" id="p_u"></select>&nbsp;-&nbsp;&nbsp;&nbsp;
 							<input class="userinput" id="cname" type="text"
 								placeholder="输入 班级名" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a
 								href="javascript:add()"><button class="userbtn"

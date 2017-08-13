@@ -37,7 +37,6 @@ public class StudentController {
 		student.setPassword(password);
 		student.setGender(Integer.valueOf(gender));
 		student.setName(name);
-		student.setSchool(school);
 		student.setMajor(major);
 		student.setGrade(grade);
 		student.setStudent_no(student_no);
