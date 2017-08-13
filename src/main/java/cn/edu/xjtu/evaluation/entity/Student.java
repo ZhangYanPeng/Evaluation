@@ -47,6 +47,9 @@ public class Student {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Organization unit;
 	
+	@ManyToOne(fetch = FetchType.LAZY)
+	private EngClass engClass;
+	
 	public Student() {
 		super();
 	}
@@ -178,6 +181,14 @@ public class Student {
 
 	public void setUnit(Organization unit) {
 		this.unit = unit;
+	}
+
+	public EngClass getEngClass() {
+		return engClass;
+	}
+
+	public void setEngClass(EngClass engClass) {
+		this.engClass = engClass;
 	}
 	
 	

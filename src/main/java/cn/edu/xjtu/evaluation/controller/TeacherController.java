@@ -50,7 +50,6 @@ public class TeacherController {
 		teacher.setTitle(title);
 		teacher.setSchool(school);
 		teacher.setMajor(major);
-		teacher.setUnits(null);
 		int status = teacherService.register(teacher);
 		if (status == 1) {
 			teacher = teacherService.login(teacher);

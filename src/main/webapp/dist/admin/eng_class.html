@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>教师管理</title>
+<title>英语班级管理</title>
 <link rel="stylesheet" type="text/css" href="css/css.css" />
 <link rel="stylesheet" href="./css/jqpagination.css" />
 <script type="text/javascript" src="js/jquery.min.js"></script>
@@ -23,7 +23,7 @@
 					cache : false,
 					type : 'POST',
 					crossDomain : true,
-					url : "./list_teacher",
+					url : "./list_engclass",
 					data : {
 						page : p
 					},
@@ -39,12 +39,11 @@
 
 						var tab_title = "<tr>"
 								+ "<td width='66px' class='tdColor tdC'>序号</td>"
-								+ "<td width='500px' class='tdColor'>姓名</td>"
-								+ "<td width='500px' class='tdColor'>用户名</td>"
-								+ "<td width='500px' class='tdColor'>密码</td>"
+								+ "<td width='730px' class='tdColor'>班级</td>"
+								+ "<td width='730px' class='tdColor'>人员</td>"
 								+ "<td width='130px' class='tdColor'>操作</td>"
 								+ "	</tr>";
-						$("#teacherlist").html(tab_title);
+						$("#engclasslist").html(tab_title);
 						
 						$
 								.each(
@@ -54,43 +53,55 @@
 													value.id);
 											var td_n = $('<td></td>').append(
 													value.name);
-											var td_un = $('<td></td>').append(
-													value.username);
-											var td_pd = $('<td></td>').append(
+											var td_s = $('<td></td>').append(
 													value.password);
-											var a_edit = $('<a></a>').attr(
-													'href',
-													"teacheradd.html?id="
-															+ value.id);
-											a_edit
-													.append("<img class='operation' src='img/update.png'></a>");
 											var td_op = $('<td></td>')
-													.append(a_edit)
 													.append(
-															"<img class='operation delban' src='img/delete.png' onclick='javascript:removeTeacher("
+															"<img class='operation delban' src='img/delete.png' onclick='javascript:removeEngClass("
 																	+ value.id
 																	+ ");' /></td>");
 											var tr = $('<tr></tr>').attr(
 													'height', "40px");
-											tr.append(td_id).append(td_n).append(td_un)
-													.append(td_pd)
-													.append(td_op);
-											$("#teacherlist").append(tr);
+											tr.append(td_id).append(td_n).append(td_s).append(td_op);
+											$("#engclasslist").append(tr);
 										});
 					}
 				});
 	}
 
-	
-	function removeTeacher(tid) {
+	function add(){
 		$.ajax({
 			sync : false,
 			cache : false,
 			type : 'POST',
 			crossDomain : true,
-			url : "./delete_teacher",
+			url : "./add_engclass",
 			data : {
-				id : tid
+				name : $('#cname').val()
+			},
+			dataType : "json",
+			contentType : "application/x-www-form-urlencoded;charset=utf-8",
+			error : function(e) {
+				alert("网络错误，请重试");
+			},
+			success : function(data) {
+				if (data == true) {
+					list(1);
+					page_num = 1;
+				}
+			}
+		});
+	}
+	
+	function removeEngClass(eid) {
+		$.ajax({
+			sync : false,
+			cache : false,
+			type : 'POST',
+			crossDomain : true,
+			url : "./delete_engclass",
+			data : {
+				id : eid
 			},
 			dataType : "json",
 			contentType : "application/x-www-form-urlencoded;charset=utf-8",
@@ -147,19 +158,21 @@
 		<div class="page">
 			<!-- user页面样式 -->
 			<div class="connoisseur">
-			
+
 				<div class="conform">
 					<form>
 						<div class="cfD">
-							<a href="teacheradd.html?id=-1"><button class="userbtn"
-						disabled="disabled">新增</button></a>
+							<input class="userinput" id="cname" type="text"
+								placeholder="输入 班级名" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a
+								href="javascript:add()"><button class="userbtn"
+									disabled="disabled">新增</button></a>
 						</div>
 					</form>
 				</div>
-				
+
 				<!-- user 表格 显示 -->
 				<div class="conShow">
-					<table id="teacherlist" border="1" cellspacing="0" cellpadding="0">
+					<table id="engclasslist" border="1" cellspacing="0" cellpadding="0">
 					</table>
 				</div>
 				<div class="paging">

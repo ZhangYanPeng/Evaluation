@@ -33,8 +33,8 @@ public class Teacher {
 	
 	@JsonIgnore
 	@OneToMany( fetch = FetchType.LAZY)
-	@JoinColumn( name = "teacher_id")
-	private Set<Organization> units;
+	@JoinColumn( name = "engclass_id")
+	private Set<EngClass> engClasses;
 
 	public Teacher() {
 		super();
@@ -96,14 +96,6 @@ public class Teacher {
 		this.gender = gender;
 	}
 
-	public Set<Organization> getUnits() {
-		return units;
-	}
-
-	public void setUnits(Set<Organization> units) {
-		this.units = units;
-	}
-
 	public String getMajor() {
 		return major;
 	}
@@ -118,6 +110,14 @@ public class Teacher {
 
 	public void setSchool(String school) {
 		this.school = school;
+	}
+
+	public Set<EngClass> getEngClasses() {
+		return engClasses;
+	}
+
+	public void setEngClasses(Set<EngClass> engClasses) {
+		this.engClasses = engClasses;
 	}
 	
 	
