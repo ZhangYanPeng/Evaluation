@@ -21,7 +21,7 @@ public class ExerciseType {
 	@GenericGenerator(name = "exercisegenerator", strategy = "increment")
 	private long id;
 	
-	private String decription;
+	private String description;
 	
 	@OneToMany( fetch = FetchType.LAZY )
 	@JoinColumn( name = "exercise_type_id")
@@ -43,12 +43,12 @@ public class ExerciseType {
 		this.id = id;
 	}
 
-	public String getDecription() {
-		return decription;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setDecription(String decription) {
-		this.decription = decription;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public Set<Part> getParts() {

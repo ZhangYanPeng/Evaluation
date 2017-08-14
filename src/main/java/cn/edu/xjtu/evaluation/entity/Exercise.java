@@ -33,9 +33,8 @@ public class Exercise {
 	@JoinColumn( name = "exercise_id")
 	private Set<Question> questions;
 	
-	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn( name = "exercise_id" )
-	private Set<Part> parts;
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Part part;
 
 	public Exercise() {
 		super();
@@ -80,12 +79,12 @@ public class Exercise {
 		this.exerciseType = exerciseType;
 	}
 
-	public Set<Part> getParts() {
-		return parts;
+	public Part getPart() {
+		return part;
 	}
 
-	public void setParts(Set<Part> parts) {
-		this.parts = parts;
+	public void setPart(Part part) {
+		this.part = part;
 	}
 
 	public String getE_no() {

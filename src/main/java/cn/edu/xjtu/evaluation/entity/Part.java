@@ -13,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 @Entity
 @Table( name = "t_part" )
@@ -22,6 +23,7 @@ public class Part {
 	@GenericGenerator(name = "partgenerator", strategy = "increment")
 	private long id;
 	
+	@Type(type="text")
 	String desription;
 	
 	@ManyToOne(fetch = FetchType.LAZY)

@@ -1,6 +1,8 @@
 package cn.edu.xjtu.evaluation.service.impl;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,11 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import cn.edu.xjtu.evaluation.common.Constants;
 import cn.edu.xjtu.evaluation.dao.impl.ExerciseDAOImpl;
+import cn.edu.xjtu.evaluation.dao.impl.ExerciseTypeDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.InterventionDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.PartDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.QuestionDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.TestDAOImpl;
 import cn.edu.xjtu.evaluation.entity.Exercise;
+import cn.edu.xjtu.evaluation.entity.ExerciseType;
 import cn.edu.xjtu.evaluation.entity.Intervention;
 import cn.edu.xjtu.evaluation.entity.Part;
 import cn.edu.xjtu.evaluation.entity.Question;
@@ -34,6 +38,8 @@ public class TestServiceImpl implements ITestService {
 	QuestionDAOImpl questionDAO;
 	@Autowired
 	InterventionDAOImpl interventionDAO;
+	@Autowired
+	ExerciseTypeDAOImpl exerciseTypeDAO;
 	
 	@Override
 	@Transactional
@@ -102,14 +108,36 @@ public class TestServiceImpl implements ITestService {
 			return 0;
 		}
 		try {
+			Set<Part> ps = test.getParts();
+			test.setParts(null);
 			testDAO.saveOrUpdate(test);
-			for( Part p : test.getParts()){
+			for( Part p : ps){
+				ExerciseType et = p.getExerciseType();
+				Object[] values = { et.getDescription()};
+				String hql ="from ExerciseType where description = ?";
+				System.out.println(exerciseTypeDAO.getByHQL(hql, values) );
+				if( exerciseTypeDAO.getByHQL(hql, values) == null ) {
+					exerciseTypeDAO.save(et);
+				}
+				et = exerciseTypeDAO.getByHQL(hql, values);
+				p.setExerciseType(et);
+				Set<Exercise> es = p.getExercises();
+				p.setExercises(null);
+				p.setTest(test);
 				partDAO.save(p);
-				for( Exercise e : p.getExercises()){
+				for( Exercise e : es){
+					e.setExerciseType(et);
+					Set<Question> qs = e.getQuestions();
+					e.setQuestions(null);
+					e.setPart(p);
 					exerciseDAO.save(e);
-					for( Question q : e.getQuestions()){
+					for( Question q : qs){
+						Set<Intervention> is = q.getInterventions();
+						q.setInterventions(null);
+						q.setExercise(e);
 						questionDAO.save(q);
-						for( Intervention i : q.getInterventions()){
+						for( Intervention i : is){
+							i.setQuestion(q);
 							interventionDAO.save(i);
 						}
 					}
