@@ -1,6 +1,8 @@
 package cn.edu.xjtu.evaluation.controller;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,10 +19,12 @@ import org.springframework.web.multipart.MultipartFile;
 import cn.edu.xjtu.evaluation.entity.EngClass;
 import cn.edu.xjtu.evaluation.entity.Student;
 import cn.edu.xjtu.evaluation.entity.Teacher;
+import cn.edu.xjtu.evaluation.entity.Test;
 import cn.edu.xjtu.evaluation.service.IEngClassService;
 import cn.edu.xjtu.evaluation.service.IOrganizationService;
 import cn.edu.xjtu.evaluation.service.IStudentService;
 import cn.edu.xjtu.evaluation.service.ITeacherService;
+import cn.edu.xjtu.evaluation.service.ITestService;
 import cn.edu.xjtu.evaluation.service.IUniversityService;
 import cn.edu.xjtu.evaluation.support.DealExcel;
 import cn.edu.xjtu.evaluation.support.PageResults;
@@ -39,6 +43,8 @@ public class EnglishController {
 	IStudentService studentService;
 	@Autowired
 	IOrganizationService organizationService;
+	@Autowired
+	ITestService testService;
 
 	private int getNum(EngClass ec) {
 		// TODO Auto-generated method stub
@@ -113,9 +119,7 @@ public class EnglishController {
 			String originalFilename = stu_list.getOriginalFilename();
 			String genePath = request.getSession().getServletContext().getRealPath("/upload/stu_list/");
 			FileUtils.copyInputStreamToFile(stu_list.getInputStream(), new File(genePath,originalFilename));
-			System.out.println(genePath);
 			List<String[]> s_info = DealExcel.loadInStudentInfo(Long.valueOf(id),genePath+originalFilename);
-			System.out.println(s_info.iterator().next()[0]);
 			return engClassService.importStudent(s_info,Long.valueOf(id));
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -128,7 +132,7 @@ public class EnglishController {
 	
 	//student mange
 	@RequestMapping(value = "/list_student" , method = RequestMethod.POST)
-	public @ResponseBody PageResults<Student> listv(String str,String page) {
+	public @ResponseBody PageResults<Student> listStudent(String str,String page) {
 		return studentService.list(str, Integer.valueOf(page));
 	}
 	
@@ -156,6 +160,28 @@ public class EnglishController {
 		}else{
 			student.setId(sid);
 			return studentService.edit(student);
+		}
+	}
+	
+	//test manage
+	@RequestMapping(value = "/list_test" , method = RequestMethod.POST)
+	public @ResponseBody PageResults<Test> listTest(String page) {
+		return testService.list(Integer.valueOf(page));
+	}
+	
+	@RequestMapping(value = "/add_test" , method = RequestMethod.POST)
+	public @ResponseBody int addTest(HttpServletRequest request) {
+		String basePath = request.getSession().getServletContext().getRealPath("/res/");
+		try {
+			List<Test> tl = DealExcel.loadInTest(basePath+"test_in.xlsx");
+			for( Test t : tl){
+				testService.importTest(t);
+			}
+			return 1;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return 0;
 		}
 	}
 }

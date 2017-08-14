@@ -24,6 +24,7 @@ public class Exercise {
 	
 	private String audio_path;
 	private String text;
+	private String e_no;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	private ExerciseType exerciseType;
@@ -85,6 +86,14 @@ public class Exercise {
 
 	public void setParts(Set<Part> parts) {
 		this.parts = parts;
+	}
+
+	public String getE_no() {
+		return e_no;
+	}
+
+	public void setE_no(String e_no) {
+		this.e_no = e_no;
 	}
 	
 	

@@ -22,10 +22,12 @@ public class Part {
 	@GenericGenerator(name = "partgenerator", strategy = "increment")
 	private long id;
 	
+	String desription;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Test test;
 	
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.EAGER)
 	@JoinColumn(name = "part_id")
 	private Set<Exercise> exercises;
 	
@@ -76,6 +78,14 @@ public class Part {
 
 	public void setExerciseType(ExerciseType exerciseType) {
 		this.exerciseType = exerciseType;
+	}
+
+	public String getDesription() {
+		return desription;
+	}
+
+	public void setDesription(String desription) {
+		this.desription = desription;
 	}
 	
 	
