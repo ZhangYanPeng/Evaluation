@@ -106,17 +106,23 @@ public class DealExcel {
 			if (q == null) {
 				q = new Question();
 				q.setInterventions(new HashSet<Intervention>());
+				q.setOptions("");
 			}
-			q.setOptions(q.getOptions() + "||" + getCellCotent(row.getCell(6)));
-			if (getCellCotent(row.getCell(7)).replaceAll(" ", "").length() != 0) {
+			if (getCellCotent(row.getCell(6)).replaceAll(" ", "").length() != 0) {
+				q.setQ_num(Integer.valueOf(getCellCotent(row.getCell(6))));
+			}
+			q.setOptions(q.getOptions() + "||" + getCellCotent(row.getCell(7)));
+			if (getCellCotent(row.getCell(8)).replaceAll(" ", "").length() != 0) {
 				i = new Intervention();
-				i.setAudio_path(getCellCotent(row.getCell(8)));
-				i.setText(getCellCotent(row.getCell(7)));
+				i.setAudio_path(getCellCotent(row.getCell(9)));
+				i.setText(getCellCotent(row.getCell(8)));
 				q.getInterventions().add(i);
 			} else {
-				q.setAnswer(Integer.valueOf(getCellCotent(row.getCell(9))));
+				q.setAnswer(Integer.valueOf(getCellCotent(row.getCell(10))));
 				e.getQuestions().add(q);
-				q = null;
+				q =  new Question();
+				q.setInterventions(new HashSet<Intervention>());
+				q.setOptions("");
 			}
 			if (getCellCotent(row.getCell(5)).replaceAll(" ", "").length() != 0) {
 				if (e != null)

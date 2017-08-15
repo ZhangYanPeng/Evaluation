@@ -57,10 +57,23 @@ public class TestServiceImpl implements ITestService {
 
 	@Override
 	@Transactional
-	public int remove(Test test) {
+	public int remove(Long id) {
 		// TODO Auto-generated method stub
 		try {
-			testDAO.delete(test);
+			Test t = testDAO.get(id);
+			for(Part p : t.getParts()) {
+				for(Exercise e : p.getExercises()) {
+					for(Question q : e.getQuestions()) {
+						for(Intervention i : q.getInterventions()) {
+							interventionDAO.delete(i);
+						}
+						questionDAO.delete(q);
+					}
+					exerciseDAO.delete(e);
+				}
+				partDAO.delete(p);
+			}
+			testDAO.deleteById(id);
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -132,6 +145,7 @@ public class TestServiceImpl implements ITestService {
 					e.setPart(p);
 					exerciseDAO.save(e);
 					for( Question q : qs){
+						System.out.println(q.getText());
 						Set<Intervention> is = q.getInterventions();
 						q.setInterventions(null);
 						q.setExercise(e);

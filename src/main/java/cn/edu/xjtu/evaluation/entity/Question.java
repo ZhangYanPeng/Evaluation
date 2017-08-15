@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -30,12 +31,14 @@ public class Question {
 	private String options;
 	private int answer;
 	private Double score;
+	int q_num;
 	
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinColumn( name = "question_id" )
 	private Set<Intervention> interventions;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JsonIgnore
 	private Exercise exercise;
 	
 	public Question() {
@@ -99,6 +102,14 @@ public class Question {
 
 	public void setExercise(Exercise exercise) {
 		this.exercise = exercise;
+	}
+
+	public int getQ_num() {
+		return q_num;
+	}
+
+	public void setQ_num(int q_num) {
+		this.q_num = q_num;
 	}
 	
 	

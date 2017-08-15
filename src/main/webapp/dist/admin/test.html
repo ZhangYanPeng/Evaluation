@@ -38,9 +38,9 @@
 						$("#page_num").val(p);
 
 						var tab_title = "<tr>"
-								+ "<td width='66px' class='tdColor tdC'>序号</td>"
-								+ "<td width='730px' class='tdColor'>测试名</td>"
-								+ "<td width='130px' class='tdColor'>操作</td>"
+								+ "<td width='366px' class='tdColor tdC'>序号</td>"
+								+ "<td width='930px' class='tdColor'>测试名</td>"
+								+ "<td width='430px' class='tdColor'>操作</td>"
 								+ "	</tr>";
 						$("#testlist").html(tab_title);
 						
@@ -51,9 +51,8 @@
 											var td_id = $('<td></td>').append(
 													value.id);
 											var td_n = $('<td></td>').append(
-													value.name);
+													value.title);
 											var td_op = $('<td></td>')
-													.append(a_edit)
 													.append(
 															"<img class='operation delban' src='img/delete.png' onclick='javascript:removeTest("
 																	+ value.id

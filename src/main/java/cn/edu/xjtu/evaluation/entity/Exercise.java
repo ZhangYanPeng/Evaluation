@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -27,6 +28,7 @@ public class Exercise {
 	private String e_no;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JsonIgnore
 	private ExerciseType exerciseType;
 	
 	@OneToMany(fetch = FetchType.EAGER)
@@ -34,6 +36,7 @@ public class Exercise {
 	private Set<Question> questions;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JsonIgnore
 	private Part part;
 
 	public Exercise() {

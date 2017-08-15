@@ -7,7 +7,7 @@ import cn.edu.xjtu.evaluation.support.PageResults;
 
 public interface ITestService {
 	int add(Test test);
-	int remove(Test test);
+	int remove(Long id);
 	Test get(long id);
 	List<Test> getAll();
 	PageResults<Test> list(Integer page);

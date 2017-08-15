@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -24,16 +25,17 @@ public class Test {
 	@GenericGenerator( name = "testgenerator", strategy = "increment")
 	private long id;
 	
-	private String Title;
-	private String Description;
+	private String title;
+	private String description;
 	private String remarks;
 	
-	@OneToMany( fetch = FetchType.EAGER , cascade = CascadeType.ALL )
+	@OneToMany( fetch = FetchType.EAGER )
 	@JoinColumn( name = "test_id" )
 	private Set<Part> parts;
 	
 	@OneToMany( fetch = FetchType.LAZY)
 	@JoinColumn( name = "test_id")
+	@JsonIgnore
 	private Set<Answer> answers;
 
 	public Test() {
@@ -49,19 +51,19 @@ public class Test {
 	}
 
 	public String getTitle() {
-		return Title;
+		return title;
 	}
 
 	public void setTitle(String title) {
-		Title = title;
+		this.title = title;
 	}
 
 	public String getDescription() {
-		return Description;
+		return description;
 	}
 
 	public void setDescription(String description) {
-		Description = description;
+		this.description = description;
 	}
 
 	public String getRemarks() {
