@@ -16,14 +16,11 @@ $$(document).on('pageInit', function(e) {
 		// Code for index page
 		if (page.name === 'index') {
 		}
-
-		if (page.name === 'edit_exercise') {
-			var exercise_id = page.query.exercise_id;
-			if (exercise_id == -1) {
-				$('.pagetitle').html('新增试题');
-			} else {
-				$('.pagetitle').html('编辑试题');
-			}
+		
+		
+		// Code for test page
+		if (page.name === 'test') {
+			loadTest();
 		}
 	}
 });
@@ -43,11 +40,6 @@ $$(document).on(
 				}
 			}
 
-			// check for registering
-			if (element.id === 'register-button') {
-				register();
-			}
-
 			if (element.id === 'logout') {
 				// log out
 				userId = -1;
@@ -55,15 +47,6 @@ $$(document).on(
 				initBar();
 			}
 
-			if (element.id === 'open-popup-edit-quesition') {
-				//edit quesition
-				initEditQuestion(element.title);
-			}
-
-			if (element.id === 'save-quesition') {
-				// save quesition
-				saveQuestion();
-			}
 		});
 
 // if logged, close the log in modal
@@ -71,11 +54,6 @@ $('#login-screen').on('open', function() {
 	if (userId >= 0) {
 		myApp.closeModal('.login-screen');
 	}
-});
-
-// if register open, close log in
-$('.popup-register').on('open', function() {
-	myApp.closeModal('.login-screen');
 });
 
 // switch input content between teacher and student in register page
