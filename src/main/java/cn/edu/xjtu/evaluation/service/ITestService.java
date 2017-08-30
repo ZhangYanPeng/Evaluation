@@ -12,4 +12,6 @@ public interface ITestService {
 	List<Test> getAll();
 	PageResults<Test> list(Integer page);
 	int importTest(Test test);
+	int chooseTest(long id);
+	int check(Integer type, Long tid, Long uid);
 }

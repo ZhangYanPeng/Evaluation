@@ -17,10 +17,9 @@ $$(document).on('pageInit', function(e) {
 		if (page.name === 'index') {
 		}
 		
-		
 		// Code for test page
-		if (page.name === 'test') {
-			loadTest();
+		if (page.name === 'test_list') {
+			loadTest(page.query.type);
 		}
 	}
 });

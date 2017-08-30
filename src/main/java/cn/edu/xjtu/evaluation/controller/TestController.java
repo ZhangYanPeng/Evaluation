@@ -27,4 +27,9 @@ public class TestController {
 			return tList;
 		}
 	}
+	
+	@RequestMapping(value = "/getStatus" )
+	public @ResponseBody int getStatus(String type, String tid, String uid) {
+		return testService.check(Integer.valueOf(type),Long.valueOf(tid),Long.valueOf(uid));
+	}
 }

@@ -23,11 +23,13 @@ public class Answer {
 	@GenericGenerator( name = "answergenerator" , strategy = "increment" )
 	private long id;
 	
+	private int type;
+	
 	@OneToMany( fetch = FetchType.EAGER, cascade = CascadeType.ALL )
 	@JoinColumn( name = "answer_id" )
 	private List<Record> records;
 	
-	@OneToOne
+	@ManyToOne
 	private Student student;
 	
 	@ManyToOne
@@ -67,6 +69,14 @@ public class Answer {
 
 	public void setTest(Test test) {
 		this.test = test;
+	}
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
 	}
 	
 	

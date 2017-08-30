@@ -25,6 +25,7 @@ public class Test {
 	@GenericGenerator( name = "testgenerator", strategy = "increment")
 	private long id;
 	
+	private int choose;
 	private String title;
 	private String description;
 	private String remarks;
@@ -88,6 +89,14 @@ public class Test {
 
 	public void setAnswers(Set<Answer> answers) {
 		this.answers = answers;
+	}
+
+	public int getChoose() {
+		return choose;
+	}
+
+	public void setChoose(int choose) {
+		this.choose = choose;
 	}
 	
 	

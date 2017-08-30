@@ -189,4 +189,9 @@ public class EnglishController {
 	public @ResponseBody int deleteTest(String id) {
 		return testService.remove(Long.valueOf(id));
 	}
+	
+	@RequestMapping(value = "/choose_test" , method = RequestMethod.POST)
+	public @ResponseBody int chooseTest(String id) {
+		return testService.chooseTest(Long.valueOf(id));
+	}
 }

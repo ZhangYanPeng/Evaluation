@@ -8,12 +8,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.edu.xjtu.evaluation.common.Constants;
+import cn.edu.xjtu.evaluation.dao.impl.AnswerDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.ExerciseDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.ExerciseTypeDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.InterventionDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.PartDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.QuestionDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.TestDAOImpl;
+import cn.edu.xjtu.evaluation.entity.Answer;
 import cn.edu.xjtu.evaluation.entity.Exercise;
 import cn.edu.xjtu.evaluation.entity.ExerciseType;
 import cn.edu.xjtu.evaluation.entity.Intervention;
@@ -39,6 +41,8 @@ public class TestServiceImpl implements ITestService {
 	InterventionDAOImpl interventionDAO;
 	@Autowired
 	ExerciseTypeDAOImpl exerciseTypeDAO;
+	@Autowired
+	AnswerDAOImpl answerDAO;
 	
 	@Override
 	@Transactional
@@ -159,6 +163,36 @@ public class TestServiceImpl implements ITestService {
 			e.printStackTrace();
 			return 0;
 		}
+		return 1;
+	}
+
+	@Override
+	@Transactional
+	public int chooseTest(long id) {
+		// TODO Auto-generated method stub
+		String hql = "from Test where choose = 1";
+		List<Test> tl = testDAO.getListByHQL(hql, null);
+		if(tl!=null) {
+			for(Test t : tl) {
+				t.setChoose(0);
+				testDAO.update(t);
+			}
+		}
+		Test t = testDAO.get(id);
+		t.setChoose(1);
+		testDAO.update(t);
+		return 0;
+	}
+
+	@Override
+	@Transactional
+	public int check(Integer type, Long tid, Long uid) {
+		// TODO Auto-generated method stub
+		String hql = "from Answer where type = ? and student.id = ? and test.id = ?";
+		Object[] values = {type, tid, uid};
+		Answer a = answerDAO.getByHQL(hql, values);
+		if( a==null )
+			return 0;
 		return 1;
 	}
 

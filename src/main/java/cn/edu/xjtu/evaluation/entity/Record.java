@@ -1,6 +1,5 @@
 package cn.edu.xjtu.evaluation.entity;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -18,8 +17,9 @@ public class Record {
 	@GenericGenerator( name = "recgenerator" , strategy = "increment" )
 	private long id;
 	
-	private String answers;
+	private String result;
 	private String reason;
+	private int num;
 	
 	@ManyToOne( fetch = FetchType.LAZY )
 	private Answer answer;
@@ -36,12 +36,12 @@ public class Record {
 		this.id = id;
 	}
 
-	public String getAnswers() {
-		return answers;
+	public String getResult() {
+		return result;
 	}
 
-	public void setAnswers(String answers) {
-		this.answers = answers;
+	public void setResult(String result) {
+		this.result = result;
 	}
 
 	public String getReason() {
@@ -50,6 +50,22 @@ public class Record {
 
 	public void setReason(String reason) {
 		this.reason = reason;
+	}
+
+	public int getNum() {
+		return num;
+	}
+
+	public void setNum(int num) {
+		this.num = num;
+	}
+
+	public Answer getAnswer() {
+		return answer;
+	}
+
+	public void setAnswer(Answer answer) {
+		this.answer = answer;
 	}
 	
 	
