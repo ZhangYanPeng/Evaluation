@@ -10,10 +10,11 @@ function loadTest(){
 		data : {},
 		dataType : "json",
 		error : function(e) {
+			console.log(e);
 		},
 		success : function(data) {
 			if(data != null ){
-				
+				console.log(data);
 			}
 		}
 	});

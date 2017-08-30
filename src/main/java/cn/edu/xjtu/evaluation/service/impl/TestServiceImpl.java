@@ -1,6 +1,5 @@
 package cn.edu.xjtu.evaluation.service.impl;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -128,7 +127,6 @@ public class TestServiceImpl implements ITestService {
 				ExerciseType et = p.getExerciseType();
 				Object[] values = { et.getDescription()};
 				String hql ="from ExerciseType where description = ?";
-				System.out.println(exerciseTypeDAO.getByHQL(hql, values) );
 				if( exerciseTypeDAO.getByHQL(hql, values) == null ) {
 					exerciseTypeDAO.save(et);
 				}
@@ -145,7 +143,6 @@ public class TestServiceImpl implements ITestService {
 					e.setPart(p);
 					exerciseDAO.save(e);
 					for( Question q : qs){
-						System.out.println(q.getText());
 						Set<Intervention> is = q.getInterventions();
 						q.setInterventions(null);
 						q.setExercise(e);
