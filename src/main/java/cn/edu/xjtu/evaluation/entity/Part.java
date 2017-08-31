@@ -23,6 +23,7 @@ public class Part {
 	@GeneratedValue(generator = "partgenerator")
 	@GenericGenerator(name = "partgenerator", strategy = "increment")
 	private long id;
+	private int p_no;
 	
 	@Type(type="text")
 	String desription;
@@ -35,8 +36,7 @@ public class Part {
 	@JoinColumn(name = "part_id")
 	private Set<Exercise> exercises;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JsonIgnore
+	@ManyToOne(fetch = FetchType.EAGER)
 	private ExerciseType exerciseType;
 	
 	public Set<Exercise> getExercises() {
@@ -46,8 +46,6 @@ public class Part {
 	public void setExercises(Set<Exercise> exercises) {
 		this.exercises = exercises;
 	}
-
-	private int no;
 
 	public Part() {
 		super();
@@ -59,14 +57,6 @@ public class Part {
 
 	public void setId(long id) {
 		this.id = id;
-	}
-
-	public int getNo() {
-		return no;
-	}
-
-	public void setNo(int no) {
-		this.no = no;
 	}
 
 	public Test getTest() {
@@ -91,6 +81,14 @@ public class Part {
 
 	public void setDesription(String desription) {
 		this.desription = desription;
+	}
+
+	public int getP_no() {
+		return p_no;
+	}
+
+	public void setP_no(int p_no) {
+		this.p_no = p_no;
 	}
 	
 	

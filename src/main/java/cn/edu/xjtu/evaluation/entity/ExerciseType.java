@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -25,10 +26,12 @@ public class ExerciseType {
 	
 	@OneToMany( fetch = FetchType.LAZY )
 	@JoinColumn( name = "exercise_type_id")
+	@JsonIgnore
 	private Set<Part> parts;
 	
 	@OneToMany( fetch = FetchType.LAZY )
 	@JoinColumn( name = "exercise_type_id")
+	@JsonIgnore
 	private Set<Exercise> exercises;
 
 	public ExerciseType() {

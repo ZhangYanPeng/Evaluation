@@ -3,6 +3,12 @@
 var userId; // equals -1 before logging
 var user;
 var userType;
+var c_test;
+var c_type;
+var c_part;
+var c_exercise;
+var c_question;
+var q_total;
 
 // base url
 var baseUrl = getRootPath();

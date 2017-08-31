@@ -108,39 +108,41 @@ public class DealExcel {
 				q.setInterventions(new HashSet<Intervention>());
 				q.setOptions("");
 			}
-			if (getCellCotent(row.getCell(6)).replaceAll(" ", "").length() != 0) {
-				q.setQ_num(Integer.valueOf(getCellCotent(row.getCell(6))));
-			}
-			q.setOptions(q.getOptions() + "||" + getCellCotent(row.getCell(7)));
 			if (getCellCotent(row.getCell(8)).replaceAll(" ", "").length() != 0) {
+				q.setQ_num(Integer.valueOf(getCellCotent(row.getCell(8))));
+			}
+			q.setOptions(q.getOptions() + "||" + getCellCotent(row.getCell(9)));
+			if (getCellCotent(row.getCell(10)).replaceAll(" ", "").length() != 0) {
 				i = new Intervention();
-				i.setAudio_path(getCellCotent(row.getCell(9)));
-				i.setText(getCellCotent(row.getCell(8)));
+				i.setAudio_path(getCellCotent(row.getCell(11)));
+				i.setText(getCellCotent(row.getCell(10)));
 				q.getInterventions().add(i);
 			} else {
-				q.setAnswer(Integer.valueOf(getCellCotent(row.getCell(10))));
+				q.setAnswer(Integer.valueOf(getCellCotent(row.getCell(12))));
 				e.getQuestions().add(q);
 				q =  new Question();
 				q.setInterventions(new HashSet<Intervention>());
 				q.setOptions("");
 			}
-			if (getCellCotent(row.getCell(5)).replaceAll(" ", "").length() != 0) {
+			if (getCellCotent(row.getCell(4)).replaceAll(" ", "").length() != 0) {
 				if (e != null)
 					p.getExercises().add(e);
 				e = new Exercise();
-				e.setAudio_path(getCellCotent(row.getCell(5)));
-				e.setText(getCellCotent(row.getCell(4)));
-				e.setE_no(getCellCotent(row.getCell(3)));
+				e.setE_no(Integer.valueOf(getCellCotent(row.getCell(4))));
+				e.setAudio_path(getCellCotent(row.getCell(7)));
+				e.setText(getCellCotent(row.getCell(6)));
+				e.setDescription(getCellCotent(row.getCell(5)));
 				e.setQuestions(new HashSet<Question>());
 			}
 			if (getCellCotent(row.getCell(1)).replaceAll(" ", "").length() != 0) {
 				if (p != null)
 					t.getParts().add(p);
 				p = new Part();
+				p.setP_no(Integer.valueOf(getCellCotent(row.getCell(1))));
 				ExerciseType et = new ExerciseType();
-				et.setDescription(getCellCotent(row.getCell(1)));
+				et.setDescription(getCellCotent(row.getCell(2)));
 				p.setExerciseType(et);
-				p.setDesription(getCellCotent(row.getCell(2)));
+				p.setDesription(getCellCotent(row.getCell(3)));
 				p.setExercises(new HashSet<Exercise>());
 			}
 			if (getCellCotent(row.getCell(0)).replaceAll(" ", "").length() != 0) {

@@ -28,6 +28,11 @@ $$(document).on('pageInit', function(e) {
 		if (page.name === 'test') {
 			initTest(page.query.id,page.query.type);
 		}
+		
+		if (page.name === 'test_content') {
+			c_type = page.query.type;
+			startTest(page.query.tid);
+		}
 	}
 });
 

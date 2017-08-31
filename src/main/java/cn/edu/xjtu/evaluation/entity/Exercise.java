@@ -25,7 +25,8 @@ public class Exercise {
 	
 	private String audio_path;
 	private String text;
-	private String e_no;
+	private String description;
+	private int e_no;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JsonIgnore
@@ -90,13 +91,21 @@ public class Exercise {
 		this.part = part;
 	}
 
-	public String getE_no() {
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public int getE_no() {
 		return e_no;
 	}
 
-	public void setE_no(String e_no) {
+	public void setE_no(int e_no) {
 		this.e_no = e_no;
 	}
-	
+
 	
 }
