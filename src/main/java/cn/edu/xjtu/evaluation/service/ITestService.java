@@ -14,4 +14,5 @@ public interface ITestService {
 	int importTest(Test test);
 	int chooseTest(long id);
 	int check(Integer type, Long tid, Long uid);
+	Test getChoose();
 }

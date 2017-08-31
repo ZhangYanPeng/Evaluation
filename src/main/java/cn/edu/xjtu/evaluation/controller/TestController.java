@@ -32,4 +32,19 @@ public class TestController {
 	public @ResponseBody int getStatus(String type, String tid, String uid) {
 		return testService.check(Integer.valueOf(type),Long.valueOf(tid),Long.valueOf(uid));
 	}
+	
+	@RequestMapping(value = "/loadTest" )
+	public @ResponseBody Test loadTest( String id) {
+		long tid = Long.valueOf(id);
+		if( tid >=0 )
+			return testService.get(tid);
+		else{
+			Test test = testService.getChoose();
+			if(test == null){
+				test = new Test();
+				test.setId(-1);
+			}
+			return test;
+		}
+	}
 }

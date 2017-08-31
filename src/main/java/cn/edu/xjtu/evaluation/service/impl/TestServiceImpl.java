@@ -90,7 +90,7 @@ public class TestServiceImpl implements ITestService {
 	public Test get(long id) {
 		// TODO Auto-generated method stub
 		try {
-			return testDAO.load(id);
+			return testDAO.get(id);
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -194,6 +194,14 @@ public class TestServiceImpl implements ITestService {
 		if( a==null )
 			return 0;
 		return 1;
+	}
+
+	@Override
+	@Transactional
+	public Test getChoose() {
+		// TODO Auto-generated method stub
+		String hql = "from Test where choose = 1";
+		return testDAO.getByHQL(hql, null);
 	}
 
 }

@@ -1,4 +1,3 @@
-
 // update user info in status bar
 initBar();
 
@@ -16,10 +15,18 @@ $$(document).on('pageInit', function(e) {
 		// Code for index page
 		if (page.name === 'index') {
 		}
-		
+
 		// Code for test page
 		if (page.name === 'test_list') {
-			loadTest(page.query.type);
+			loadTest(0,"#test_ul");
+		}
+
+		if (page.name === 'test_i_list') {
+			loadTest(1,"#test_i_ul");
+		}
+		
+		if (page.name === 'test') {
+			initTest(page.query.id,page.query.type);
 		}
 	}
 });
@@ -65,7 +72,3 @@ $('#type').on('change', function() {
 		$('.tea_info').show();
 	}
 });
-
-
-
-
