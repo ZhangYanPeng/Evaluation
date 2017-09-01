@@ -1,4 +1,7 @@
 function startTest(tid){
+	records = new Array();
+	reasons = new Array();
+	
 	$$.ajax({
 		async : false,
 		cache : false,
@@ -13,10 +16,10 @@ function startTest(tid){
 			console.log(e);
 		},
 		success : function(data){
-			test = data;
+			c_test = data;
 			q_total=0;
-			for(var ti=0; ti<test.parts.length; ti++){
-				var part = test.parts[ti];
+			for(var ti=0; ti<c_test.parts.length; ti++){
+				var part = c_test.parts[ti];
 				for(var pi=0; pi<part.exercises.length; pi++){
 					var exer = part.exercises[pi];
 					q_total = q_total+exer.questions.length;
@@ -29,20 +32,21 @@ function startTest(tid){
 
 function presentBaseTest(){
 	$$("#part_list").html("");
-	for( var i=1;i<=test.parts.length;i++){
+	for( var i=1;i<=c_test.parts.length;i++){
 		var a_part = $$("<a></a>").attr('class',"button").attr('id','part'+i).attr('href',"#");
 		$$("#part_list").append(a_part);
 	}
-	for( var i=0;i<test.parts.length;i++){
-		var p = test.parts[i];
+	for( var i=0;i<c_test.parts.length;i++){
+		var p = c_test.parts[i];
 		$$('#part'+p.p_no).append(p.exerciseType.description);
 	}
+	$$('#t_title').html(c_test.title);
 }
 
 function presentQuestion(qno){
 	presentBaseTest();
-	for(var ti=0; ti<test.parts.length; ti++){
-		var part = test.parts[ti];
+	for(var ti=0; ti<c_test.parts.length; ti++){
+		var part = c_test.parts[ti];
 		for(var pi=0; pi<part.exercises.length; pi++){
 			var exer = part.exercises[pi];
 			for( var ei=0; ei<exer.questions.length; ei++){
@@ -56,5 +60,85 @@ function presentQuestion(qno){
 		}
 	}
 	$$('#part'+c_part.p_no).attr("class","button active");
+	$$('#progress').html(qno+"/"+q_total);
+	myApp.setProgressbar($$('.progressbar'), qno*100/q_total);
+	$$('#part_description').html(c_part.description);
+	$$('#exercise_description').html(c_exercise.description);
+	$$('#exercise_text').html(c_exercise.text);
 	
+	$$('#q_text').html(c_question.q_num+".");
+	var options = c_question.options.split("||");
+	$$('#q_op').html("");
+	for(var i=1; i<options.length; i++){
+		var p_op = $$("<p></p>");
+		var i_op = $$("<input></input>").attr('type','radio').attr('name','answer').attr('value',i);
+		p_op.append(i_op).append(options[i]);
+		$$('#q_op').append(p_op);
+	}
+	
+	if(c_type==1){
+		$$('#intervention').html('<a href="#" data-panel="right" class="open-panel">查看干预</a>');
+	}
+}
+
+function nextQuestion(){
+	$$('#inte_text').html("");
+	var op = $("input[name='answer']:checked").val();  
+	if(op == undefined){
+		alert("请作答!");
+		return;
+	}
+	if(c_type==0){
+		//evaluation
+		c_record = "||"+op;
+		records[c_question.q_num-1] = c_record;
+		c_record="";
+	}else{
+		//intervention
+		c_record = c_record + "||" +op;
+		if(op == c_question.answer){
+			if(c_record.split("||").length == 2){
+				reasonQue(0);
+			}else{
+				reasonQue(1);
+			}
+			records[c_question.q_num-1] = c_record;
+		}else{
+			if(c_record.split("||").length > c_question.interventions.length){
+				reasonQue(1);
+				records[c_question.q_num-1] = c_record;
+			}
+			else{
+				interventnionQue(c_record.split("||").length-1);
+			}
+		}
+	}
+	if( c_question.q_num == q_total ){
+		finishTest();
+		return;
+	}
+	presentQuestion(c_question.q_num+1);
+}
+
+function finishTest(){
+	console.log(records);
+}
+
+function reasonQue(type){
+	if( type == 0 ){
+		reasons[c_question.q_num-1]="";
+	}else{
+		
+	}
+}
+
+function interventnionQue(num){
+	for(var i=0; i<c_question.interventions.length;i++){
+		var intervention = c_question.interventions[i];
+		if(intervention.level==num){
+			$$('#inte_text').html(intervention.text);
+			
+			break;
+		}
+	}
 }

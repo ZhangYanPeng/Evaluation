@@ -9,6 +9,9 @@ var c_part;
 var c_exercise;
 var c_question;
 var q_total;
+var c_record="";
+var records="";
+var reasons="";
 
 // base url
 var baseUrl = getRootPath();

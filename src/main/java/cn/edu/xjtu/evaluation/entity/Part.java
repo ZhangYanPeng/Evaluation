@@ -26,7 +26,7 @@ public class Part {
 	private int p_no;
 	
 	@Type(type="text")
-	String desription;
+	String description;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JsonIgnore
@@ -75,12 +75,13 @@ public class Part {
 		this.exerciseType = exerciseType;
 	}
 
-	public String getDesription() {
-		return desription;
+
+	public String getDescription() {
+		return description;
 	}
 
-	public void setDesription(String desription) {
-		this.desription = desription;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public int getP_no() {

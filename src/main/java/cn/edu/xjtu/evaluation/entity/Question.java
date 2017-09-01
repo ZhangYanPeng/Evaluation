@@ -37,6 +37,10 @@ public class Question {
 	@JoinColumn( name = "question_id" )
 	private Set<Intervention> interventions;
 	
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinColumn( name = "question_id" )
+	private Set<Record> records;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JsonIgnore
 	private Exercise exercise;

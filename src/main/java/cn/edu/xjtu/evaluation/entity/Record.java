@@ -19,10 +19,12 @@ public class Record {
 	
 	private String result;
 	private String reason;
-	private int num;
 	
 	@ManyToOne( fetch = FetchType.LAZY )
 	private Answer answer;
+	
+	@ManyToOne( fetch = FetchType.LAZY )
+	private Question question;
 	
 	public Record() {
 		super();
@@ -52,20 +54,20 @@ public class Record {
 		this.reason = reason;
 	}
 
-	public int getNum() {
-		return num;
-	}
-
-	public void setNum(int num) {
-		this.num = num;
-	}
-
 	public Answer getAnswer() {
 		return answer;
 	}
 
 	public void setAnswer(Answer answer) {
 		this.answer = answer;
+	}
+
+	public Question getQuestion() {
+		return question;
+	}
+
+	public void setQuestion(Question question) {
+		this.question = question;
 	}
 	
 	
