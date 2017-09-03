@@ -14,6 +14,7 @@ import cn.edu.xjtu.evaluation.dao.impl.ExerciseTypeDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.InterventionDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.PartDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.QuestionDAOImpl;
+import cn.edu.xjtu.evaluation.dao.impl.StudentDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.TestDAOImpl;
 import cn.edu.xjtu.evaluation.entity.Answer;
 import cn.edu.xjtu.evaluation.entity.Exercise;
@@ -21,6 +22,7 @@ import cn.edu.xjtu.evaluation.entity.ExerciseType;
 import cn.edu.xjtu.evaluation.entity.Intervention;
 import cn.edu.xjtu.evaluation.entity.Part;
 import cn.edu.xjtu.evaluation.entity.Question;
+import cn.edu.xjtu.evaluation.entity.Record;
 import cn.edu.xjtu.evaluation.entity.Test;
 import cn.edu.xjtu.evaluation.service.ITestService;
 import cn.edu.xjtu.evaluation.support.DealExcel;
@@ -43,6 +45,8 @@ public class TestServiceImpl implements ITestService {
 	ExerciseTypeDAOImpl exerciseTypeDAO;
 	@Autowired
 	AnswerDAOImpl answerDAO;
+	@Autowired
+	StudentDAOImpl studentDAO;
 	
 	@Override
 	@Transactional
@@ -202,6 +206,23 @@ public class TestServiceImpl implements ITestService {
 		// TODO Auto-generated method stub
 		String hql = "from Test where choose = 1";
 		return testDAO.getByHQL(hql, null);
+	}
+
+	@Override
+	@Transactional
+	public int finishTest(int type, long tid, long uid, String[] records, String[] reasons) {
+		// TODO Auto-generated method stub
+		Answer answer = new Answer();
+		answer.setType(type);
+		answer.setTest(testDAO.get(tid));
+		answer.setStudent(studentDAO.get(uid));
+		answerDAO.save(answer);
+		for(int i=0; i<records.length; i++ ) {
+			String r = records[i];
+			Record record = new Record();
+			record.set
+		}
+		return 0;
 	}
 
 }

@@ -25,12 +25,12 @@ public class ExerciseType {
 	private String description;
 	
 	@OneToMany( fetch = FetchType.LAZY )
-	@JoinColumn( name = "exercise_type_id")
+	@JoinColumn( name = "exerciseType_id")
 	@JsonIgnore
 	private Set<Part> parts;
 	
 	@OneToMany( fetch = FetchType.LAZY )
-	@JoinColumn( name = "exercise_type_id")
+	@JoinColumn( name = "exerciseType_id")
 	@JsonIgnore
 	private Set<Exercise> exercises;
 

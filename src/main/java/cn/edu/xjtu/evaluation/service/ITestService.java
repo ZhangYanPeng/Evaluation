@@ -15,4 +15,5 @@ public interface ITestService {
 	int chooseTest(long id);
 	int check(Integer type, Long tid, Long uid);
 	Test getChoose();
+	int finishTest(int type, long tid, long uid, String[] records, String[] reasons);
 }
