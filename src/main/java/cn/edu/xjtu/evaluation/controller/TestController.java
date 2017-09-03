@@ -47,4 +47,9 @@ public class TestController {
 			return test;
 		}
 	}
+	
+	@RequestMapping(value = "/finishTest" )
+	public @ResponseBody int finishTest(String type, String tid, String uid, String[] records, String[] reasons) {
+		return 0;
+	}
 }

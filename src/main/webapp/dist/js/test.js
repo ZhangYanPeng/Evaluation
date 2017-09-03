@@ -89,12 +89,13 @@ function nextQuestion(){
 		return;
 	}
 	if(c_type==0){
-		//evaluation
+		// evaluation
 		c_record = "||"+op;
 		records[c_question.q_num-1] = c_record;
 		c_record="";
+		reasons[c_question.q_num-1] = "";
 	}else{
-		//intervention
+		// intervention
 		c_record = c_record + "||" +op;
 		if(op == c_question.answer){
 			if(c_record.split("||").length == 2){
@@ -113,15 +114,37 @@ function nextQuestion(){
 			}
 		}
 	}
+	
 	if( c_question.q_num == q_total ){
 		finishTest();
 		return;
 	}
+	
 	presentQuestion(c_question.q_num+1);
 }
 
 function finishTest(){
-	console.log(records);
+	$.ajax({
+		async : false,
+		cache : false,
+		type : 'POST',
+		crossDomain : true,
+		url : baseUrl + "test/finishTest",
+		data : {
+			tid : c_test.id,
+			uid : userId,
+			type : c_type,
+			records : records,
+			reasons : reasons
+		},
+		dataType : "json",
+		error : function(e) {
+			console.log(e);
+		},
+		success : function(data){
+			
+		}
+	});
 }
 
 function reasonQue(type){
