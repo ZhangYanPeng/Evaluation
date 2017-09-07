@@ -3,6 +3,8 @@ package cn.edu.xjtu.evaluation.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,7 +51,7 @@ public class TestController {
 	}
 	
 	@RequestMapping(value = "/finishTest" )
-	public @ResponseBody int finishTest(String type, String tid, String uid, String[] records, String[] reasons) {
-		return 0;
+	public @ResponseBody int finishTest(HttpServletRequest request, String type, String tid, String uid, String[] records, String[] reasons) {
+		return testService.finishTest(Integer.valueOf(type), Long.valueOf(tid), Long.valueOf(uid), (String[])records,(String[]) reasons);
 	}
 }

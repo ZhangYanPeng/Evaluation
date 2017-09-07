@@ -41,6 +41,9 @@ function presentBaseTest(){
 		$$('#part'+p.p_no).append(p.exerciseType.description);
 	}
 	$$('#t_title').html(c_test.title);
+	if(c_type==1){
+		$$('#t_title').append("(intervention)");
+	}
 }
 
 function presentQuestion(qno){
@@ -78,6 +81,7 @@ function presentQuestion(qno){
 	
 	if(c_type==1){
 		$$('#intervention').html('<a href="#" data-panel="right" class="open-panel">查看干预</a>');
+		$$('#inte_text').html("");
 	}
 }
 
@@ -88,6 +92,7 @@ function nextQuestion(){
 		alert("请作答!");
 		return;
 	}
+	
 	if(c_type==0){
 		// evaluation
 		c_record = "||"+op;
@@ -104,13 +109,19 @@ function nextQuestion(){
 				reasonQue(1);
 			}
 			records[c_question.q_num-1] = c_record;
+			c_record="";
 		}else{
+			alert("很遗憾，回答错误！");
 			if(c_record.split("||").length > c_question.interventions.length){
 				reasonQue(1);
 				records[c_question.q_num-1] = c_record;
+				c_record="";
+				
+				return;
 			}
 			else{
 				interventnionQue(c_record.split("||").length-1);
+				return;
 			}
 		}
 	}
@@ -129,6 +140,7 @@ function finishTest(){
 		cache : false,
 		type : 'POST',
 		crossDomain : true,
+	    traditional: true,
 		url : baseUrl + "test/finishTest",
 		data : {
 			tid : c_test.id,
@@ -151,7 +163,8 @@ function reasonQue(type){
 	if( type == 0 ){
 		reasons[c_question.q_num-1]="";
 	}else{
-		
+		myApp.popup('.popup-reason');
+		reasons[c_question.q_num-1]="";
 	}
 }
 
@@ -160,8 +173,8 @@ function interventnionQue(num){
 		var intervention = c_question.interventions[i];
 		if(intervention.level==num){
 			$$('#inte_text').html(intervention.text);
-			
 			break;
 		}
 	}
+	myApp.openPanel('right');
 }

@@ -14,6 +14,7 @@ import cn.edu.xjtu.evaluation.dao.impl.ExerciseTypeDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.InterventionDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.PartDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.QuestionDAOImpl;
+import cn.edu.xjtu.evaluation.dao.impl.RecordDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.StudentDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.TestDAOImpl;
 import cn.edu.xjtu.evaluation.entity.Answer;
@@ -45,6 +46,8 @@ public class TestServiceImpl implements ITestService {
 	ExerciseTypeDAOImpl exerciseTypeDAO;
 	@Autowired
 	AnswerDAOImpl answerDAO;
+	@Autowired
+	RecordDAOImpl recordDAO;
 	@Autowired
 	StudentDAOImpl studentDAO;
 	
@@ -193,7 +196,7 @@ public class TestServiceImpl implements ITestService {
 	public int check(Integer type, Long tid, Long uid) {
 		// TODO Auto-generated method stub
 		String hql = "from Answer where type = ? and student.id = ? and test.id = ?";
-		Object[] values = {type, tid, uid};
+		Object[] values = {type, uid, tid};
 		Answer a = answerDAO.getByHQL(hql, values);
 		if( a==null )
 			return 0;
@@ -217,10 +220,18 @@ public class TestServiceImpl implements ITestService {
 		answer.setTest(testDAO.get(tid));
 		answer.setStudent(studentDAO.get(uid));
 		answerDAO.save(answer);
-		for(int i=0; i<records.length; i++ ) {
-			String r = records[i];
-			Record record = new Record();
-			record.set
+		for(Part p : testDAO.get(tid).getParts()){
+			for(Exercise e : p.getExercises()){
+				for(Question q : e.getQuestions()){
+					int i = q.getQ_num()-1;
+					Record record = new Record();
+					record.setAnswer(answer);
+					record.setQuestion(q);
+					record.setResult(records[i]);
+					record.setReason(reasons[i]);
+					recordDAO.save(record);
+				}
+			}
 		}
 		return 0;
 	}
