@@ -55,7 +55,8 @@
 					crossDomain : true,
 					url : "./list_engclass",
 					data : {
-						page : p
+						page : p,
+						university : $('#p_u').val()
 					},
 					dataType : "json",
 					contentType : "application/x-www-form-urlencoded; charset=utf-8",
@@ -241,7 +242,7 @@
 	<div id="pageAll">
 		<div class="pageTop">
 			<div class="page">
-				<img src="img/coin02.png" /><span><a href="#">首页</a>&nbsp;-&nbsp;-</span>&nbsp;管理员管理
+				<img src="img/coin02.png" /><span><a href="#">首页</a>&nbsp;-&nbsp;-</span>&nbsp;英语班级管理
 			</div>
 		</div>
 
@@ -252,7 +253,7 @@
 				<div class="conform">
 					<form>
 						<div class="cfD">
-							<select class="userinput" id="p_u"></select>&nbsp;-&nbsp;&nbsp;&nbsp;
+							<select class="userinput" id="p_u" onchange="javascript:list(1);"></select>&nbsp;-&nbsp;&nbsp;&nbsp;
 							<input class="userinput" id="cname" type="text"
 								placeholder="输入 班级名" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a
 								href="javascript:add()"><button class="userbtn"

@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.sun.corba.se.impl.orbutil.closure.Constant;
+
+import cn.edu.xjtu.evaluation.common.Constants;
 import cn.edu.xjtu.evaluation.entity.EngClass;
 import cn.edu.xjtu.evaluation.entity.Student;
 import cn.edu.xjtu.evaluation.entity.Teacher;
@@ -84,8 +87,8 @@ public class EnglishController {
 
 	// english class manage
 	@RequestMapping(value = "/list_engclass" , method = RequestMethod.POST)
-	public @ResponseBody PageResults<EngClass> listEngClass(String page) {
-		PageResults<EngClass> tmp =  engClassService.list(Integer.valueOf(page));
+	public @ResponseBody PageResults<EngClass> listEngClass(String page, String university) {
+		PageResults<EngClass> tmp =  engClassService.list(Integer.valueOf(page), Long.valueOf(university));
 		for( EngClass ec : tmp.getResults()){
 			ec.setStu_num(getNum(ec));
 		}
@@ -177,7 +180,7 @@ public class EnglishController {
 				testService.importTest(t);
 			}
 			return 1;
-		} catch (IOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return 0;
@@ -192,5 +195,16 @@ public class EnglishController {
 	@RequestMapping(value = "/choose_test" , method = RequestMethod.POST)
 	public @ResponseBody int chooseTest(String id) {
 		return testService.chooseTest(Long.valueOf(id));
+	}
+	
+	
+	@RequestMapping(value = "/get_status" , method = RequestMethod.POST)
+	public @ResponseBody int getStatus() {
+		return Constants.COLLECT;
+	}
+	
+	@RequestMapping(value = "/set_status" , method = RequestMethod.POST)
+	public @ResponseBody int setStatus(String status) {
+		return Constants.COLLECT = Integer.valueOf(status);
 	}
 }

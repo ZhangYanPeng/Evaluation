@@ -31,12 +31,20 @@ public class EngClassServiceImpl implements IEngClassService {
 	
 	@Override
 	@Transactional
-	public PageResults<EngClass> list(int page) {
+	public PageResults<EngClass> list(int page, long university) {
 		// TODO Auto-generated method stub
-		String hql = "from EngClass ";
-		String countHql = "select count(*) from EngClass";
-		String[] values = {};
-		return engClassDAO.findPageByFetchedHql(hql, countHql, page, Constants.PAGE_SIZE, values);
+		if(university <0) {
+			String hql = "from EngClass ";
+			String countHql = "select count(*) from EngClass";
+			String[] values = {};
+			return engClassDAO.findPageByFetchedHql(hql, countHql, page, Constants.PAGE_SIZE, values);
+		}
+		else {
+			String hql = "from EngClass where university.id = ? ";
+			String countHql = "select count(*) from EngClass where university.id = ? ";
+			Object[] values = {university};
+			return engClassDAO.findPageByFetchedHql(hql, countHql, page, Constants.PAGE_SIZE, values);
+		}
 	}
 
 	@Override

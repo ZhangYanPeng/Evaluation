@@ -12,8 +12,10 @@
 <script type="text/javascript" src="js/common.js"></script>
 <script type="text/javascript">
 	var page_num = 1;
+	var status;
 	var total_num = 0;$(document).ready(function(){
 		list(1);
+		loadStatus();
 	});
 	
 	function list(p) {
@@ -53,7 +55,7 @@
 											var td_n = $('<td></td>').append(
 													value.title);
 											if( value.choose ==1 )
-												td_n.append("(数据采集)");
+												td_n.append("(选定测试)");
 											var td_op = $('<td></td>')
 												.append(
 															"<img class='operation delban' src='img/update.png' onclick='javascript:chooseTest("
@@ -76,6 +78,7 @@
 		$.ajax({
 			sync : false,
 			cache : false,
+			timeout : 100000, 
 			type : 'POST',
 			crossDomain : true,
 			url : "./add_test",
@@ -84,9 +87,11 @@
 			dataType : "json",
 			contentType : "application/x-www-form-urlencoded;charset=utf-8",
 			error : function(e) {
+				console.log(e);
 				alert("网络错误，请重试");
 			},
 			success : function(data) {
+				console.log(data);
 				if (data == 1) {
 					alert("添加成功！");
 					page_num = 1;
@@ -142,6 +147,59 @@
 		});
 	}
 	
+	function change() {
+		var aim;
+		if(status == 1){
+			aim = 0;
+		}else{
+			aim = 1;
+		}
+		$.ajax({
+			sync : false,
+			cache : false,
+			type : 'POST',
+			crossDomain : true,
+			url : "./set_status",
+			data : {
+				status : aim
+			},
+			dataType : "json",
+			contentType : "application/x-www-form-urlencoded;charset=utf-8",
+			error : function(e) {
+				alert("网络错误，请重试");
+			},
+			success : function() {
+					loadStatus();
+			}
+		});
+	}
+	
+	function loadStatus() {
+		$.ajax({
+			sync : false,
+			cache : false,
+			type : 'POST',
+			crossDomain : true,
+			url : "./get_status",
+			data : {
+			},
+			dataType : "json",
+			contentType : "application/x-www-form-urlencoded;charset=utf-8",
+			error : function(e) {
+				alert("网络错误，请重试");
+			},
+			success : function(data) {
+				status = data;
+				if(status==1){
+						$('#statusbtn').html('收集信息(点击设为不收集)');
+				}
+				else{
+						$('#statusbtn').html('不收集信息(点击设为收集)');
+				}
+			}
+		});
+	}
+	
 	function first() {
 		if (page_num == 1)
 			return;
@@ -188,6 +246,10 @@
 						<div class="cfD">
 							<button class="userbtn" onclick="javascript:add();">添加</button>
 							（提示：添加前，请确认相关文件已经放置到正确的路径！）
+						</div>
+						
+						<div class="cfD">
+							<button class="userbtn" style="width:400px;" id="statusbtn" onclick="javascript:change();"></button>
 						</div>
 					</form>
 				</div>
