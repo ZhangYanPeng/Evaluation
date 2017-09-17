@@ -25,11 +25,6 @@ public class Teacher {
 	private String username;
 	private String password;
 	private String name;
-	private String age;
-	private String major;
-	private String school;
-	private String title;
-	private String gender;
 	
 	@JsonIgnore
 	@OneToMany( fetch = FetchType.LAZY)
@@ -70,46 +65,6 @@ public class Teacher {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getAge() {
-		return age;
-	}
-
-	public void setAge(String age) {
-		this.age = age;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public String getGender() {
-		return gender;
-	}
-
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
-
-	public String getMajor() {
-		return major;
-	}
-
-	public void setMajor(String major) {
-		this.major = major;
-	}
-
-	public String getSchool() {
-		return school;
-	}
-
-	public void setSchool(String school) {
-		this.school = school;
 	}
 
 	public Set<EngClass> getEngClasses() {

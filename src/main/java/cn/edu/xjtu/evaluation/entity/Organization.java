@@ -32,10 +32,6 @@ public class Organization {
 	
 	@ManyToOne( fetch = FetchType.EAGER)
 	private School school;
-	
-	@ManyToOne( fetch = FetchType.LAZY)
-	@JsonIgnore
-	private Teacher teacher;
 
 	public Organization() {
 		super();
@@ -63,14 +59,6 @@ public class Organization {
 
 	public void setStudents(Set<Student> students) {
 		this.students = students;
-	}
-
-	public Teacher getTeacher() {
-		return teacher;
-	}
-
-	public void setTeacher(Teacher teacher) {
-		this.teacher = teacher;
 	}
 
 	public School getSchool() {

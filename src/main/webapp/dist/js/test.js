@@ -1,7 +1,7 @@
 function startTest(tid){
 	records = new Array();
 	reasons = new Array();
-	
+
 	$$.ajax({
 		async : false,
 		cache : false,
@@ -46,8 +46,14 @@ function presentBaseTest(){
 	}
 }
 
+
+function playSound(audio_path){
+	alert(audio_path);
+}
+
 function presentQuestion(qno){
 	presentBaseTest();
+	var fe;
 	for(var ti=0; ti<c_test.parts.length; ti++){
 		var part = c_test.parts[ti];
 		for(var pi=0; pi<part.exercises.length; pi++){
@@ -56,12 +62,22 @@ function presentQuestion(qno){
 				var ques = exer.questions[ei];
 				if( ques.q_num == qno ){
 					c_part = part;
+					if(qno==1){
+						fe=0;
+					}else{
+						fe = c_exercise.e_no;
+					}
 					c_exercise = exer;
 					c_question = ques;
 				}
 			}
 		}
 	}
+
+	if(fe != c_exercise.e_no){
+		playSound(c_exercise.audio_path);
+	}
+	
 	$$('#part'+c_part.p_no).attr("class","button active");
 	$$('#progress').html(qno+"/"+q_total);
 	myApp.setProgressbar($$('.progressbar'), qno*100/q_total);
@@ -116,8 +132,6 @@ function nextQuestion(){
 				reasonQue(1);
 				records[c_question.q_num-1] = c_record;
 				c_record="";
-				
-				return;
 			}
 			else{
 				interventnionQue(c_record.split("||").length-1);
@@ -154,7 +168,7 @@ function finishTest(){
 			console.log(e);
 		},
 		success : function(data){
-			
+			mainView.router.loadPage("test_result.html");
 		}
 	});
 }
@@ -178,3 +192,4 @@ function interventnionQue(num){
 	}
 	myApp.openPanel('right');
 }
+

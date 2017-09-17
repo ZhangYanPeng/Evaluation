@@ -1,16 +1,12 @@
 package cn.edu.xjtu.evaluation.support;
 
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -23,7 +19,6 @@ import cn.edu.xjtu.evaluation.entity.ExerciseType;
 import cn.edu.xjtu.evaluation.entity.Intervention;
 import cn.edu.xjtu.evaluation.entity.Part;
 import cn.edu.xjtu.evaluation.entity.Question;
-import cn.edu.xjtu.evaluation.entity.Student;
 import cn.edu.xjtu.evaluation.entity.Test;
 
 public class DealExcel {
@@ -110,16 +105,17 @@ public class DealExcel {
 			}
 			if (getCellCotent(row.getCell(8)).replaceAll(" ", "").length() != 0) {
 				q.setQ_num(Integer.valueOf(getCellCotent(row.getCell(8))));
+				q.setAudio_path(getCellCotent(row.getCell(9)));
 			}
-			q.setOptions(q.getOptions() + "||" + getCellCotent(row.getCell(9)));
-			if (getCellCotent(row.getCell(10)).replaceAll(" ", "").length() != 0) {
+			q.setOptions(q.getOptions() + "||" + getCellCotent(row.getCell(10)));
+			if (getCellCotent(row.getCell(11)).replaceAll(" ", "").length() != 0) {
 				i = new Intervention();
-				i.setAudio_path(getCellCotent(row.getCell(12)));
-				i.setText(getCellCotent(row.getCell(11)));
-				i.setLevel(Integer.valueOf(getCellCotent(row.getCell(10))));
+				i.setAudio_path(getCellCotent(row.getCell(13)));
+				i.setText(getCellCotent(row.getCell(12)));
+				i.setLevel(Integer.valueOf(getCellCotent(row.getCell(11))));
 				q.getInterventions().add(i);
 			} else {
-				q.setAnswer(Integer.valueOf(getCellCotent(row.getCell(13))));
+				q.setAnswer(Integer.valueOf(getCellCotent(row.getCell(14))));
 				e.getQuestions().add(q);
 				q =  new Question();
 				q.setInterventions(new HashSet<Intervention>());
