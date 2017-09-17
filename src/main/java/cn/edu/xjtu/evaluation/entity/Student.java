@@ -34,8 +34,6 @@ public class Student {
 	private String major;
 	
 	private int english_level;// -1：未知 0：未通过四级 1：通过4级 2：通过六级 
-	private int father_level;//-1：未知 0：高中以下 1：大专本科 2：硕士 3：博士
-	private int mother_level;//同上
 	
 	private int status;
 	
@@ -150,22 +148,6 @@ public class Student {
 
 	public void setEnglish_level(int english_level) {
 		this.english_level = english_level;
-	}
-
-	public int getFather_level() {
-		return father_level;
-	}
-
-	public void setFather_level(int father_level) {
-		this.father_level = father_level;
-	}
-
-	public int getMother_level() {
-		return mother_level;
-	}
-
-	public void setMother_level(int mother_level) {
-		this.mother_level = mother_level;
 	}
 
 	public Organization getOrganization() {

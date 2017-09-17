@@ -30,8 +30,7 @@ public class StudentController {
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public @ResponseBody Student register(String username, String password, String gender, String name, String school,
-			String major, String grade, String student_no, String english_level, String father_level,
-			String mother_level) {
+			String major, String grade, String student_no, String english_level) {
 		Student student = new Student();
 		student.setUsername(username);
 		student.setPassword(password);
@@ -41,8 +40,6 @@ public class StudentController {
 		student.setGrade(grade);
 		student.setStudent_no(student_no);
 		student.setEnglish_level(Integer.valueOf(english_level));
-		student.setFather_level(Integer.valueOf(father_level));
-		student.setMother_level(Integer.valueOf(father_level));
 		student.setStatus(1);
 		int status = studentService.add(student);
 		if (status == 1) {

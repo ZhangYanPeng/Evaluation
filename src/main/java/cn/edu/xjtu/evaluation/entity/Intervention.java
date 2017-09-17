@@ -25,8 +25,6 @@ public class Intervention {
 	private String audio_path;
 	private int level;
 	
-	private double deScore;
-	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JsonIgnore
 	private Question question;
@@ -57,15 +55,6 @@ public class Intervention {
 
 	public void setAudio_path(String audio_path) {
 		this.audio_path = audio_path;
-	}
-
-
-	public double getDeScore() {
-		return deScore;
-	}
-
-	public void setDeScore(double deScore) {
-		this.deScore = deScore;
 	}
 
 	public int getLevel() {

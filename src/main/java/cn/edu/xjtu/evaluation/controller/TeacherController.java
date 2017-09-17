@@ -1,17 +1,12 @@
 package cn.edu.xjtu.evaluation.controller;
 
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.edu.xjtu.evaluation.entity.Exercise;
-import cn.edu.xjtu.evaluation.entity.Student;
 import cn.edu.xjtu.evaluation.entity.Teacher;
 import cn.edu.xjtu.evaluation.service.IExerciseService;
 import cn.edu.xjtu.evaluation.service.ITeacherService;
@@ -40,16 +35,11 @@ public class TeacherController {
 	}
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public @ResponseBody Teacher register(String username, String password, String gender, String name, String school,
-			String major, String title) {
+	public @ResponseBody Teacher register(String username, String password, String name) {
 		Teacher teacher = new Teacher();
-		teacher.setGender(gender);
 		teacher.setName(name);
 		teacher.setPassword(password);
 		teacher.setUsername(username);
-		teacher.setTitle(title);
-		teacher.setSchool(school);
-		teacher.setMajor(major);
 		int status = teacherService.register(teacher);
 		if (status == 1) {
 			teacher = teacherService.login(teacher);
