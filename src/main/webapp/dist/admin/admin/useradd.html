@@ -2,52 +2,49 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>编辑教师</title>
-<link rel="stylesheet" type="text/css" href="css/css.css" />
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<script type="text/javascript" src="js/common.js"></script>
+<title>编辑用户</title>
+<link rel="stylesheet" type="text/css" href="../css/css.css" />
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script type="text/javascript" src="../js/common.js"></script>
 <script type="text/javascript">
 	var aid = getQueryString("id");
-	$(document).ready(function(){
-		if (aid != "-1") {
-			$.ajax({
-				sync : false,
-				cache : false,
-				type : 'POST',
-				crossDomain : true,
-				url : "./load_teacher",
-				data : {
-					id : aid
-				},
-				dataType : "json",
-				contentType : "application/x-www-form-urlencoded;charset=utf-8",
-				error : function(e) {
-					alert("网络错误，请重试");
-				},
-				success : function(data) {
-					$("#username").val(data.username);
-					$("#password").val(data.password);
-					$("#name").val(data.name);
-					$("#id").val(data.id);
-				}
-			});
-		}
-		else{
-			$("#id").val(aid);
-			password: $("#password").val("t111111");
-		}
-	});
-	
-	function save(){
+	if (aid != "-1") {
 		$.ajax({
 			sync : false,
 			cache : false,
 			type : 'POST',
 			crossDomain : true,
-			url : "./edit_teacher",
+			url : "load_admin",
+			data : {
+				id : aid
+			},
+			dataType : "json",
+			contentType : "application/x-www-form-urlencoded;charset=utf-8",
+			error : function(e) {
+				alert("网络错误，请重试");
+			},
+			success : function(data) {
+				$("#username").val(data.username);
+				$("#password").val(data.password);
+				$("#repassword").val(data.password);
+				$("#id").val(data.id);
+			}
+		});
+	}
+	
+	function save(){
+		if( $("#password").val() != $("#repassword").val() ){
+			alert("两次密码不一致，请检查！");
+			return;
+		}
+		$.ajax({
+			sync : false,
+			cache : false,
+			type : 'POST',
+			crossDomain : true,
+			url : "edit_admin",
 			data : {
 				id : $("#id").val(),
-				name: $("#name").val(),
 				username: $("#username").val(),
 				password: $("#password").val(),
 			},
@@ -68,7 +65,7 @@
 	<div id="pageAll">
 		<div class="pageTop">
 			<div class="page">
-				<img src="img/coin02.png" /><span><a href="#">首页</a>&nbsp;-&nbsp;<a
+				<img src="../img/coin02.png" /><span><a href="#">首页</a>&nbsp;-&nbsp;<a
 					href="#">网站管理</a>&nbsp;-</span>&nbsp;管理员编辑
 			</div>
 		</div>
@@ -86,11 +83,11 @@
 					</div>
 					<div class="bbD">
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;密码：<input id="password"
-							type="text" class="input3" />
+							type="password" class="input3" />
 					</div>
 					<div class="bbD">
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;姓名：<input id="name"
-							type="text" class="input3" />
+						重复密码：<input id="repassword"
+							type="password" class="input3" />
 					</div>
 					<div class="bbD">
 						<p class="bbDP">

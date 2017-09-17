@@ -3,12 +3,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>学院管理</title>
-<link rel="stylesheet" type="text/css" href="css/css.css" />
-<link rel="stylesheet" href="./css/jqpagination.css" />
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<script src="./js/jquery.jqpagination.js"></script>
-<script type="text/javascript" src="js/init.js"></script>
-<script type="text/javascript" src="js/common.js"></script>
+<link rel="stylesheet" type="text/css" href="../css/css.css" />
+<link rel="stylesheet" href="../css/jqpagination.css" />
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script src="../js/jquery.jqpagination.js"></script>
+<!-- <script type="text/javascript" src="js/page.js" ></script> -->
+<script type="text/javascript" src="../js/init.js"></script>
+<script type="text/javascript" src="../js/common.js"></script>
 <script type="text/javascript">
 		var page_num = 1;
 		var total_num = 0;
@@ -28,7 +29,7 @@
 				cache : false,
 				type : 'POST',
 				crossDomain : true,
-				url : "./get_all_university",
+				url : "get_all_university",
 				data : {},
 				dataType : "json",
 				contentType : "application/x-www-form-urlencoded;charset=utf-8",
@@ -51,7 +52,7 @@
 				cache : false,
 				type : 'POST',
 				crossDomain : true,
-				url : "./list_school",
+				url : "list_school",
 				data : {
 					page : p,
 					university : $("#p_u").val()
@@ -83,11 +84,11 @@
 								'href',
 								"schooladd.html?id="
 								+ value.id);
-							a_edit.append("<img class='operation' src='img/update.png'></a>");
+							a_edit.append("<img class='operation' src='../img/update.png'></a>");
 							var td_op = $('<td></td>')
 							.append(a_edit)
 							.append(
-								"<img class='operation delban' src='img/delete.png' onclick='javascript:removeschool("
+								"<img class='operation delban' src='../img/delete.png' onclick='javascript:removeschool("
 								+ value.id
 								+ ");' /></td>");
 							var tr = $('<tr></tr>').attr(
@@ -105,7 +106,7 @@
 				cache : false,
 				type : 'POST',
 				crossDomain : true,
-				url : "./remove_school",
+				url : "remove_school",
 				data : {
 					id : sid,
 				},
@@ -163,7 +164,7 @@
 	<div id="pageAll">
 		<div class="pageTop">
 			<div class="page">
-				<img src="img/coin02.png" /><span><a href="#">首页</a>&nbsp;-&nbsp;-</span>&nbsp;用户管理
+				<img src="../img/coin02.png" /><span><a href="#">首页</a>&nbsp;-&nbsp;-</span>&nbsp;用户管理
 			</div>
 		</div>
 

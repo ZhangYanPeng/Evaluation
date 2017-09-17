@@ -56,11 +56,11 @@ public class AdminServiceImpl implements IAdminService {
 
 	@Override
 	@Transactional
-	public PageResults<Admin> list( String username, int page) {
+	public PageResults<Admin> list( int page) {
 		// TODO Auto-generated method stub
-		String hql = "from Admin where username like ? ";
-		String countHql = "select count(*) from Admin where username like ?";
-		String[] values = { username };
+		String hql = "from Admin";
+		String countHql = "select count(*) from Admin";
+		String[] values = {};
 		return adminDAO.findPageByFetchedHql(hql, countHql, page, Constants.PAGE_SIZE, values);
 	}
 

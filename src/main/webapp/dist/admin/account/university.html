@@ -2,22 +2,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>管理员管理</title>
-<link rel="stylesheet" type="text/css" href="css/css.css" />
-<link rel="stylesheet" href="./css/jqpagination.css" />
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<script src="./js/jquery.jqpagination.js"></script>
+<title>学校管理</title>
+<link rel="stylesheet" type="text/css" href="../css/css.css" />
+<link rel="stylesheet" href="../css/jqpagination.css" />
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script src="../js/jquery.jqpagination.js"></script>
 <!-- <script type="text/javascript" src="js/page.js" ></script> -->
-<script type="text/javascript" src="js/init.js"></script>
-<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="../js/init.js"></script>
+<script type="text/javascript" src="../js/common.js"></script>
 <script type="text/javascript">
 	var page_num = 1;
-	var status;
-	var total_num = 0;$(document).ready(function(){
+	var total_num = 0;
+	$(document).ready(function() {
 		list(1);
-		loadStatus();
 	});
-	
 	function list(p) {
 		$
 				.ajax({
@@ -25,7 +23,7 @@
 					cache : false,
 					type : 'POST',
 					crossDomain : true,
-					url : "./list_test",
+					url : "list_university",
 					data : {
 						page : p
 					},
@@ -38,14 +36,12 @@
 						total_num = data.pageCount;
 						page_num=p;
 						$("#page_num").val(p);
-
 						var tab_title = "<tr>"
-								+ "<td width='366px' class='tdColor tdC'>序号</td>"
-								+ "<td width='930px' class='tdColor'>测试名</td>"
-								+ "<td width='430px' class='tdColor'>操作</td>"
+								+ "<td width='66px' class='tdColor tdC'>序号</td>"
+								+ "<td width='730px' class='tdColor'>学校名</td>"
+								+ "<td width='130px' class='tdColor'>操作</td>"
 								+ "	</tr>";
-						$("#testlist").html(tab_title);
-						
+						$("#universitylist").html(tab_title);
 						$
 								.each(
 										data.results,
@@ -53,63 +49,63 @@
 											var td_id = $('<td></td>').append(
 													value.id);
 											var td_n = $('<td></td>').append(
-													value.title);
-											if( value.choose ==1 )
-												td_n.append("(选定测试)");
+													value.name);
+											var a_edit = $('<a></a>').attr(
+													'href',
+													"universityadd.html?id="
+															+ value.id);
+											a_edit
+													.append("<img class='operation' src='../img/update.png'></a>");
 											var td_op = $('<td></td>')
-												.append(
-															"<img class='operation delban' src='img/update.png' onclick='javascript:chooseTest("
-																	+ value.id
-																	+ ");' /></td>")
+													.append(a_edit)
 													.append(
-															"<img class='operation delban' src='img/delete.png' onclick='javascript:removeTest("
+															"<img class='operation delban' src='../img/delete.png' onclick='javascript:removeUniversity("
 																	+ value.id
 																	+ ");' /></td>");
 											var tr = $('<tr></tr>').attr(
 													'height', "40px");
-											tr.append(td_id).append(td_n).append(td_op);
-											$("#testlist").append(tr);
+											tr.append(td_id).append(td_n)
+													.append(td_op);
+											$("#universitylist").append(tr);
 										});
 					}
 				});
 	}
 
-	function add() {
+	function save() {
 		$.ajax({
 			sync : false,
 			cache : false,
-			timeout : 100000, 
 			type : 'POST',
 			crossDomain : true,
-			url : "./add_test",
+			url : "add_university",
 			data : {
+				name : $("#nu").val(),
 			},
 			dataType : "json",
 			contentType : "application/x-www-form-urlencoded;charset=utf-8",
 			error : function(e) {
-				console.log(e);
 				alert("网络错误，请重试");
 			},
 			success : function(data) {
-				console.log(data);
 				if (data == 1) {
 					alert("添加成功！");
+					jump("/admin/university");
 					page_num = 1;
-					list(1);
 				}
 			}
 		});
 	}
 
-	function removeTest(tid) {
+	function removeUniversity(uid) {
 		$.ajax({
 			sync : false,
 			cache : false,
 			type : 'POST',
 			crossDomain : true,
-			url : "./delete_test",
+			url : "remove_university",
 			data : {
-				id : tid
+				id : uid,
 			},
 			dataType : "json",
 			contentType : "application/x-www-form-urlencoded;charset=utf-8",
@@ -117,89 +113,20 @@
 				alert("网络错误，请重试");
 			},
 			success : function(data) {
-				if (data == true) {
-					list(1);
+				if (data == 1) {
+					list(1);;
 					page_num = 1;
 				}
-			}
-		});
-	}
-	
-	function chooseTest(tid) {
-		$.ajax({
-			sync : false,
-			cache : false,
-			type : 'POST',
-			crossDomain : true,
-			url : "./choose_test",
-			data : {
-				id : tid
-			},
-			dataType : "json",
-			contentType : "application/x-www-form-urlencoded;charset=utf-8",
-			error : function(e) {
-				alert("网络错误，请重试");
-			},
-			success : function(data) {
-					list(1);
-					page_num = 1;
-			}
-		});
-	}
-	
-	function change() {
-		var aim;
-		if(status == 1){
-			aim = 0;
-		}else{
-			aim = 1;
-		}
-		$.ajax({
-			sync : false,
-			cache : false,
-			type : 'POST',
-			crossDomain : true,
-			url : "./set_status",
-			data : {
-				status : aim
-			},
-			dataType : "json",
-			contentType : "application/x-www-form-urlencoded;charset=utf-8",
-			error : function(e) {
-				alert("网络错误，请重试");
-			},
-			success : function() {
-					loadStatus();
-			}
-		});
-	}
-	
-	function loadStatus() {
-		$.ajax({
-			sync : false,
-			cache : false,
-			type : 'POST',
-			crossDomain : true,
-			url : "./get_status",
-			data : {
-			},
-			dataType : "json",
-			contentType : "application/x-www-form-urlencoded;charset=utf-8",
-			error : function(e) {
-				alert("网络错误，请重试");
-			},
-			success : function(data) {
-				status = data;
-				if(status==1){
-						$('#statusbtn').html('收集信息(点击设为不收集)');
+				if (data == 0) {
+					alert("网络错误，请重试");
 				}
-				else{
-						$('#statusbtn').html('不收集信息(点击设为收集)');
+				if (data == -1) {
+					alert("该学校有关联学院，不能删除！");
 				}
 			}
 		});
 	}
-	
+
 	function first() {
 		if (page_num == 1)
 			return;
@@ -234,7 +161,7 @@
 	<div id="pageAll">
 		<div class="pageTop">
 			<div class="page">
-				<img src="img/coin02.png" /><span><a href="#">首页</a>&nbsp;-&nbsp;-</span>&nbsp;管理员管理
+				<img src="../img/coin02.png" /><span><a href="#">首页</a>&nbsp;-&nbsp;-</span>&nbsp;学校管理
 			</div>
 		</div>
 
@@ -244,18 +171,15 @@
 				<div class="conform">
 					<form>
 						<div class="cfD">
-							<button class="userbtn" onclick="javascript:add();">添加</button>
-							（提示：添加前，请确认相关文件已经放置到正确的路径！）
-						</div>
-						
-						<div class="cfD">
-							<button class="userbtn" style="width:400px;" id="statusbtn" onclick="javascript:change();"></button>
+							<input class="userinput" id="nu" type="text" placeholder="输入学院名" />&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;
+							<button class="userbtn" onclick="javascript:save();">添加</button>
 						</div>
 					</form>
 				</div>
 				<!-- user 表格 显示 -->
 				<div class="conShow">
-					<table id="testlist" border="1" cellspacing="0" cellpadding="0">
+					<table id="universitylist" border="1" cellspacing="0"
+						cellpadding="0">
 					</table>
 				</div>
 				<div class="paging">

@@ -3,14 +3,14 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>英语班级管理</title>
-<link rel="stylesheet" type="text/css" href="css/css.css" />
-<link rel="stylesheet" href="./css/jqpagination.css" />
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<script src="./js/jquery.jqpagination.js"></script>
-<script src="./js/ajaxfileupload.js"></script>
+<link rel="stylesheet" type="text/css" href="../css/css.css" />
+<link rel="stylesheet" href="../css/jqpagination.css" />
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script src="../js/jquery.jqpagination.js"></script>
+<script src="../js/ajaxfileupload.js"></script>
 <!-- <script type="text/javascript" src="js/page.js" ></script> -->
-<script type="text/javascript" src="js/init.js"></script>
-<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="../js/init.js"></script>
+<script type="text/javascript" src="../js/common.js"></script>
 <script type="text/javascript">
 	var page_num = 1;
 	var total_num = 0;
@@ -29,7 +29,7 @@
 			cache : false,
 			type : 'POST',
 			crossDomain : true,
-			url : "./get_all_university",
+			url : "get_all_university",
 			data : {},
 			dataType : "json",
 			contentType : "application/x-www-form-urlencoded;charset=utf-8",
@@ -53,7 +53,7 @@
 					cache : false,
 					type : 'POST',
 					crossDomain : true,
-					url : "./list_engclass",
+					url : "list_engclass",
 					data : {
 						page : p,
 						university : $('#p_u').val()
@@ -109,7 +109,7 @@
 											}
 											var td_op = $('<td></td>')
 													.append(
-															"<img class='operation delban' src='img/delete.png' onclick='javascript:removeEngClass("
+															"<img class='operation delban' src='../img/delete.png' onclick='javascript:removeEngClass("
 																	+ value.id
 																	+ ");' /></td>");
 											var tr = $('<tr></tr>').attr(
@@ -133,7 +133,7 @@
 			cache : false,
 			type : 'POST',
 			crossDomain : true,
-			url : "./add_engclass",
+			url : "add_engclass",
 			data : {
 				name : $('#cname').val(),
 				university : $('#p_u').val()
@@ -155,7 +155,7 @@
 	function upload(cid) {
 		$.ajaxFileUpload({
 			type : 'post',
-			url : './upload_students_list', //用于文件上传的服务器端请求地址
+			url : 'upload_students_list', //用于文件上传的服务器端请求地址
 			secureuri : false, //是否需要安全协议，一般设置为false
 			fileElementId : 'file' + cid, //文件上传域的ID
 			data : {
@@ -190,7 +190,7 @@
 			cache : false,
 			type : 'POST',
 			crossDomain : true,
-			url : "./delete_engclass",
+			url : "delete_engclass",
 			data : {
 				id : eid
 			},
@@ -242,7 +242,7 @@
 	<div id="pageAll">
 		<div class="pageTop">
 			<div class="page">
-				<img src="img/coin02.png" /><span><a href="#">首页</a>&nbsp;-&nbsp;-</span>&nbsp;英语班级管理
+				<img src="../img/coin02.png" /><span><a href="#">首页</a>&nbsp;-&nbsp;-</span>&nbsp;英语班级管理
 			</div>
 		</div>
 

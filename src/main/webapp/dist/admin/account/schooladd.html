@@ -3,9 +3,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>编辑学院</title>
-<link rel="stylesheet" type="text/css" href="css/css.css" />
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<script type="text/javascript" src="js/common.js"></script>
+<link rel="stylesheet" type="text/css" href="../css/css.css" />
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script type="text/javascript" src="../js/common.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
 		loadUniversity();
@@ -16,7 +16,7 @@
 				cache : false,
 				type : 'POST',
 				crossDomain : true,
-				url : "./load_school",
+				url : "load_school",
 				data : {
 					id : sid
 				},
@@ -45,7 +45,7 @@
 			cache : false,
 			type : 'POST',
 			crossDomain : true,
-			url : "./get_all_university",
+			url : "get_all_university",
 			data : {},
 			dataType : "json",
 			contentType : "application/x-www-form-urlencoded;charset=utf-8",
@@ -73,7 +73,7 @@
 			cache : false,
 			type : 'POST',
 			crossDomain : true,
-			url : "./edit_school",
+			url : "edit_school",
 			data : {
 				id : $("#id").val(),
 				name : $("#name").val(),
@@ -98,7 +98,7 @@
 	<div id="pageAll">
 		<div class="pageTop">
 			<div class="page">
-				<img src="img/coin02.png" /><span><a href="#">首页</a>&nbsp;-&nbsp;<a
+				<img src="../img/coin02.png" /><span><a href="#">首页</a>&nbsp;-&nbsp;<a
 					href="#">用户管理</a>&nbsp;-</span>&nbsp;学院编辑
 			</div>
 		</div>

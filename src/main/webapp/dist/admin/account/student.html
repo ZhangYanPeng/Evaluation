@@ -3,13 +3,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>管理员管理</title>
-<link rel="stylesheet" type="text/css" href="css/css.css" />
-<link rel="stylesheet" href="./css/jqpagination.css" />
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<script src="./js/jquery.jqpagination.js"></script>
+<link rel="stylesheet" type="text/css" href="../css/css.css" />
+<link rel="stylesheet" href="../css/jqpagination.css" />
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script src="../js/jquery.jqpagination.js"></script>
 <!-- <script type="text/javascript" src="js/page.js" ></script> -->
-<script type="text/javascript" src="js/init.js"></script>
-<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="../js/init.js"></script>
+<script type="text/javascript" src="../js/common.js"></script>
 <script type="text/javascript">
 	var page_num = 1;
 	var total_num = 0;$(document).ready(function(){
@@ -23,7 +23,7 @@
 					cache : false,
 					type : 'POST',
 					crossDomain : true,
-					url : "./list_student",
+					url : "list_student",
 					data : {
 						str : $("#str").val(),
 						page : p
@@ -51,6 +51,7 @@
 								.each(
 										data.results,
 										function(index, value) {
+											console.log(value);
 											var td_id = $('<td></td>').append(
 													value.id);
 											var td_ec = $('<td></td>').append(
@@ -64,11 +65,11 @@
 													"studentadd.html?id="
 															+ value.id);
 											a_edit
-													.append("<img class='operation' src='img/update.png'></a>");
+													.append("<img class='operation' src='../img/update.png'></a>");
 											var td_op = $('<td></td>')
 													.append(a_edit)
 													.append(
-															"<img class='operation delban' src='img/delete.png' onclick='javascript:removeStudent("
+															"<img class='operation delban' src='../img/delete.png' onclick='javascript:removeStudent("
 																	+ value.id
 																	+ ");' /></td>");
 											var tr = $('<tr></tr>').attr(
@@ -88,7 +89,7 @@
 			cache : false,
 			type : 'POST',
 			crossDomain : true,
-			url : "./delete_student",
+			url : "delete_student",
 			data : {
 				id : sid
 			},
@@ -140,7 +141,7 @@
 	<div id="pageAll">
 		<div class="pageTop">
 			<div class="page">
-				<img src="img/coin02.png" /><span><a href="#">首页</a>&nbsp;-&nbsp;-</span>&nbsp;管理员管理
+				<img src="../img/coin02.png" /><span><a href="#">首页</a>&nbsp;-&nbsp;-</span>&nbsp;管理员管理
 			</div>
 		</div>
 
