@@ -20,6 +20,9 @@
 				
 				<p id="exercise_description"></p>
 				<p id="exercise_text"></p>
+				
+				<audio src="" id="q_audio" onended="javascript:count();"></audio>
+				<p id="count"></p>
 
 				<div class="card">
 					<div class="card-header" id="q_text"></div>
@@ -27,7 +30,7 @@
 						<div class="card-content-inner" id="q_op"></div>
 					</div>
 					<div class="card-footer">
-						<a href="javascript:nextQuestion();" class="button active">下一题</a>
+						<a href="javascript:nextQuestion(1);" class="button active">下一题</a>
 						<div id="intervention"></div>
 					</div>
 				</div>

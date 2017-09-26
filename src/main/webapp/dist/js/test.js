@@ -25,9 +25,9 @@ function startTest(tid){
 					q_total = q_total+exer.questions.length;
 				}
 			}
-			presentQuestion(1);
 		}
 	});
+	presentQuestion(1);
 }
 
 function presentBaseTest(){
@@ -48,12 +48,26 @@ function presentBaseTest(){
 
 
 function playSound(audio_path){
-	alert(audio_path);
+	$$('#q_audio').attr("autoplay","autoplay").attr('src', baseUrl + audio_path);
+}
+
+function count() {
+	var t = 15;
+	var a = setInterval(daojishi, 1000);// 1000毫秒
+	function daojishi() {
+		t--;
+		// 刷新时间显示
+		$$("#count").html("还剩"+t+"秒，请作答！");
+		if (t == 0) {
+			clearInterval(a);
+			$$("#count").html("");
+			nextQuestion(0);
+		}
+	}
 }
 
 function presentQuestion(qno){
 	presentBaseTest();
-	var fe;
 	for(var ti=0; ti<c_test.parts.length; ti++){
 		var part = c_test.parts[ti];
 		for(var pi=0; pi<part.exercises.length; pi++){
@@ -62,11 +76,6 @@ function presentQuestion(qno){
 				var ques = exer.questions[ei];
 				if( ques.q_num == qno ){
 					c_part = part;
-					if(qno==1){
-						fe=0;
-					}else{
-						fe = c_exercise.e_no;
-					}
 					c_exercise = exer;
 					c_question = ques;
 				}
@@ -74,9 +83,6 @@ function presentQuestion(qno){
 		}
 	}
 
-	if(fe != c_exercise.e_no){
-		playSound(c_exercise.audio_path);
-	}
 	
 	$$('#part'+c_part.p_no).attr("class","button active");
 	$$('#progress').html(qno+"/"+q_total);
@@ -99,14 +105,20 @@ function presentQuestion(qno){
 		$$('#intervention').html('<a href="#" data-panel="right" class="open-panel">查看干预</a>');
 		$$('#inte_text').html("");
 	}
+	
+	playSound(c_question.audio_path);
 }
 
-function nextQuestion(){
+function nextQuestion(t){
 	$$('#inte_text').html("");
 	var op = $("input[name='answer']:checked").val();  
-	if(op == undefined){
+	if(op == undefined && t!=0){
 		alert("请作答!");
 		return;
+	}
+	
+	if(t==0 &&op == undefined){
+		op=-1;
 	}
 	
 	if(c_type==0){
