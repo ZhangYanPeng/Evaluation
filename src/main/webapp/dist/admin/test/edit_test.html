@@ -8,13 +8,19 @@
 <script type="text/javascript" src="../js/common.js"></script>
 <script type="text/javascript">
 	var tid = getQueryString("id");
+	
 	if (tid != "-1") {
+		init();
+	}else{
+	}
+	
+	function init(){
 		$.ajax({
 			sync : false,
 			cache : false,
 			type : 'POST',
 			crossDomain : true,
-			url : "loadTest",
+			url : "loadParts",
 			data : {
 				id : tid
 			},
@@ -24,44 +30,15 @@
 				alert("网络错误，请重试");
 			},
 			success : function(data) {
-				present(data);
-			}
-		});
-	}else{
-		$.ajax({
-			sync : false,
-			cache : false,
-			type : 'POST',
-			crossDomain : true,
-			url : "loadTest",
-			data : {
-				id : aid
-			},
-			dataType : "json",
-			contentType : "application/x-www-form-urlencoded;charset=utf-8",
-			error : function(e) {
-				alert("网络错误，请重试");
-			},
-			success : function(data) {
-			}
-		});
-	}
-	
-	function present(test){
-		$("#test_name").val(test.title);
-		for(var p in test){
-			$("#test").html("");
-			for(var e in p){
-				
-				for(var q in e){
-					
-					for(var i in q){
-						
-					}
+				var tab = $("<table></table>");
+				for(var i=0; i<data.length;i++){
+					var td_no = $("<td></td>").append(p_no);
+					var tr = $("<tr></tr>").append(td_no);
+					tab.append(tr);
 				}
-				$("#test")
+				$("#plist").append(tab);
 			}
-		}
+		});
 	}
 	
 	
@@ -86,7 +63,7 @@
 					<div class="bbD">
 						试题名称：<input id="test_name" name="test_name" type="text" class="input3" />
 					</div>
-					<div class="bbD" id="test" >
+					<div class="bbD" id="plist" >
 					</div>
 					
 				</div>

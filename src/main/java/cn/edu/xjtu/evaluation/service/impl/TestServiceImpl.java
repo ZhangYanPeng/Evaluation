@@ -227,4 +227,40 @@ public class TestServiceImpl implements ITestService {
 		return 0;
 	}
 
+	@Override
+	@Transactional
+	public List<Part> loadParts(Long id) {
+		// TODO Auto-generated method stub
+		String hqlString = "from Part where test.id = ? order by p_no asc";
+		Object[] values = {id};
+		return partDAO.getListByHQL(hqlString, values);
+	}
+
+	@Override
+	@Transactional
+	public List<Exercise> loadExercises(Long id) {
+		// TODO Auto-generated method stub
+		String hqlString = "from Exercise where part.id = ? order by e_no asc";
+		Object[] values = {id};
+		return exerciseDAO.getListByHQL(hqlString, values);
+	}
+
+	@Override
+	@Transactional
+	public List<Question> loadQuestions(Long id) {
+		// TODO Auto-generated method stub
+		String hqlString = "from Question where exercise.id = ? order by q_no asc";
+		Object[] values = {id};
+		return questionDAO.getListByHQL(hqlString, values);
+	}
+
+	@Override
+	@Transactional
+	public List<Intervention> loadInterventions(Long id) {
+		// TODO Auto-generated method stub
+		String hqlString = "from Intervention where question.id = ? order by level asc";
+		Object[] values = {id};
+		return interventionDAO.getListByHQL(hqlString, values);
+	}
+
 }

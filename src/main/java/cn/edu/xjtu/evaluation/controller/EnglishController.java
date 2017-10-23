@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.edu.xjtu.evaluation.common.Constants;
+import cn.edu.xjtu.evaluation.entity.Part;
 import cn.edu.xjtu.evaluation.entity.Test;
 import cn.edu.xjtu.evaluation.service.ITestService;
 import cn.edu.xjtu.evaluation.support.DealExcel;
@@ -64,5 +65,10 @@ public class EnglishController {
 	@RequestMapping(value = "/set_status" , method = RequestMethod.POST)
 	public @ResponseBody int setStatus(String status) {
 		return Constants.COLLECT = Integer.valueOf(status);
+	}
+	
+	@RequestMapping(value = "/loadParts" )
+	public @ResponseBody List<Part> loadParts( String id) {
+		return testService.loadParts(Long.valueOf(id));
 	}
 }
