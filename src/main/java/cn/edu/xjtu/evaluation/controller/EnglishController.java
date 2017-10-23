@@ -33,7 +33,7 @@ public class EnglishController {
 	public @ResponseBody int addTest(HttpServletRequest request) {
 		String basePath = request.getSession().getServletContext().getRealPath("/res/");
 		try {
-			List<Test> tl = DealExcel.loadInTest(basePath+"test_in.xlsx");
+			List<Test> tl = DealExcel.loadInTest(basePath+"/test_in.xlsx");
 			for( Test t : tl){
 				testService.importTest(t);
 			}
