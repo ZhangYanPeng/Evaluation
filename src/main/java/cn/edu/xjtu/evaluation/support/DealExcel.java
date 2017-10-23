@@ -138,7 +138,6 @@ public class DealExcel {
 				p.setP_no(Integer.valueOf(getCellCotent(row.getCell(1))));
 				ExerciseType et = new ExerciseType();
 				et.setDescription(getCellCotent(row.getCell(2)));
-				p.setExerciseType(et);
 				p.setDescription(getCellCotent(row.getCell(3)));
 				p.setExercises(new HashSet<Exercise>());
 			}

@@ -58,9 +58,7 @@
 												td_n.append("(选定测试)");
 											var td_op = $('<td></td>')
 												.append(
-															"<img class='operation delban' src='../img/update.png' onclick='javascript:chooseTest("
-																	+ value.id
-																	+ ");' /></td>")
+															"<a href='edit_test.html?id='"+value.id+"'><img class='operation delban' src='../img/update.png' /></td></a>")
 													.append(
 															"<img class='operation delban' src='../img/delete.png' onclick='javascript:removeTest("
 																	+ value.id
@@ -241,8 +239,7 @@
 				<div class="conform">
 					<form>
 						<div class="cfD">
-							<button class="userbtn" onclick="javascript:add();">添加</button>
-							（提示：添加前，请确认相关文件已经放置到正确的路径！）
+							<a href="edit_test.html?id=-1"><button class="userbtn" disabled="disabled">添加</button></a>
 						</div>
 						
 						<div class="cfD">

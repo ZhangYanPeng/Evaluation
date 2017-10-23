@@ -28,11 +28,6 @@ public class ExerciseType {
 	@JoinColumn( name = "exerciseType_id")
 	@JsonIgnore
 	private Set<Part> parts;
-	
-	@OneToMany( fetch = FetchType.LAZY )
-	@JoinColumn( name = "exerciseType_id")
-	@JsonIgnore
-	private Set<Exercise> exercises;
 
 	public ExerciseType() {
 		super();
@@ -62,14 +57,4 @@ public class ExerciseType {
 		this.parts = parts;
 	}
 
-	public Set<Exercise> getExercises() {
-		return exercises;
-	}
-
-	public void setExercises(Set<Exercise> exercises) {
-		this.exercises = exercises;
-	}
-	
-	
-	
 }

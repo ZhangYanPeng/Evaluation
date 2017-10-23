@@ -135,20 +135,11 @@ public class TestServiceImpl implements ITestService {
 			test.setParts(null);
 			testDAO.saveOrUpdate(test);
 			for( Part p : ps){
-				ExerciseType et = p.getExerciseType();
-				Object[] values = { et.getDescription()};
-				String hql ="from ExerciseType where description = ?";
-				if( exerciseTypeDAO.getByHQL(hql, values) == null ) {
-					exerciseTypeDAO.save(et);
-				}
-				et = exerciseTypeDAO.getByHQL(hql, values);
-				p.setExerciseType(et);
 				Set<Exercise> es = p.getExercises();
 				p.setExercises(null);
 				p.setTest(test);
 				partDAO.save(p);
 				for( Exercise e : es){
-					e.setExerciseType(et);
 					Set<Question> qs = e.getQuestions();
 					e.setQuestions(null);
 					e.setPart(p);

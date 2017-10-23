@@ -35,9 +35,8 @@ public class Part {
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinColumn(name = "part_id")
 	private Set<Exercise> exercises;
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	private ExerciseType exerciseType;
+
+	private String exerciseType;
 	
 	public Set<Exercise> getExercises() {
 		return exercises;
@@ -67,15 +66,6 @@ public class Part {
 		this.test = test;
 	}
 
-	public ExerciseType getExerciseType() {
-		return exerciseType;
-	}
-
-	public void setExerciseType(ExerciseType exerciseType) {
-		this.exerciseType = exerciseType;
-	}
-
-
 	public String getDescription() {
 		return description;
 	}
@@ -90,6 +80,14 @@ public class Part {
 
 	public void setP_no(int p_no) {
 		this.p_no = p_no;
+	}
+
+	public String getExerciseType() {
+		return exerciseType;
+	}
+
+	public void setExerciseType(String exerciseType) {
+		this.exerciseType = exerciseType;
 	}
 	
 	

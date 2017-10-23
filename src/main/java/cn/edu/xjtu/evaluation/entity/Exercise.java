@@ -28,10 +28,6 @@ public class Exercise {
 	private String description;
 	private int e_no;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JsonIgnore
-	private ExerciseType exerciseType;
-	
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinColumn( name = "exercise_id")
 	private Set<Question> questions;
@@ -73,14 +69,6 @@ public class Exercise {
 
 	public void setQuestions(Set<Question> questions) {
 		this.questions = questions;
-	}
-
-	public ExerciseType getExerciseType() {
-		return exerciseType;
-	}
-
-	public void setExerciseType(ExerciseType exerciseType) {
-		this.exerciseType = exerciseType;
 	}
 
 	public Part getPart() {
