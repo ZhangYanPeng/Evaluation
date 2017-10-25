@@ -15,7 +15,6 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import cn.edu.xjtu.evaluation.entity.Exercise;
-import cn.edu.xjtu.evaluation.entity.ExerciseType;
 import cn.edu.xjtu.evaluation.entity.Intervention;
 import cn.edu.xjtu.evaluation.entity.Part;
 import cn.edu.xjtu.evaluation.entity.Question;
@@ -136,8 +135,7 @@ public class DealExcel {
 					t.getParts().add(p);
 				p = new Part();
 				p.setP_no(Integer.valueOf(getCellCotent(row.getCell(1))));
-				ExerciseType et = new ExerciseType();
-				et.setDescription(getCellCotent(row.getCell(2)));
+				p.setExerciseType(getCellCotent(row.getCell(2)));
 				p.setDescription(getCellCotent(row.getCell(3)));
 				p.setExercises(new HashSet<Exercise>());
 			}

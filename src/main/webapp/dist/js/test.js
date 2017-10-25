@@ -38,7 +38,8 @@ function presentBaseTest(){
 	}
 	for( var i=0;i<c_test.parts.length;i++){
 		var p = c_test.parts[i];
-		$$('#part'+p.p_no).append(p.exerciseType.description);
+		console.log(p);
+		$$('#part'+p.p_no).append(p.exerciseType);
 	}
 	$$('#t_title').html(c_test.title);
 	if(c_type==1){

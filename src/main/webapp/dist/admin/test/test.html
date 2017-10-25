@@ -55,7 +55,7 @@
 											var td_n = $('<td></td>').append(
 													value.title);
 											if( value.choose ==1 )
-												td_n.append("(选定测试)");
+												td_n.append("(选定测试)").append("<a href='javascript:choose("+value.id+")' ></a>");
 											var td_op = $('<td></td>')
 												.append(
 															"<a href='edit_test.html?id="+value.id+"'><img class='operation delban' src='../img/update.png' /></td></a>")
@@ -239,7 +239,7 @@
 				<div class="conform">
 					<form>
 						<div class="cfD">
-							<a href="edit_test.html?id=-1"><button class="userbtn" disabled="disabled">添加</button></a>
+							<button class="userbtn" onclick="javascript:add();">添加</button>
 						</div>
 						
 						<div class="cfD">

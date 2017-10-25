@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import cn.edu.xjtu.evaluation.common.Constants;
 import cn.edu.xjtu.evaluation.dao.impl.AnswerDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.ExerciseDAOImpl;
-import cn.edu.xjtu.evaluation.dao.impl.ExerciseTypeDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.InterventionDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.PartDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.QuestionDAOImpl;
@@ -19,14 +18,12 @@ import cn.edu.xjtu.evaluation.dao.impl.StudentDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.TestDAOImpl;
 import cn.edu.xjtu.evaluation.entity.Answer;
 import cn.edu.xjtu.evaluation.entity.Exercise;
-import cn.edu.xjtu.evaluation.entity.ExerciseType;
 import cn.edu.xjtu.evaluation.entity.Intervention;
 import cn.edu.xjtu.evaluation.entity.Part;
 import cn.edu.xjtu.evaluation.entity.Question;
 import cn.edu.xjtu.evaluation.entity.Record;
 import cn.edu.xjtu.evaluation.entity.Test;
 import cn.edu.xjtu.evaluation.service.ITestService;
-import cn.edu.xjtu.evaluation.support.DealExcel;
 import cn.edu.xjtu.evaluation.support.PageResults;
 
 @Service
@@ -42,8 +39,6 @@ public class TestServiceImpl implements ITestService {
 	QuestionDAOImpl questionDAO;
 	@Autowired
 	InterventionDAOImpl interventionDAO;
-	@Autowired
-	ExerciseTypeDAOImpl exerciseTypeDAO;
 	@Autowired
 	AnswerDAOImpl answerDAO;
 	@Autowired
