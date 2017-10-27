@@ -119,7 +119,7 @@ function initTest(tid,type){
 								}else{
 									var aop = $("<a></a>").attr('class','button button-big button-fill');
 									aop.append('开始试听干预诊断');
-									aop.attr('href','test_content.html?tid='+tstid+'&type='+1);
+									aop.attr('href','load_test.html?tid='+tstid+'&type='+1);
 									$("#op").append(aop);
 								}
 							}
@@ -130,7 +130,7 @@ function initTest(tid,type){
 						}
 						var aop = $("<a></a>").attr('class','button button-big button-fill');
 						aop.append('开始试听诊断');
-						aop.attr('href','test_content.html?tid='+tstid+'&type='+0);
+						aop.attr('href','load_test.html?tid='+tstid+'&type='+0);
 						$("#op").append(aop);
 					}
 				}

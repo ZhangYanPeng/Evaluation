@@ -28,10 +28,14 @@ $$(document).on('pageInit', function(e) {
 		if (page.name === 'test') {
 			initTest(page.query.id,page.query.type);
 		}
-		
-		if (page.name === 'test_content') {
+
+		if (page.name === 'load_test') {
 			c_type = page.query.type;
 			startTest(page.query.tid);
+		}
+		
+		if (page.name === 'test_content') {
+			presentQuestion(1);
 		}
 	}
 });

@@ -13,6 +13,8 @@ var c_record="";
 var records="";
 var reasons="";
 
+var load_progress=0;
+
 // base url
 var baseUrl = getRootPath();
 

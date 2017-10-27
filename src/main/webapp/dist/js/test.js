@@ -2,8 +2,10 @@ function startTest(tid){
 	records = new Array();
 	reasons = new Array();
 
+	$("load_complete").hide();
+
 	$$.ajax({
-		async : false,
+		async : true,
 		cache : false,
 		type : 'POST',
 		crossDomain : true,
@@ -16,193 +18,46 @@ function startTest(tid){
 			console.log(e);
 		},
 		success : function(data){
-			c_test = data;
-			q_total=0;
-			for(var ti=0; ti<c_test.parts.length; ti++){
-				var part = c_test.parts[ti];
-				for(var pi=0; pi<part.exercises.length; pi++){
-					var exer = part.exercises[pi];
-					q_total = q_total+exer.questions.length;
-				}
-			}
+			loadData(data);
 		}
 	});
-	presentQuestion(1);
 }
 
-function presentBaseTest(){
-	$$("#part_list").html("");
-	for( var i=1;i<=c_test.parts.length;i++){
-		var a_part = $$("<a></a>").attr('class',"button").attr('id','part'+i).attr('href',"#");
-		$$("#part_list").append(a_part);
-	}
-	for( var i=0;i<c_test.parts.length;i++){
-		var p = c_test.parts[i];
-		console.log(p);
-		$$('#part'+p.p_no).append(p.exerciseType);
-	}
-	$$('#t_title').html(c_test.title);
-	if(c_type==1){
-		$$('#t_title').append("(intervention)");
-	}
-}
-
-
-function playSound(audio_path){
-	$$('#q_audio').attr("autoplay","autoplay").attr('src', baseUrl + audio_path);
-}
-
-function count() {
-	var t = 15;
-	var a = setInterval(daojishi, 1000);// 1000毫秒
-	function daojishi() {
-		t--;
-		// 刷新时间显示
-		$$("#count").html("还剩"+t+"秒，请作答！");
-		if (t == 0) {
-			clearInterval(a);
-			$$("#count").html("");
-			nextQuestion(0);
-		}
-	}
-}
-
-function presentQuestion(qno){
-	presentBaseTest();
+function loadData(data){
+	c_test = data;
+	q_total = 0;
+	load_progress = 0;
+	$("#audios").html("");
+	$("#load_complete").hide();
 	for(var ti=0; ti<c_test.parts.length; ti++){
 		var part = c_test.parts[ti];
 		for(var pi=0; pi<part.exercises.length; pi++){
 			var exer = part.exercises[pi];
-			for( var ei=0; ei<exer.questions.length; ei++){
-				var ques = exer.questions[ei];
-				if( ques.q_num == qno ){
-					c_part = part;
-					c_exercise = exer;
-					c_question = ques;
-				}
+			q_total = q_total+exer.questions.length;
+			for( var qi=0; qi<exer.questions.length; qi++){
+				loadAudio(exer.questions[qi]);
 			}
 		}
 	}
-
-	
-	$$('#part'+c_part.p_no).attr("class","button active");
-	$$('#progress').html(qno+"/"+q_total);
-	myApp.setProgressbar($$('.progressbar'), qno*100/q_total);
-	$$('#part_description').html(c_part.description);
-	$$('#exercise_description').html(c_exercise.description);
-	$$('#exercise_text').html(c_exercise.text);
-	
-	$$('#q_text').html(c_question.q_num+".");
-	var options = c_question.options.split("||");
-	$$('#q_op').html("");
-	for(var i=1; i<options.length; i++){
-		var p_op = $$("<p></p>");
-		var i_op = $$("<input></input>").attr('type','radio').attr('name','answer').attr('value',i);
-		p_op.append(i_op).append(options[i]);
-		$$('#q_op').append(p_op);
-	}
-	
-	if(c_type==1){
-		$$('#intervention').html('<a href="#" data-panel="right" class="open-panel">查看干预</a>');
-		$$('#inte_text').html("");
-	}
-	
-	playSound(c_question.audio_path);
+	$("#test_title").append(data.title);
+	$("#load_progress").html("正在加载所需音频资源("+load_progress+"/"+q_total+")");
 }
 
-function nextQuestion(t){
-	$$('#inte_text').html("");
-	var op = $("input[name='answer']:checked").val();  
-	if(op == undefined && t!=0){
-		alert("请作答!");
-		return;
-	}
-	
-	if(t==0 &&op == undefined){
-		op=-1;
-	}
-	
-	if(c_type==0){
-		// evaluation
-		c_record = "||"+op;
-		records[c_question.q_num-1] = c_record;
-		c_record="";
-		reasons[c_question.q_num-1] = "";
+function loadAudio(que){
+//加载所有音频信息（题目和干预）
+	var aud = $("<audio></audio>").attr('id','que-'+que.id).attr('onended','javascript:count();').attr('oncanplaythrough','javascript:loaded();');
+	aud.attr("preload","preload").attr('src', baseUrl + que.audio_path);
+	$("#audios").append(aud);
+}
+
+function loaded(){
+	load_progress = load_progress + 1;
+	if( load_progress == q_total){
+		$("#load_complete").hide();
+		$("#load_complete").show();
 	}else{
-		// intervention
-		c_record = c_record + "||" +op;
-		if(op == c_question.answer){
-			if(c_record.split("||").length == 2){
-				reasonQue(0);
-			}else{
-				reasonQue(1);
-			}
-			records[c_question.q_num-1] = c_record;
-			c_record="";
-		}else{
-			alert("很遗憾，回答错误！");
-			if(c_record.split("||").length > c_question.interventions.length){
-				reasonQue(1);
-				records[c_question.q_num-1] = c_record;
-				c_record="";
-			}
-			else{
-				interventnionQue(c_record.split("||").length-1);
-				return;
-			}
-		}
-	}
-	
-	if( c_question.q_num == q_total ){
-		finishTest();
-		return;
-	}
-	
-	presentQuestion(c_question.q_num+1);
-}
-
-function finishTest(){
-	$.ajax({
-		async : false,
-		cache : false,
-		type : 'POST',
-		crossDomain : true,
-	    traditional: true,
-		url : baseUrl + "test/finishTest",
-		data : {
-			tid : c_test.id,
-			uid : userId,
-			type : c_type,
-			records : records,
-			reasons : reasons
-		},
-		dataType : "json",
-		error : function(e) {
-			console.log(e);
-		},
-		success : function(data){
-			mainView.router.loadPage("test_result.html");
-		}
-	});
-}
-
-function reasonQue(type){
-	if( type == 0 ){
-		reasons[c_question.q_num-1]="";
-	}else{
-		myApp.popup('.popup-reason');
-		reasons[c_question.q_num-1]="";
+		$("#load_progress").html("正在加载所需音频资源("+load_progress+"/"+q_total+")");
 	}
 }
 
-function interventnionQue(num){
-	for(var i=0; i<c_question.interventions.length;i++){
-		var intervention = c_question.interventions[i];
-		if(intervention.level==num){
-			$$('#inte_text').html(intervention.text);
-			break;
-		}
-	}
-	myApp.openPanel('right');
-}
 
