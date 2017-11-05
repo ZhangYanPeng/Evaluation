@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -21,6 +22,7 @@ public class Record {
 	private String reason;
 	
 	@ManyToOne( fetch = FetchType.LAZY )
+	@JsonIgnore
 	private Answer answer;
 	
 	@ManyToOne( fetch = FetchType.LAZY )

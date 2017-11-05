@@ -37,6 +37,15 @@ $$(document).on('pageInit', function(e) {
 		if (page.name === 'test_content') {
 			presentQuestion(1);
 		}
+		
+		if (page.name === 'test-result') {
+			calculate_result(page.query.tid, page.query.type);
+		}
+		
+		if (page.name === 'test_rlist') {
+			loadAnswers(page.query.type);
+		}
+		
 	}
 });
 

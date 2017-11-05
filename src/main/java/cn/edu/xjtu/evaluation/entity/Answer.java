@@ -13,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -30,6 +31,7 @@ public class Answer {
 	private List<Record> records;
 	
 	@ManyToOne
+	@JsonIgnore
 	private Student student;
 	
 	@ManyToOne

@@ -1,9 +1,11 @@
 package cn.edu.xjtu.evaluation.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import cn.edu.xjtu.evaluation.dao.impl.AnswerDAOImpl;
 import cn.edu.xjtu.evaluation.entity.Answer;
@@ -18,6 +20,7 @@ public class AnswerServiceImpl implements IAnswerService {
 	AnswerDAOImpl answerDAO;
 	
 	@Override
+	@Transactional
 	public int answer(Answer answer) {
 		// TODO Auto-generated method stub
 		try {
@@ -31,6 +34,7 @@ public class AnswerServiceImpl implements IAnswerService {
 	}
 
 	@Override
+	@Transactional
 	public Answer get(long id) {
 		// TODO Auto-generated method stub
 		try {
@@ -43,6 +47,7 @@ public class AnswerServiceImpl implements IAnswerService {
 	}
 
 	@Override
+	@Transactional
 	public List<Answer> getByStudent(Student student) {
 		// TODO Auto-generated method stub
 		String hql = "from Answer where student.id = ?";
@@ -51,11 +56,30 @@ public class AnswerServiceImpl implements IAnswerService {
 	}
 
 	@Override
+	@Transactional
 	public List<Answer> getByTest(Test test) {
 		// TODO Auto-generated method stub
 		String hql = "from Answer where test.id = ?";
 		String[] values = { (new Long(test.getId())).toString()};
 		return answerDAO.getListByHQL(hql,values);
+	}
+
+	@Override
+	@Transactional
+	public Answer getAnswer(Long tid, Long uid, Integer type) {
+		// TODO Auto-generated method stub
+		String hql = "from Answer where test.id = ? and student.id = ? and type = ?";
+		Object[] values = {tid, uid, type};
+		return answerDAO.getByHQL(hql, values);
+	}
+
+	@Override
+	@Transactional
+	public List<Answer> getAnswers(Long uid, Integer type) {
+		// TODO Auto-generated method stub
+		String hql = "from Answer where student.id = ? and type = ?";
+		Object[] values = {uid, type};
+		return answerDAO.getListByHQL(hql, values);
 	}
 
 }

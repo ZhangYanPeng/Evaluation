@@ -10,7 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.edu.xjtu.evaluation.entity.Answer;
 import cn.edu.xjtu.evaluation.entity.Test;
+import cn.edu.xjtu.evaluation.service.IAnswerService;
 import cn.edu.xjtu.evaluation.service.ITestService;
 
 @Controller
@@ -18,6 +20,8 @@ import cn.edu.xjtu.evaluation.service.ITestService;
 public class TestController {
 	@Autowired
 	ITestService testService;
+	@Autowired
+	IAnswerService answerService;
 	
 	@RequestMapping(value = "/getAllTest" )
 	public @ResponseBody List<Test> listTest() {
@@ -54,5 +58,15 @@ public class TestController {
 	public @ResponseBody int finishTest(HttpServletRequest request, String type, String tid, String uid, String[] records, String[] reasons) {
 		return testService.finishTest(Integer.valueOf(type), Long.valueOf(tid), Long.valueOf(uid), (String[])records,(String[]) reasons);
 	}
-
+	
+	@RequestMapping(value = "/testResult" )
+	public @ResponseBody Answer testResult(String type, String tid, String uid) {
+		return answerService.getAnswer(Long.valueOf(tid),Long.valueOf(uid),Integer.valueOf(type));
+	}
+	
+	@RequestMapping(value = "/getAnswers" )
+	public @ResponseBody List<Answer> getAnswers(String type, String uid) {
+		return answerService.getAnswers(Long.valueOf(uid),Integer.valueOf(type));
+	}
+	
 }

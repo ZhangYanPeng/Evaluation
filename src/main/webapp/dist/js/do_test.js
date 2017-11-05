@@ -15,11 +15,13 @@ function presentBaseTest(){
 }
 
 
-function playSound(audio_path){
-	$$('#q_audio').attr("autoplay","autoplay").attr('src', baseUrl + audio_path);
+function playSound(qid){
+	$('#que-'+qid)[0].play();
 }
 
 function count() {
+	if(c_type!=0)
+		return;
 	var t = 15;
 	var a = setInterval(daojishi, 1000);// 1000毫秒
 	function daojishi() {
@@ -72,9 +74,10 @@ function presentQuestion(qno){
 	if(c_type==1){
 		$$('#intervention').html('<a href="#" data-panel="right" class="open-panel">查看干预</a>');
 		$$('#inte_text').html("");
+		$$('#i_audio').hide();
 	}
 	
-	playSound(c_question.audio_path);
+	playSound(c_question.id);
 }
 
 function nextQuestion(t){
@@ -95,17 +98,21 @@ function nextQuestion(t){
 		records[c_question.q_num-1] = c_record;
 		c_record="";
 		reasons[c_question.q_num-1] = "";
+		ToNextQue();
 	}else{
 		// intervention
 		c_record = c_record + "||" +op;
 		if(op == c_question.answer){
 			if(c_record.split("||").length == 2){
 				reasonQue(0);
+				records[c_question.q_num-1] = c_record;
+				c_record="";
+				ToNextQue();
 			}else{
 				reasonQue(1);
+				records[c_question.q_num-1] = c_record;
+				c_record="";
 			}
-			records[c_question.q_num-1] = c_record;
-			c_record="";
 		}else{
 			alert("很遗憾，回答错误！");
 			if(c_record.split("||").length > c_question.interventions.length){
@@ -115,11 +122,15 @@ function nextQuestion(t){
 			}
 			else{
 				interventnionQue(c_record.split("||").length-1);
-				return;
 			}
 		}
+		return;
 	}
-	
+}
+
+function ToNextQue(){
+	console.log(records[c_question.q_num-1]);
+	console.log(c_question.answer);
 	if( c_question.q_num == q_total ){
 		finishTest();
 		return;
@@ -128,38 +139,18 @@ function nextQuestion(t){
 	presentQuestion(c_question.q_num+1);
 }
 
-function finishTest(){
-	$.ajax({
-		async : false,
-		cache : false,
-		type : 'POST',
-		crossDomain : true,
-	    traditional: true,
-		url : baseUrl + "test/finishTest",
-		data : {
-			tid : c_test.id,
-			uid : userId,
-			type : c_type,
-			records : records,
-			reasons : reasons
-		},
-		dataType : "json",
-		error : function(e) {
-			console.log(e);
-		},
-		success : function(data){
-			mainView.router.loadPage("test_result.html");
-		}
-	});
-}
-
 function reasonQue(type){
 	if( type == 0 ){
 		reasons[c_question.q_num-1]="";
 	}else{
 		myApp.popup('.popup-reason');
-		reasons[c_question.q_num-1]="";
 	}
+}
+
+function reasonSubmit(){
+	reasons[c_question.q_num-1]=$$("#reason_text").val();
+	myApp.closeModal('.popup-reason');
+	ToNextQue();
 }
 
 function interventnionQue(num){
@@ -167,6 +158,12 @@ function interventnionQue(num){
 		var intervention = c_question.interventions[i];
 		if(intervention.level==num){
 			$$('#inte_text').html(intervention.text);
+			if( intervention.audio_path == null || intervention.audio_path=="" || intervention.audio_path.length == 0){
+				$$('#i_audio').hide();
+			}else{
+				$$('#i_audio').attr('src',intervention.audio_path);
+				$$('#i_audio').show();
+			}
 			break;
 		}
 	}
