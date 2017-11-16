@@ -46,6 +46,9 @@ $$(document).on('pageInit', function(e) {
 			loadAnswers(page.query.type);
 		}
 		
+		if( page.name === 'info' ){
+			loadAccountInfo();
+		}
 	}
 });
 

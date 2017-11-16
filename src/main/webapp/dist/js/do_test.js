@@ -19,19 +19,25 @@ function playSound(qid){
 	$('#que-'+qid)[0].play();
 }
 
-function count() {
+function count(qid) {
 	if(c_type!=0)
 		return;
 	var t = 15;
 	var a = setInterval(daojishi, 1000);// 1000毫秒
 	function daojishi() {
+		if(qid != c_question.id){
+			clearInterval(a);
+			$$("#count").html("&nbsp;");
+			return;
+		}
 		t--;
 		// 刷新时间显示
 		$$("#count").html("还剩"+t+"秒，请作答！");
-		if (t == 0) {
+		if (t == -1) {
 			clearInterval(a);
-			$$("#count").html("");
-			nextQuestion(0);
+			$$("#count").html("&nbsp;");
+			if(qid == c_question.id)
+				nextQuestion(0);
 		}
 	}
 }
@@ -77,6 +83,9 @@ function presentQuestion(qno){
 		$$('#i_audio').hide();
 	}
 	
+	$.each($("#audios").children(),function(index,value){
+		value.pause();
+	});
 	playSound(c_question.id);
 }
 
@@ -115,7 +124,7 @@ function nextQuestion(t){
 			}
 		}else{
 			alert("很遗憾，回答错误！");
-			if(c_record.split("||").length > c_question.interventions.length){
+			if(c_record.split("||").length > c_question.interventions.length + 1){
 				reasonQue(1);
 				records[c_question.q_num-1] = c_record;
 				c_record="";
@@ -129,8 +138,6 @@ function nextQuestion(t){
 }
 
 function ToNextQue(){
-	console.log(records[c_question.q_num-1]);
-	console.log(c_question.answer);
 	if( c_question.q_num == q_total ){
 		finishTest();
 		return;
@@ -161,7 +168,7 @@ function interventnionQue(num){
 			if( intervention.audio_path == null || intervention.audio_path=="" || intervention.audio_path.length == 0){
 				$$('#i_audio').hide();
 			}else{
-				$$('#i_audio').attr('src',intervention.audio_path);
+				$$('#i_audio').attr('src',baseUrl + "/audio/" +intervention.audio_path);
 				$$('#i_audio').show();
 			}
 			break;

@@ -56,6 +56,9 @@
 													value.title);
 											if( value.choose ==1 )
 												td_n.append("(选定测试)").append("<a href='javascript:choose("+value.id+")' ></a>");
+											else{
+												td_n.append($("<a></a>").attr('href','javascript:chooseTest('+value.id+');').append("设为目标测试"));
+											}
 											var td_op = $('<td></td>')
 												.append(
 															"<a href='edit_test.html?id="+value.id+"'><img class='operation delban' src='../img/update.png' /></td></a>")

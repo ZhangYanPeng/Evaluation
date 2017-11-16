@@ -3,6 +3,7 @@ package cn.edu.xjtu.evaluation.entity;
 
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -14,7 +15,6 @@ import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
 
 @Entity
 @Table( name = "t_part" )
@@ -25,7 +25,7 @@ public class Part {
 	private long id;
 	private int p_no;
 	
-	@Type(type="text")
+	@Column(length=10000)
 	String description;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
