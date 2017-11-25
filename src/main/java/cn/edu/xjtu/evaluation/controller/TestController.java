@@ -8,12 +8,15 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.edu.xjtu.evaluation.entity.Answer;
 import cn.edu.xjtu.evaluation.entity.Test;
+import cn.edu.xjtu.evaluation.entity.Type;
 import cn.edu.xjtu.evaluation.service.IAnswerService;
 import cn.edu.xjtu.evaluation.service.ITestService;
+import cn.edu.xjtu.evaluation.service.ITypeService;
 
 @Controller
 @RequestMapping("/test")
@@ -68,5 +71,4 @@ public class TestController {
 	public @ResponseBody List<Answer> getAnswers(String type, String uid) {
 		return answerService.getAnswers(Long.valueOf(uid),Integer.valueOf(type));
 	}
-	
 }

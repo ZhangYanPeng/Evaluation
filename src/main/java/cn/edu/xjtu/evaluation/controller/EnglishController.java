@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cn.edu.xjtu.evaluation.common.Constants;
 import cn.edu.xjtu.evaluation.entity.Part;
 import cn.edu.xjtu.evaluation.entity.Test;
+import cn.edu.xjtu.evaluation.entity.Type;
 import cn.edu.xjtu.evaluation.service.ITestService;
+import cn.edu.xjtu.evaluation.service.ITypeService;
 import cn.edu.xjtu.evaluation.support.DealExcel;
 import cn.edu.xjtu.evaluation.support.PageResults;
 
@@ -23,6 +25,8 @@ public class EnglishController {
 
 	@Autowired
 	ITestService testService;
+	@Autowired
+	ITypeService typeService;
 	
 	//test manage
 	@RequestMapping(value = "/list_test" , method = RequestMethod.POST)
@@ -70,5 +74,36 @@ public class EnglishController {
 	@RequestMapping(value = "/loadParts" )
 	public @ResponseBody List<Part> loadParts( String id) {
 		return testService.loadParts(Long.valueOf(id));
+	}
+	
+
+	
+	@RequestMapping(value = "/getTypes")
+	public @ResponseBody List<Type> getTypes() {
+		return typeService.getTypes();
+	}
+	
+	@RequestMapping(value = "/loadType" )
+	public @ResponseBody Type loadType(String id) {
+		return typeService.load(Long.valueOf(id));
+	}
+	
+	@RequestMapping(value = "/deleteType" )
+	public @ResponseBody int deleteType(String id) {
+		return typeService.delete(Long.valueOf(id));
+	}
+	
+	@RequestMapping(value = "/addType" )
+	public @ResponseBody int addType(String name) {
+		Type type = new Type();
+		type.setName(name);
+		return typeService.add(type);
+	}
+	
+	@RequestMapping(value = "/editType" )
+	public @ResponseBody int addType(String id, String name) {
+		Type type = typeService.load(Long.valueOf(id));
+		type.setName(name);
+		return typeService.update(type);
 	}
 }

@@ -35,6 +35,10 @@ public class Exercise {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JsonIgnore
 	private Part part;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JsonIgnore
+	private Type type;
 
 	public Exercise() {
 		super();
@@ -93,6 +97,14 @@ public class Exercise {
 
 	public void setE_no(int e_no) {
 		this.e_no = e_no;
+	}
+
+	public Type getType() {
+		return type;
+	}
+
+	public void setType(Type type) {
+		this.type = type;
 	}
 
 	

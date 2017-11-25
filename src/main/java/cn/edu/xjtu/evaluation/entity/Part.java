@@ -90,5 +90,4 @@ public class Part {
 		this.exerciseType = exerciseType;
 	}
 	
-	
 }
