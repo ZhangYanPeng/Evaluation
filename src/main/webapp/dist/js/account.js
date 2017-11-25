@@ -40,6 +40,15 @@ function login(username, password, type) {
 	});
 }
 
+//logout
+function logout(){
+	storeUserIdentification("", "", "")
+	userId = "";
+	user = "";
+	userType = "";
+	myApp.loginScreen();
+}
+
 // local storage the identification
 function storeUserIdentification(userinfo, id, type) {
 	var storage = window.localStorage;
@@ -101,4 +110,44 @@ function initBar() {
 		}
 		$$('#user_type').html(tmpstr);
 	}
+}
+
+function loadAccountInfo(){
+	$("#name").val(user.name);
+	$("#stu_no").val(user.student_no);
+	$("#password").val(user.password);
+	$("#repassword").val(user.password);
+}
+
+function saveinfo(){
+	if($("#password").val()!=$("#repassword").val()){
+		myApp.alert("两次密码不一致","错误");
+		return;
+	}
+	var url = baseUrl;
+	if (userType === "student") {
+		url += "student/modifypassword";
+	} else {
+		url += "teacher/login";
+	}
+	$$.ajax({
+		async : false,
+		cache : false,
+		type : 'POST',
+		crossDomain : true,
+		url : url,
+		data : {
+			id : user.id,
+			password : $("#password").val()
+		},
+		dataType : "json",
+		error : function(e) {
+			myApp.alert("登陆失败，请重试", "抱歉");
+		},
+		success : function(data) {
+			if (data > 0) {
+				login(user.username,  $("#password").val(), userType)
+			}
+		}
+	});
 }

@@ -27,6 +27,13 @@ public class StudentController {
 		}
 		return student;
 	}
+	
+	@RequestMapping(value = "/modifypassword", method = RequestMethod.POST)
+	public @ResponseBody int modifyPassword(String id, String password) {
+		Student std = studentService.get(Long.valueOf(id));
+		std.setPassword(password);
+		return studentService.edit(std);
+	}
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public @ResponseBody Student register(String username, String password, String gender, String name, String school,

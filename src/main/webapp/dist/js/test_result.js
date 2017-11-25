@@ -1,4 +1,7 @@
 function finishTest(){
+	$.each($("#audios").children(),function(index,value){
+		value.pause();
+	});
 	$.ajax({
 		async : false,
 		cache : false,
@@ -43,7 +46,7 @@ function calculate_result(tid, type){
 		},
 		success : function(data){
 			var t_score=0;
-			for (var ri =1; ri <data.records.length; ri++){
+			for (var ri =1; ri <=data.records.length; ri++){
 				$.each(data.records, function(index, value){
 					if(ri == value.question.q_num){
 						if(type == 0){

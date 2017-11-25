@@ -1,5 +1,6 @@
 package cn.edu.xjtu.evaluation.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -20,6 +21,7 @@ public class Intervention {
 	@GenericGenerator(name = "interventiongenerator", strategy = "increment")
 	private long id;
 	
+	@Column(length=10000)
 	private String text;
 	private String audio_path;
 	private int level;

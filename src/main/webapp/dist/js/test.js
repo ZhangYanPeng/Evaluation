@@ -45,8 +45,8 @@ function loadData(data){
 
 function loadAudio(que){
 //加载所有音频信息（题目和干预）
-	var aud = $("<audio></audio>").attr('id','que-'+que.id).attr('onended','javascript:count();').attr('controls','controls').attr('oncanplaythrough','javascript:loaded();');
-	aud.attr("preload","preload").attr('src', baseUrl + que.audio_path);
+	var aud = $("<audio></audio>").attr('id','que-'+que.id).attr('onended','javascript:count('+que.id+');').attr('controls','controls').attr('oncanplaythrough','javascript:loaded();');
+	aud.attr("preload","preload").attr('src', baseUrl + "/audio/" + que.audio_path);
 	$("#audios").append(aud);
 }
 

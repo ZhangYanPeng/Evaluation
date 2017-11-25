@@ -2,6 +2,7 @@ package cn.edu.xjtu.evaluation.entity;
 
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -24,6 +25,7 @@ public class Question {
 	private long id;
 
 	private String text;
+	@Column(length=10000)
 	private String options;
 	private int answer;
 	int q_num;

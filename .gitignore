@@ -52,3 +52,6 @@ Temporary Items
 target/m2e-wtp/web-resources/META-INF/maven/cn.edu/xjtu/pom.properties
 .settings/org.eclipse.core.resources.prefs
 .settings/org.eclipse.core.resources.prefs
+src/main/webapp/dist/admin/test/test.html
+src/main/webapp/dist/admin/test/test.html
+target/m2e-wtp/web-resources/META-INF/maven/cn.edu/xjtu/pom.properties
