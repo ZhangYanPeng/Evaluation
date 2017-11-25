@@ -121,41 +121,6 @@ public class TestServiceImpl implements ITestService {
 	@Override
 	@Transactional
 	public int importTest(Test test) {
-		// TODO Auto-generated method stub
-		if(test == null){
-			return 0;
-		}
-		try {
-			Set<Part> ps = test.getParts();
-			test.setParts(null);
-			testDAO.saveOrUpdate(test);
-			for( Part p : ps){
-				Set<Exercise> es = p.getExercises();
-				p.setExercises(null);
-				p.setTest(test);
-				partDAO.save(p);
-				for( Exercise e : es){
-					Set<Question> qs = e.getQuestions();
-					e.setQuestions(null);
-					e.setPart(p);
-					exerciseDAO.save(e);
-					for( Question q : qs){
-						Set<Intervention> is = q.getInterventions();
-						q.setInterventions(null);
-						q.setExercise(e);
-						questionDAO.save(q);
-						for( Intervention i : is){
-							i.setQuestion(q);
-							interventionDAO.save(i);
-						}
-					}
-				}
-			}
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-			return 0;
-		}
 		return 1;
 	}
 
