@@ -1,94 +1,88 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>题型管理</title>
-<link rel="stylesheet" type="text/css" href="../css/css.css" />
-<link rel="stylesheet" href="../css/jqpagination.css" />
-<script type="text/javascript" src="../js/jquery.min.js"></script>
-<script src="../js/jquery.jqpagination.js"></script>
-<!-- <script type="text/javascript" src="js/page.js" ></script> -->
-<script type="text/javascript" src="../js/init.js"></script>
-<script type="text/javascript" src="../js/common.js"></script>
-<script type="text/javascript">
-	$(document).ready(function() {
-		list();
-	});
-
-	function list() {
-		$
-				.ajax({
-					sync : false,
-					cache : false,
-					type : 'POST',
-					crossDomain : true,
-					url : "getTypes",
-					data : {
-					},
-					dataType : "json",
-					contentType : "application/x-www-form-urlencoded; charset=utf-8",
-					error : function(e) {
-						alert("网络错误，请重试");
-					},
-					success : function(data) {
-						var tab_title = "<tr>"
-								+ "<td width='66px' class='tdColor tdC'>序号</td>"
-								+ "<td width='730px' class='tdColor'>名称</td>"
-								+ "<td width='130px' class='tdColor'>操作</td>"
-								+ "	</tr>";
-						$("#typelist").html(tab_title);
-
-						$
-								.each(
-										data,
-										function(index, value) {
-											var td_id = $('<td></td>').append(
-													value.id);
-											var td_un = $('<td></td>').append(
-													value.name);
-											var td_op = $('<td></td>')
-													.append(
-															"<img class='operation delban' src='../img/delete.png' onclick='javascript:removeType("
-																	+ value.id
-																	+ ");' /></td>");
-											var tr = $('<tr></tr>').attr(
-													'height', "40px");
-											tr.append(td_id).append(td_un)
-													.append(td_op);
-											$("#typelist").append(tr);
-										});
-					}
-				});
-	}
-	
-	function removeType(tid){
-		$
-		.ajax({
-			sync : false,
-			cache : false,
-			type : 'POST',
-			crossDomain : true,
-			url : "deleteType",
-			data : {
-				id : tid
-			},
-			dataType : "json",
-			contentType : "application/x-www-form-urlencoded; charset=utf-8",
-			error : function(e) {
-				alert("网络错误，请重试");
-			},
-			success : function(data) {
-				if(data == 1)
-					list();
-				else if(data == -1)
-					alert("不能删除该题型，因为有题目属于该题型");
-			}
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>题型管理</title>
+	<link rel="stylesheet" type="text/css" href="../css/css.css" />
+	<link rel="stylesheet" href="../css/jqpagination.css" />
+	<script type="text/javascript" src="../js/jquery.min.js"></script>
+	<script src="../js/jquery.jqpagination.js"></script>
+	<!-- <script type="text/javascript" src="js/page.js" ></script> -->
+	<script type="text/javascript" src="../js/init.js"></script>
+	<script type="text/javascript" src="../js/common.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			list();
 		});
-	}
+
+		function list() {
+			$.ajax({
+				sync : false,
+				cache : false,
+				type : 'POST',
+				crossDomain : true,
+				url : "getTypes",
+				data : {
+				},
+				dataType : "json",
+				contentType : "application/x-www-form-urlencoded; charset=utf-8",
+				error : function(e) {
+					alert("网络错误，请重试");
+				},
+				success : function(data) {
+					var tab_title = "<tr>"
+					+ "<td width='66px' class='tdColor tdC'>序号</td>"
+					+ "<td width='730px' class='tdColor'>名称</td>"
+					+ "<td width='130px' class='tdColor'>操作</td>"
+					+ "	</tr>";
+					$("#typelist").html(tab_title);
+
+					$.each(data,function(index, value) {
+						var td_id = $('<td></td>').append(
+							value.id);
+						var td_un = $('<td></td>').append(
+							value.name);
+						var td_op = $('<td></td>')
+						.append(
+							"<img class='operation delban' src='../img/delete.png' onclick='javascript:removeType("
+							+ value.id
+							+ ");' /></td>");
+						var tr = $('<tr></tr>').attr(
+							'height', "40px");
+						tr.append(td_id).append(td_un)
+						.append(td_op);
+						$("#typelist").append(tr);
+					});
+				}
+			});
+		}
+
+		function removeType(tid){
+			$.ajax({
+				sync : false,
+				cache : false,
+				type : 'POST',
+				crossDomain : true,
+				url : "deleteType",
+				data : {
+					id : tid
+				},
+				dataType : "json",
+				contentType : "application/x-www-form-urlencoded; charset=utf-8",
+				error : function(e) {
+					alert("网络错误，请重试");
+				},
+				success : function(data) {
+					if(data == 1)
+						list();
+					else if(data == -1)
+						alert("不能删除该题型，因为有题目属于该题型");
+				}
+			});
+		}
 		
-	function add(){
-			$
-			.ajax({
+		function add(){
+			$.ajax({
 				sync : false,
 				cache : false,
 				type : 'POST',
@@ -108,7 +102,7 @@
 				}
 			});
 		}
-</script>
+	</script>
 </head>
 
 <body>
