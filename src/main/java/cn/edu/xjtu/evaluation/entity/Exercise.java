@@ -21,22 +21,17 @@ public class Exercise {
 	
 	@Id
 	@GeneratedValue(generator = "exegenerator")
-	@GenericGenerator(name = "exegenerator", strategy = "increment")
+	@GenericGenerator(name = "exegenerator", strategy = "native")
 	private long id;
 	
 	private String audio_path;
 	private String text;
 	@Column(length=10000)
 	private String description;
-	private int e_no;
 	
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinColumn( name = "exercise_id")
 	private Set<Question> questions;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JsonIgnore
-	private Part part;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JsonIgnore
@@ -77,28 +72,12 @@ public class Exercise {
 		this.questions = questions;
 	}
 
-	public Part getPart() {
-		return part;
-	}
-
-	public void setPart(Part part) {
-		this.part = part;
-	}
-
 	public String getDescription() {
 		return description;
 	}
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public int getE_no() {
-		return e_no;
-	}
-
-	public void setE_no(int e_no) {
-		this.e_no = e_no;
 	}
 
 	public Type getType() {

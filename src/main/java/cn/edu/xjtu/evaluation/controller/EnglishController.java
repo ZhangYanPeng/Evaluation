@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.edu.xjtu.evaluation.common.Constants;
+import cn.edu.xjtu.evaluation.entity.Exercise;
 import cn.edu.xjtu.evaluation.entity.Part;
 import cn.edu.xjtu.evaluation.entity.Test;
 import cn.edu.xjtu.evaluation.entity.Type;
+import cn.edu.xjtu.evaluation.service.IExerciseService;
 import cn.edu.xjtu.evaluation.service.ITestService;
 import cn.edu.xjtu.evaluation.service.ITypeService;
 import cn.edu.xjtu.evaluation.support.DealExcel;
@@ -27,6 +29,8 @@ public class EnglishController {
 	ITestService testService;
 	@Autowired
 	ITypeService typeService;
+	@Autowired
+	IExerciseService exerciseService;
 	
 	//test manage
 	@RequestMapping(value = "/list_test" , method = RequestMethod.POST)
@@ -105,5 +109,27 @@ public class EnglishController {
 		Type type = typeService.load(Long.valueOf(id));
 		type.setName(name);
 		return typeService.update(type);
+	}
+	
+	@RequestMapping(value = "/addExercise" )
+	public @ResponseBody Exercise addExercise() {
+		return exerciseService.create();
+	}
+	
+	@RequestMapping(value = "/deleteExercise" )
+	public @ResponseBody int deleteExercise(String id) {
+		return exerciseService.remove(Long.valueOf(id));
+	}
+	
+	@RequestMapping(value = "/listExercise" )
+	public @ResponseBody PageResults<Exercise> listExercise(String page, String type) {
+		if(type == "" || type == null)
+			type = "-1";
+		return exerciseService.getPageList(Integer.valueOf(page), Long.valueOf(type));
+	}
+	
+	@RequestMapping(value = "/loadExercise" )
+	public @ResponseBody Exercise loadExercise(String id) {
+		return exerciseService.get(Long.valueOf(id));
 	}
 }
