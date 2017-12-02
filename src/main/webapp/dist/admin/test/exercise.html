@@ -71,22 +71,20 @@
 					+ "	</tr>";
 					$("#exerciselist").html(tab_title);
 
-					$.each(
-						data.results,
-						function(index, value) {
-							var td_id = $('<td></td>').append(value.id);
-							var td_un = $('<td></td>').append(value.text);
-							var a_edit = $('<a></a>').attr('href',"exerciseadd.html?id="+ value.id);
-							a_edit.append("<img class='operation' src='../img/update.png'></a>");
-							var td_op = $('<td></td>').append(a_edit)
-								.append(
-									"<img class='operation delban' src='../img/delete.png' onclick='javascript:DeleteExercise("
-									+ value.id
-									+ ");' /></td>");
-							var tr = $('<tr></tr>').attr('height', "40px");
-							tr.append(td_id).append(td_un).append(td_op);
-							$("#exerciselist").append(tr);
-						});
+					$.each(data.results,function(index, value) {
+						var td_id = $('<td></td>').append(value.id);
+						var td_un = $('<td></td>').append(value.text);
+						var a_edit = $('<a></a>').attr('href',"exerciseadd.html?id="+ value.id);
+						a_edit.append("<img class='operation' src='../img/update.png'></a>");
+						var td_op = $('<td></td>').append(a_edit)
+							.append(
+								"<img class='operation delban' src='../img/delete.png' onclick='javascript:DeleteExercise("
+								+ value.id
+								+ ");' /></td>");
+						var tr = $('<tr></tr>').attr('height', "40px");
+						tr.append(td_id).append(td_un).append(td_op);
+						$("#exerciselist").append(tr);
+					});
 				}
 			});
 		}

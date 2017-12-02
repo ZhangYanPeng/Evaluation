@@ -32,7 +32,8 @@
 				success : function(data) {
 					var tab_title = "<tr>"
 					+ "<td width='66px' class='tdColor tdC'>序号</td>"
-					+ "<td width='730px' class='tdColor'>名称</td>"
+					+ "<td width='230px' class='tdColor'>名称</td>"
+					+ "<td width='730px' class='tdColor'>提示</td>"
 					+ "<td width='130px' class='tdColor'>操作</td>"
 					+ "	</tr>";
 					$("#typelist").html(tab_title);
@@ -42,6 +43,8 @@
 							value.id);
 						var td_un = $('<td></td>').append(
 							value.name);
+						var td_di = $('<td></td>').append(
+							value.direction);
 						var td_op = $('<td></td>')
 						.append(
 							"<img class='operation delban' src='../img/delete.png' onclick='javascript:removeType("
@@ -49,7 +52,7 @@
 							+ ");' /></td>");
 						var tr = $('<tr></tr>').attr(
 							'height', "40px");
-						tr.append(td_id).append(td_un)
+						tr.append(td_id).append(td_un).append(td_di)
 						.append(td_op);
 						$("#typelist").append(tr);
 					});
@@ -89,7 +92,8 @@
 				crossDomain : true,
 				url : "addType",
 				data : {
-					name : $("#name").val()
+					name : $("#name").val(),
+					direction : $("#direction").val()
 				},
 				dataType : "json",
 				contentType : "application/x-www-form-urlencoded; charset=utf-8",
@@ -119,8 +123,10 @@
 				<div class="conform">
 					<form>
 						<div class="cfD">
-							<input class="userinput" id="name" type="text" placeholder="题型名称" />&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;
-							<button class="userbtn" onclick="javascript:add();">添加</button>
+							<input class="userinput" id="name" type="text" placeholder="题型名称" />
+							&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;
+							<button class="userbtn" onclick="javascript:add();">添加</button><br><br>
+							<textarea id="direction" class="userinput" placeholder="题型提示" style="width: 600px; height: 40px;"></textarea>
 						</div>
 					</form>
 				</div>

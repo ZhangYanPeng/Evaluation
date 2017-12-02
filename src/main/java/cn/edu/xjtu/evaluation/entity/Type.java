@@ -2,6 +2,7 @@ package cn.edu.xjtu.evaluation.entity;
 
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -10,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -20,10 +22,13 @@ public class Type {
 	@GenericGenerator(name = "typegenerator", strategy = "increment")
 	private long id;
 	
+	@Column(length=10000)
+	private String direction;
 	private String name;
 	
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinColumn(name = "type_id")
+	@JsonIgnore
 	private Set<Exercise> exercises;
 
 	public long getId() {
@@ -48,6 +53,14 @@ public class Type {
 
 	public void setExercises(Set<Exercise> exercises) {
 		this.exercises = exercises;
+	}
+
+	public String getDirection() {
+		return direction;
+	}
+
+	public void setDirection(String direction) {
+		this.direction = direction;
 	}
 	
 	

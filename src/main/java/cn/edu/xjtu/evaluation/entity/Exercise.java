@@ -33,8 +33,7 @@ public class Exercise {
 	@JoinColumn( name = "exercise_id")
 	private Set<Question> questions;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JsonIgnore
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Type type;
 
 	public Exercise() {

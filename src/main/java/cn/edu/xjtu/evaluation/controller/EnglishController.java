@@ -16,6 +16,7 @@ import cn.edu.xjtu.evaluation.entity.Part;
 import cn.edu.xjtu.evaluation.entity.Test;
 import cn.edu.xjtu.evaluation.entity.Type;
 import cn.edu.xjtu.evaluation.service.IExerciseService;
+import cn.edu.xjtu.evaluation.service.IQuestionService;
 import cn.edu.xjtu.evaluation.service.ITestService;
 import cn.edu.xjtu.evaluation.service.ITypeService;
 import cn.edu.xjtu.evaluation.support.DealExcel;
@@ -31,6 +32,8 @@ public class EnglishController {
 	ITypeService typeService;
 	@Autowired
 	IExerciseService exerciseService;
+	@Autowired
+	IQuestionService questionService;
 	
 	//test manage
 	@RequestMapping(value = "/list_test" , method = RequestMethod.POST)
@@ -98,16 +101,18 @@ public class EnglishController {
 	}
 	
 	@RequestMapping(value = "/addType" )
-	public @ResponseBody int addType(String name) {
+	public @ResponseBody int addType(String name, String direction) {
 		Type type = new Type();
 		type.setName(name);
+		type.setDirection(direction);
 		return typeService.add(type);
 	}
 	
 	@RequestMapping(value = "/editType" )
-	public @ResponseBody int addType(String id, String name) {
+	public @ResponseBody int editType(String id, String name, String direction) {
 		Type type = typeService.load(Long.valueOf(id));
 		type.setName(name);
+		type.setDirection(direction);
 		return typeService.update(type);
 	}
 	
@@ -131,5 +136,10 @@ public class EnglishController {
 	@RequestMapping(value = "/loadExercise" )
 	public @ResponseBody Exercise loadExercise(String id) {
 		return exerciseService.get(Long.valueOf(id));
+	}
+	
+	@RequestMapping(value = "/addQuestion" )
+	public @ResponseBody int addQuestion(String id) {
+		return questionService.add(Long.valueOf(id));
 	}
 }
