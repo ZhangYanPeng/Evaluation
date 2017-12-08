@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -23,12 +24,14 @@ public class Intervention {
 	
 	@Column(length=10000)
 	private String text;
-	private String audio_path;
 	private int level;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JsonIgnore
 	private Question question;
+	
+	@OneToOne
+	private Audio audio;
 	
 	public Intervention() {
 		super();
@@ -50,14 +53,6 @@ public class Intervention {
 		this.text = text;
 	}
 
-	public String getAudio_path() {
-		return audio_path;
-	}
-
-	public void setAudio_path(String audio_path) {
-		this.audio_path = audio_path;
-	}
-
 	public int getLevel() {
 		return level;
 	}
@@ -72,6 +67,14 @@ public class Intervention {
 
 	public void setQuestion(Question question) {
 		this.question = question;
+	}
+
+	public Audio getAudio() {
+		return audio;
+	}
+
+	public void setAudio(Audio audio) {
+		this.audio = audio;
 	}
 	
 	

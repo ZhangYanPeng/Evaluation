@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -24,7 +25,6 @@ public class Exercise {
 	@GenericGenerator(name = "exegenerator", strategy = "native")
 	private long id;
 	
-	private String audio_path;
 	private String text;
 	@Column(length=10000)
 	private String description;
@@ -35,6 +35,9 @@ public class Exercise {
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Type type;
+	
+	@OneToOne
+	private Audio audio;
 
 	public Exercise() {
 		super();
@@ -47,15 +50,7 @@ public class Exercise {
 	public void setId(long id) {
 		this.id = id;
 	}
-
-	public String getAudio_path() {
-		return audio_path;
-	}
-
-	public void setAudio_path(String audio_path) {
-		this.audio_path = audio_path;
-	}
-
+	
 	public String getText() {
 		return text;
 	}
@@ -87,5 +82,13 @@ public class Exercise {
 		this.type = type;
 	}
 
+	public Audio getAudio() {
+		return audio;
+	}
+
+	public void setAudio(Audio audio) {
+		this.audio = audio;
+	}
+	
 	
 }

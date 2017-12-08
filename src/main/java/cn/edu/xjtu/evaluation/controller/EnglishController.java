@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -142,4 +143,16 @@ public class EnglishController {
 	public @ResponseBody int addQuestion(String id) {
 		return questionService.add(Long.valueOf(id));
 	}
+	
+	@RequestMapping(value = "/editExercise" )
+	public @ResponseBody int editExercise(String exercise) {
+		JSONObject jsonObj = new JSONObject(exercise);
+		Exercise exer = exerciseService.get(jsonObj.getLong("id"));
+		exer.setType(typeService.load(jsonObj.getLong("type")));
+		exer.setDescription(jsonObj.getString("description"));
+		exer.setText(jsonObj.getString("text"));
+		return exerciseService.edit(exer);
+	}
+	
+	
 }
