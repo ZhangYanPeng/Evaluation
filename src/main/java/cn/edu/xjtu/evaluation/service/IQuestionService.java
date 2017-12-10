@@ -5,7 +5,7 @@ import cn.edu.xjtu.evaluation.entity.Question;
 
 public interface IQuestionService {
 	int add(Exercise exercise, Question question);
-	int remove(Question question);
+	int remove(long id);
 	int edit(Question question);
 	int add(long id);
 	Question load(long id);

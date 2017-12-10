@@ -74,14 +74,26 @@
 										}
 
 										var ops = value.options.split("||");
-										console.log(ops[1]);
 										var td_op = $("<td></td>");
 										for( var oi=1; oi<=5; oi++){
 											var in_op = $("<input></input>").attr('type','text').attr('name','option').attr('style','width:250px;margin:3px;').val(ops[oi]);
 											td_op.append(oi+":   ").append(in_op).append("<br>");
 										}
 										
-										var tr = $("<tr></tr>").append(td_no).append(td_aud).append(td_op);
+										var td_in = $("<td></td>");
+										for( var ii=0; ii<4; ii++){
+											$.each(value.interventions, function(ind,val){
+												if(val.level == ii){
+													var in_in = $("<textarea></textarea>").attr('name','in_text').attr('style','width:250px;margin:3px;').val(val.text);
+													td_in.append(in_in).append("<input type='file' id='ia"+value.id+"' name='iaudio' class='file' />").append("<br>");
+												}
+											});
+										}
+
+										var td_de = $("<td></td>").append("<img class='operation delban' src='../img/delete.png' onclick='javascript:deleteQue("+value.id+");'></img>");
+										
+										var tr = $("<tr></tr>").append(td_no).append(td_aud).append(td_op).append(td_in).append(td_de);
+										
 										$("#quelist").append(tr);
 									}
 								});
@@ -101,6 +113,27 @@
 				crossDomain : true,
 				url : "addQuestion",
 				data : {id : eid},
+				dataType : "json",
+				contentType : "application/x-www-form-urlencoded; charset=utf-8",
+				error : function(e) {
+					alert("网络错误，请重试");
+				},
+				success : function(data) {
+					init();
+				}
+			});
+		}
+
+		function deleteQue(qid){
+			$.ajax({
+				sync : false,
+				cache : false,
+				type : 'POST',
+				crossDomain : true,
+				url : "deleteQuestion",
+				data : {
+					id : qid
+				},
 				dataType : "json",
 				contentType : "application/x-www-form-urlencoded; charset=utf-8",
 				error : function(e) {
@@ -157,48 +190,48 @@
 		<div class="pageTop">
 			<div class="page">
 				<img src="../img/coin02.png" /><span><a href="#">首页</a>&nbsp;-&nbsp;<a
-					href="#">试题管理</a>&nbsp;-</span>&nbsp;习题编辑
-				</div>
+				href="#">试题管理</a>&nbsp;-</span>&nbsp;习题编辑
 			</div>
-			<div class="page ">
-				<!-- 会员注册页面样式 -->
-				<div class="banneradd bor">
-					<div class="baTopNo">
-						<span>习题编辑</span>
-					</div>
-					<form id="content">
-						<div class="baBody">
-							<input id="id" type="hidden" name="id" class="input3" />
-							<div class="bbD">
-								&nbsp;&nbsp;&nbsp;&nbsp;题目名称<input class="input3" id="text" name="text" type="text" />
-							</div>
-							<div class="bbD">
-								&nbsp;&nbsp;&nbsp;&nbsp;题目类型<select class="input3" name="type" id="type" >
-								</select>
-							</div>
-							<div class="bbD">
-								&nbsp;&nbsp;&nbsp;&nbsp;题目描述<input id="description" name="description" type="text"
-								class="input3" javascript:save();/>
-							</div>
-							<div class="conShow">
-								<button onclick="javascript:addQuestion();">新增问题</button>
-								<table id="quelist">
-								</table>
-							</div>
-							<div class="bbD">
-								<p class="bbDP">
-									<button class="btn_ok btn_yes" href="#"
-									onclick="javascript:save();">提交</button>
-									<a class="btn_ok btn_no" href="exercise.html">取消</a>
-								</p>
-							</div>
+		</div>
+		<div class="page ">
+			<!-- 会员注册页面样式 -->
+			<div class="banneradd bor">
+				<div class="baTopNo">
+					<span>习题编辑</span>
+				</div>
+				<form id="content">
+					<div class="baBody">
+						<input id="id" type="hidden" name="id" class="input3" />
+						<div class="bbD">
+							&nbsp;&nbsp;&nbsp;&nbsp;题目名称<input class="input3" id="text" name="text" type="text" />
 						</div>
-					</form>
+						<div class="bbD">
+							&nbsp;&nbsp;&nbsp;&nbsp;题目类型<select class="input3" name="type" id="type" >
+						</select>
+					</div>
+					<div class="bbD">
+						&nbsp;&nbsp;&nbsp;&nbsp;题目描述<input id="description" name="description" type="text"
+						class="input3" javascript:save();/>
+					</div>
+					<div class="conShow">
+						<button onclick="javascript:addQuestion();">新增问题</button>
+						<table id="quelist">
+						</table>
+					</div>
+					<div class="bbD">
+						<p class="bbDP">
+							<button class="btn_ok btn_yes" href="#"
+							onclick="javascript:save();">提交</button>
+							<a class="btn_ok btn_no" href="exercise.html">取消</a>
+						</p>
+					</div>
 				</div>
-			</div>
-
-			<!-- 会员注册页面样式end -->
+			</form>
 		</div>
 	</div>
+
+	<!-- 会员注册页面样式end -->
+</div>
+</div>
 </body>
 </html>

@@ -155,6 +155,11 @@ public class EnglishController {
 		return questionService.add(Long.valueOf(id));
 	}
 	
+	@RequestMapping(value = "/deleteQuestion" )
+	public @ResponseBody int deleteQuestion(String id) {
+		return questionService.remove(Long.valueOf(id));
+	}
+	
 	@RequestMapping(value = "/editExercise" )
 	public @ResponseBody int editExercise(String exercise) {
 		JSONObject jsonObj = new JSONObject(exercise);

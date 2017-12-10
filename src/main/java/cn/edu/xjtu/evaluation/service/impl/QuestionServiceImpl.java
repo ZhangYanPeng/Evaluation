@@ -50,17 +50,26 @@ public class QuestionServiceImpl implements IQuestionService {
 
 	@Override
 	@Transactional
-	public int remove(Question question) {
+	public int remove(long id) {
 		// TODO Auto-generated method stub
+		Question question = questionDAO.get(id);
 		try {
 			Iterator it = question.getInterventions().iterator();
 			while(it.hasNext()){
 				Intervention i = (Intervention) it.next();
 				interventionDAO.delete(i);
 			}
+			int qn = question.getQ_num();
+			for(Question q : question.getExercise().getQuestions()) {
+				if( q.getQ_num() > qn ) {
+					q.setQ_num(q.getQ_num()-1);
+					questionDAO.update(q);
+				}
+			}
 			questionDAO.delete(question);
 		} catch (Exception e) {
 			// TODO: handle exception
+			e.printStackTrace();
 			return 0;
 		}
 		return 1;
