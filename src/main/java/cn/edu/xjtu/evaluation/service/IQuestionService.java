@@ -8,4 +8,5 @@ public interface IQuestionService {
 	int remove(Question question);
 	int edit(Question question);
 	int add(long id);
+	Question load(long id);
 }

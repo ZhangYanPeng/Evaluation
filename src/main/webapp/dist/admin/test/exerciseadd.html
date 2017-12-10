@@ -65,13 +65,23 @@
 								$.each(data.questions, function(index,value){
 									if( value.q_num == i){
 										var td_no = $("<td></td>").append(i+1);
+
 										var td_aud =  $("<td></td>");
-										if(value.questions != null && value.questions.length>0){
+										if(value.audio != null ){
 											td_aud.append("音频");
 										}else{
 											td_aud.append("<input type='file' id='qa"+value.id+"' name='qaudio' class='file' />");
 										}
-										var tr = $("<tr></tr>").append(td_no).append(td_aud);
+
+										var ops = value.options.split("||");
+										console.log(ops[1]);
+										var td_op = $("<td></td>");
+										for( var oi=1; oi<=5; oi++){
+											var in_op = $("<input></input>").attr('type','text').attr('name','option').attr('style','width:250px;margin:3px;').val(ops[oi]);
+											td_op.append(oi+":   ").append(in_op).append("<br>");
+										}
+										
+										var tr = $("<tr></tr>").append(td_no).append(td_aud).append(td_op);
 										$("#quelist").append(tr);
 									}
 								});

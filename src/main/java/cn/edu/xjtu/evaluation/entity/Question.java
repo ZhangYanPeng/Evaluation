@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -29,8 +30,9 @@ public class Question {
 	private String options;
 	private int answer;
 	int q_num;
-
-	private String audio_path;
+	
+	@OneToOne
+	private Audio audio;
 
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinColumn(name = "question_id")
@@ -104,15 +106,7 @@ public class Question {
 	public void setQ_num(int q_num) {
 		this.q_num = q_num;
 	}
-
-	public String getAudio_path() {
-		return audio_path;
-	}
-
-	public void setAudio_path(String audio_path) {
-		this.audio_path = audio_path;
-	}
-
+	
 	public Set<Record> getRecords() {
 		return records;
 	}
@@ -120,5 +114,15 @@ public class Question {
 	public void setRecords(Set<Record> records) {
 		this.records = records;
 	}
+
+	public Audio getAudio() {
+		return audio;
+	}
+
+	public void setAudio(Audio audio) {
+		this.audio = audio;
+	}
+	
+	
 
 }

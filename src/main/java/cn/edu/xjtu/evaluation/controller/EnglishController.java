@@ -9,14 +9,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import cn.edu.xjtu.evaluation.common.Constants;
+import cn.edu.xjtu.evaluation.entity.Audio;
 import cn.edu.xjtu.evaluation.entity.Exercise;
+import cn.edu.xjtu.evaluation.entity.Intervention;
 import cn.edu.xjtu.evaluation.entity.Part;
+import cn.edu.xjtu.evaluation.entity.Question;
 import cn.edu.xjtu.evaluation.entity.Test;
 import cn.edu.xjtu.evaluation.entity.Type;
+import cn.edu.xjtu.evaluation.service.IAudioService;
 import cn.edu.xjtu.evaluation.service.IExerciseService;
+import cn.edu.xjtu.evaluation.service.IInterventionService;
 import cn.edu.xjtu.evaluation.service.IQuestionService;
 import cn.edu.xjtu.evaluation.service.ITestService;
 import cn.edu.xjtu.evaluation.service.ITypeService;
@@ -35,6 +42,10 @@ public class EnglishController {
 	IExerciseService exerciseService;
 	@Autowired
 	IQuestionService questionService;
+	@Autowired
+	IAudioService audioService;
+	@Autowired
+	IInterventionService interventionService;
 	
 	//test manage
 	@RequestMapping(value = "/list_test" , method = RequestMethod.POST)
@@ -154,5 +165,34 @@ public class EnglishController {
 		return exerciseService.edit(exer);
 	}
 	
+	@RequestMapping(value = "/uploadQueAudio" )
+	public @ResponseBody int uploadQueAudio(@RequestParam String id, @RequestParam MultipartFile audio, HttpServletRequest request){
+		Audio aud = new Audio();
+		Question question = questionService.load(Long.valueOf(id));
+		aud.setQuestion(question);
+		String originalFilename = System.currentTimeMillis()+"-"+audio.getOriginalFilename();
+		String genePath = request.getSession().getServletContext().getRealPath("/upload/audio/");
+		aud.setSrc(request.getContextPath()+"/upload/audio/"+originalFilename);
+		aud.setPath(genePath+"/"+originalFilename);
+		audioService.save(aud, audio);
+		return 0;
+	}
 	
+	@RequestMapping(value = "/uploadIntAudio" )
+	public @ResponseBody int uploadIntAudio(@RequestParam String id, @RequestParam MultipartFile audio, HttpServletRequest request){
+		Audio aud = new Audio();
+		Intervention intervention = interventionService.load(Long.valueOf(id));
+		aud.setIntervention(intervention);
+		String originalFilename = System.currentTimeMillis()+"-"+audio.getOriginalFilename();
+		String genePath = request.getSession().getServletContext().getRealPath("/upload/audio/");
+		aud.setSrc(request.getContextPath()+"/upload/audio/"+originalFilename);
+		aud.setPath(genePath+"/"+originalFilename);
+		audioService.save(aud, audio);
+		return 0;
+	}
+	
+	@RequestMapping(value = "/deleteAudio" )
+	public @ResponseBody int deleteAudio(String id){
+		return audioService.delete(Long.valueOf(id));
+	}
 }

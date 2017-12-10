@@ -103,4 +103,11 @@ public class QuestionServiceImpl implements IQuestionService {
 		return 0;
 	}
 
+	@Override
+	@Transactional
+	public Question load(long id) {
+		// TODO Auto-generated method stub
+		return questionDAO.get(id);
+	}
+
 }

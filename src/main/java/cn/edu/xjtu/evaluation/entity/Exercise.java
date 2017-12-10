@@ -35,9 +35,6 @@ public class Exercise {
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Type type;
-	
-	@OneToOne
-	private Audio audio;
 
 	public Exercise() {
 		super();
@@ -81,14 +78,5 @@ public class Exercise {
 	public void setType(Type type) {
 		this.type = type;
 	}
-
-	public Audio getAudio() {
-		return audio;
-	}
-
-	public void setAudio(Audio audio) {
-		this.audio = audio;
-	}
-	
 	
 }

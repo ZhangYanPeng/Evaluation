@@ -9,4 +9,5 @@ public interface IInterventionService {
 	int add(Question question,Intervention intervention);
 	int remove(Intervention intervention);
 	int edit(Intervention intervention);
+	Intervention load(long id);
 }

@@ -19,11 +19,12 @@ public class Audio {
 	private long id;
 	
 	private String path;
+	private String src;
 	private int type;
 	
 	@OneToOne
 	@JsonIgnore
-	private Exercise exercise;
+	private Question question;
 	
 	@OneToOne
 	@JsonIgnore
@@ -52,21 +53,28 @@ public class Audio {
 	public void setType(int type) {
 		this.type = type;
 	}
-
-	public Exercise getExercise() {
-		return exercise;
-	}
-
-	public void setExercise(Exercise exercise) {
-		this.exercise = exercise;
-	}
-
 	public Intervention getIntervention() {
 		return intervention;
 	}
 
 	public void setIntervention(Intervention intervention) {
 		this.intervention = intervention;
+	}
+
+	public Question getQuestion() {
+		return question;
+	}
+
+	public void setQuestion(Question question) {
+		this.question = question;
+	}
+
+	public String getSrc() {
+		return src;
+	}
+
+	public void setSrc(String src) {
+		this.src = src;
 	}
 	
 	
