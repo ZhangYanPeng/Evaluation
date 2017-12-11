@@ -70,7 +70,7 @@
 										if(value.audio != null ){
 											td_aud.append("音频");
 										}else{
-											td_aud.append("<input type='file' id='qa"+value.id+"' name='qaudio' class='file' />");
+											td_aud.append("<input type='file' id='qa"+value.id+"' name='qa"+value.id+"' class='file' />").append("<a href='javascript:upload("+value.id+",0"+");' >上传</a>");
 										}
 
 										var ops = value.options.split("||");
@@ -85,7 +85,7 @@
 											$.each(value.interventions, function(ind,val){
 												if(val.level == ii){
 													var in_in = $("<textarea></textarea>").attr('name','in_text').attr('style','width:250px;margin:3px;').val(val.text);
-													td_in.append(in_in).append("<input type='file' id='ia"+value.id+"' name='iaudio' class='file' />").append("<br>");
+													td_in.append(in_in).append("<input type='file' id='ia"+value.id+"' name='ia"+value.id+"' class='file' />").append("<a href='javascript:upload("+val.id+",1"+");' >上传</a>").append("<br>");
 												}
 											});
 										}
@@ -101,6 +101,46 @@
 							
 						}
 					});
+				}
+			});
+		}
+
+		function upload(pid,type){
+			var feid = "";
+			if(type == 0){
+				if( $("#qa"+pid).val() =="" ){
+					alert("请选择文件");
+					return;
+				}
+				feid = feid + "#qa"+pid;
+			}else{
+				if( $("#ia"+pid).val() =="" ){
+					alert("请选择文件");
+					return;
+				}
+				feid = feid + "#ia"+pid;
+			}
+			$("#pic"+did).attr('name','picture').attr('id','picture');
+			$.ajaxFileUpload({
+				type : 'post',
+				url : 'upload_pic', //用于文件上传的服务器端请求地址
+				secureuri : false, //是否需要安全协议，一般设置为false
+				fileElementId : feid, //文件上传域的ID
+				data : {
+					id : did,
+					picname : 'none'
+				},//要传到后台的参数，没有可以不写  
+				async : false,
+				dataType : 'json',
+				processData : false,
+				contentType : false,
+				success : function(data) //服务器成功响应处理函数
+				{
+					list(page_num); 
+				},
+				error : function(data, status, e)//服务器响应失败处理函数
+				{
+					console.log(data,status,e);
 				}
 			});
 		}
