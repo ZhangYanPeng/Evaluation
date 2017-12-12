@@ -1,5 +1,6 @@
 package cn.edu.xjtu.evaluation.service.impl;
 
+import java.io.File;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -8,11 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import cn.edu.xjtu.evaluation.dao.impl.AudioDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.ExerciseDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.InterventionDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.PartDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.QuestionDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.TestDAOImpl;
+import cn.edu.xjtu.evaluation.entity.Audio;
 import cn.edu.xjtu.evaluation.entity.Exercise;
 import cn.edu.xjtu.evaluation.entity.Intervention;
 import cn.edu.xjtu.evaluation.entity.Question;
@@ -26,6 +29,8 @@ public class QuestionServiceImpl implements IQuestionService {
 	QuestionDAOImpl questionDAO;
 	@Autowired
 	InterventionDAOImpl interventionDAO;
+	@Autowired
+	AudioDAOImpl audioDAO;
 	
 	@Override
 	@Transactional
@@ -57,6 +62,16 @@ public class QuestionServiceImpl implements IQuestionService {
 			Iterator it = question.getInterventions().iterator();
 			while(it.hasNext()){
 				Intervention i = (Intervention) it.next();
+				Audio aud = i.getAudio();
+				i.setAudio(null);
+				interventionDAO.update(i);
+				if(aud != null){
+					File file = new File(aud.getPath());
+					if (file.exists()) {
+						file.delete();
+					}
+					audioDAO.deleteById(aud.getId());
+				}
 				interventionDAO.delete(i);
 			}
 			int qn = question.getQ_num();
@@ -65,6 +80,17 @@ public class QuestionServiceImpl implements IQuestionService {
 					q.setQ_num(q.getQ_num()-1);
 					questionDAO.update(q);
 				}
+			}
+			
+			Audio aud = question.getAudio();
+			question.setAudio(null);
+			questionDAO.update(question);
+			if(aud != null){
+				File file = new File(aud.getPath());
+				if (file.exists()) {
+					file.delete();
+				}
+				audioDAO.deleteById(aud.getId());
 			}
 			questionDAO.delete(question);
 		} catch (Exception e) {

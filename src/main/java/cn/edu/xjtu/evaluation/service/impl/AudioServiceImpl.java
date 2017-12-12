@@ -47,4 +47,22 @@ public class AudioServiceImpl implements IAudioService{
 		return 1;
 	}
 
+	@Override
+	@Transactional
+	public Audio getByQue(long id) {
+		// TODO Auto-generated method stub
+		String hql = "from Audio where question.id = ?";
+		Object[] values = {id};
+		return audioDAO.getByHQL(hql, values);
+	}
+
+	@Override
+	@Transactional
+	public Audio getByIn(long id) {
+		// TODO Auto-generated method stub
+		String hql = "from Audio where intervention.id = ?";
+		Object[] values = {id};
+		return audioDAO.getByHQL(hql, values);
+	}
+
 }

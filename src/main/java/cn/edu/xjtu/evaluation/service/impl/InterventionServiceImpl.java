@@ -58,6 +58,7 @@ public class InterventionServiceImpl implements IInterventionService {
 	}
 
 	@Override
+	@Transactional
 	public Intervention load(long id) {
 		// TODO Auto-generated method stub
 		return interventionDAO.get(id);

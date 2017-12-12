@@ -7,4 +7,6 @@ import cn.edu.xjtu.evaluation.entity.Audio;
 public interface IAudioService {
 	int save(Audio audio, MultipartFile file);
 	int delete(long id);
+	Audio getByQue(long id);
+	Audio getByIn(long id);
 }

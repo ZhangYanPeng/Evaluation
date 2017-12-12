@@ -6,6 +6,7 @@
 	<link rel="stylesheet" type="text/css" href="../css/css.css" />
 	<script type="text/javascript" src="../js/jquery.min.js"></script>
 	<script type="text/javascript" src="../js/common.js"></script>
+	<script src="../js/ajaxfileupload.js"></script>
 	<script type="text/javascript">
 
 		$(document).ready(function(){
@@ -58,7 +59,7 @@
 								+"<td width='66px' class='tdColor'>题目序号</td>"
 								+"<td width='300px' class='tdColor'>题目音频</td>"
 								+"<td width='300px' class='tdColor'>题目选项</td>"
-								+"<td width='500px' class='tdColor'>干预</td>"
+								+"<td width='350px' class='tdColor'>干预</td>"
 								+"<td width='100px' class='tdColor'>操作</td>"
 								+"</tr>");
 							for (var i=0; i<data.questions.length; i++){
@@ -68,7 +69,8 @@
 
 										var td_aud =  $("<td></td>");
 										if(value.audio != null ){
-											td_aud.append("音频");
+											var aud_in = $("<audio></audio>").attr('src',value.audio.src).attr('controls','controls');
+											td_aud.append(aud_in);
 										}else{
 											td_aud.append("<input type='file' id='qa"+value.id+"' name='qa"+value.id+"' class='file' />").append("<a href='javascript:upload("+value.id+",0"+");' >上传</a>");
 										}
@@ -79,13 +81,25 @@
 											var in_op = $("<input></input>").attr('type','text').attr('name','option').attr('style','width:250px;margin:3px;').val(ops[oi]);
 											td_op.append(oi+":   ").append(in_op).append("<br>");
 										}
-										
+										var in_an = $("<input></input>").attr('type','text').attr('name','answer').attr('style','width:100px;margin:3px;').attr('placeholder','正确答案').val(value.answer);
+										td_op.append("答案:").append(in_an);
+
 										var td_in = $("<td></td>");
 										for( var ii=0; ii<4; ii++){
 											$.each(value.interventions, function(ind,val){
 												if(val.level == ii){
 													var in_in = $("<textarea></textarea>").attr('name','in_text').attr('style','width:250px;margin:3px;').val(val.text);
-													td_in.append(in_in).append("<input type='file' id='ia"+value.id+"' name='ia"+value.id+"' class='file' />").append("<a href='javascript:upload("+val.id+",1"+");' >上传</a>").append("<br>");
+													td_in.append((ii+1)+"级干预:").append(in_in).append("<br>");
+													if(val.level>0 && val.level<3){
+														td_in.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+														if(val.audio !=null ){
+															var aud_in = $("<audio></audio>").attr('src',val.audio.src).attr('controls','controls');
+															td_in.append(aud_in);
+														}else{
+															td_in.append("<input type='file' id='ia"+val.id+"' name='ia"+val.id+"' class='file' />").append("<a href='javascript:upload("+val.id+",1"+");' >上传</a>");
+														}
+														td_in.append("<br>");
+													}
 												}
 											});
 										}
@@ -105,30 +119,29 @@
 			});
 		}
 
-		function upload(pid,type){
+		function upload(aid,t){
 			var feid = "";
-			if(type == 0){
-				if( $("#qa"+pid).val() =="" ){
+			if(t == 0){
+				if( $("#qa"+aid).val() =="" ){
 					alert("请选择文件");
 					return;
 				}
-				feid = feid + "#qa"+pid;
+				feid = feid + "qa"+aid;
 			}else{
-				if( $("#ia"+pid).val() =="" ){
+				if( $("#ia"+aid).val() =="" ){
 					alert("请选择文件");
 					return;
 				}
-				feid = feid + "#ia"+pid;
+				feid = feid + "ia"+aid;
 			}
-			$("#pic"+did).attr('name','picture').attr('id','picture');
 			$.ajaxFileUpload({
 				type : 'post',
-				url : 'upload_pic', //用于文件上传的服务器端请求地址
+				url : 'uploadAudio', //用于文件上传的服务器端请求地址
 				secureuri : false, //是否需要安全协议，一般设置为false
 				fileElementId : feid, //文件上传域的ID
 				data : {
-					id : did,
-					picname : 'none'
+					id : aid,
+					type : t
 				},//要传到后台的参数，没有可以不写  
 				async : false,
 				dataType : 'json',
@@ -136,7 +149,7 @@
 				contentType : false,
 				success : function(data) //服务器成功响应处理函数
 				{
-					list(page_num); 
+					init(); 
 				},
 				error : function(data, status, e)//服务器响应失败处理函数
 				{
@@ -230,48 +243,48 @@
 		<div class="pageTop">
 			<div class="page">
 				<img src="../img/coin02.png" /><span><a href="#">首页</a>&nbsp;-&nbsp;<a
-				href="#">试题管理</a>&nbsp;-</span>&nbsp;习题编辑
+					href="#">试题管理</a>&nbsp;-</span>&nbsp;习题编辑
+				</div>
 			</div>
-		</div>
-		<div class="page ">
-			<!-- 会员注册页面样式 -->
-			<div class="banneradd bor">
-				<div class="baTopNo">
-					<span>习题编辑</span>
-				</div>
-				<form id="content">
-					<div class="baBody">
-						<input id="id" type="hidden" name="id" class="input3" />
-						<div class="bbD">
-							&nbsp;&nbsp;&nbsp;&nbsp;题目名称<input class="input3" id="text" name="text" type="text" />
+			<div class="page ">
+				<!-- 会员注册页面样式 -->
+				<div class="banneradd bor">
+					<div class="baTopNo">
+						<span>习题编辑</span>
+					</div>
+					<form id="content">
+						<div class="baBody">
+							<input id="id" type="hidden" name="id" class="input3" />
+							<div class="bbD">
+								&nbsp;&nbsp;&nbsp;&nbsp;题目名称<input class="input3" id="text" name="text" type="text" />
+							</div>
+							<div class="bbD">
+								&nbsp;&nbsp;&nbsp;&nbsp;题目类型<select class="input3" name="type" id="type" >
+								</select>
+							</div>
+							<div class="bbD">
+								&nbsp;&nbsp;&nbsp;&nbsp;题目描述<input id="description" name="description" type="text"
+								class="input3" javascript:save();/>
+							</div>
+							<div class="conShow">
+								<button onclick="javascript:addQuestion();">新增问题</button>
+								<table id="quelist">
+								</table>
+							</div>
+							<div class="bbD">
+								<p class="bbDP">
+									<button class="btn_ok btn_yes" href="#"
+									onclick="javascript:save();">提交</button>
+									<a class="btn_ok btn_no" href="exercise.html">取消</a>
+								</p>
+							</div>
 						</div>
-						<div class="bbD">
-							&nbsp;&nbsp;&nbsp;&nbsp;题目类型<select class="input3" name="type" id="type" >
-						</select>
-					</div>
-					<div class="bbD">
-						&nbsp;&nbsp;&nbsp;&nbsp;题目描述<input id="description" name="description" type="text"
-						class="input3" javascript:save();/>
-					</div>
-					<div class="conShow">
-						<button onclick="javascript:addQuestion();">新增问题</button>
-						<table id="quelist">
-						</table>
-					</div>
-					<div class="bbD">
-						<p class="bbDP">
-							<button class="btn_ok btn_yes" href="#"
-							onclick="javascript:save();">提交</button>
-							<a class="btn_ok btn_no" href="exercise.html">取消</a>
-						</p>
-					</div>
+					</form>
 				</div>
-			</form>
+			</div>
+
+			<!-- 会员注册页面样式end -->
 		</div>
 	</div>
-
-	<!-- 会员注册页面样式end -->
-</div>
-</div>
 </body>
 </html>

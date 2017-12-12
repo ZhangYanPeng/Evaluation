@@ -4,14 +4,18 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.poi.util.SystemOutLogger;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import cn.edu.xjtu.evaluation.common.Constants;
 import cn.edu.xjtu.evaluation.entity.Audio;
@@ -167,37 +171,63 @@ public class EnglishController {
 		exer.setType(typeService.load(jsonObj.getLong("type")));
 		exer.setDescription(jsonObj.getString("description"));
 		exer.setText(jsonObj.getString("text"));
+		JSONArray option =  jsonObj.getJSONArray("option");
+		JSONArray answer =  jsonObj.getJSONArray("answer");
+		JSONArray in_text =  jsonObj.getJSONArray("in_text");
+		for(Question q : exer.getQuestions()){
+			int qn = q.getQ_num();
+			q.setAnswer(answer.getInt(qn));
+			String op = "";
+			for(int i=qn*5; i<(qn+1)*5; i++){
+				op += "||" + option.getString(i);
+			}
+			q.setOptions(op);
+			questionService.edit(q);
+			for(Intervention i : q.getInterventions()){
+				i.setText(in_text.getString(qn*5+i.getLevel()));
+				interventionService.edit(i);
+			}
+		}
 		return exerciseService.edit(exer);
-	}
-	
-	@RequestMapping(value = "/uploadQueAudio" )
-	public @ResponseBody int uploadQueAudio(@RequestParam String id, @RequestParam MultipartFile audio, HttpServletRequest request){
-		Audio aud = new Audio();
-		Question question = questionService.load(Long.valueOf(id));
-		aud.setQuestion(question);
-		String originalFilename = System.currentTimeMillis()+"-"+audio.getOriginalFilename();
-		String genePath = request.getSession().getServletContext().getRealPath("/upload/audio/");
-		aud.setSrc(request.getContextPath()+"/upload/audio/"+originalFilename);
-		aud.setPath(genePath+"/"+originalFilename);
-		audioService.save(aud, audio);
-		return 0;
-	}
-	
-	@RequestMapping(value = "/uploadIntAudio" )
-	public @ResponseBody int uploadIntAudio(@RequestParam String id, @RequestParam MultipartFile audio, HttpServletRequest request){
-		Audio aud = new Audio();
-		Intervention intervention = interventionService.load(Long.valueOf(id));
-		aud.setIntervention(intervention);
-		String originalFilename = System.currentTimeMillis()+"-"+audio.getOriginalFilename();
-		String genePath = request.getSession().getServletContext().getRealPath("/upload/audio/");
-		aud.setSrc(request.getContextPath()+"/upload/audio/"+originalFilename);
-		aud.setPath(genePath+"/"+originalFilename);
-		audioService.save(aud, audio);
-		return 0;
 	}
 	
 	@RequestMapping(value = "/deleteAudio" )
 	public @ResponseBody int deleteAudio(String id){
 		return audioService.delete(Long.valueOf(id));
+	}
+	
+	@RequestMapping(value = "/uploadAudio")
+	public @ResponseBody int uploadPic(@RequestParam String id, @RequestParam String type, HttpServletRequest request){
+		Audio audio = new Audio();
+		int t = Integer.valueOf(type);
+		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+		MultiValueMap<String, MultipartFile> mfmap = multipartRequest.getMultiFileMap();
+		MultipartFile aud;
+		for (String key : mfmap.keySet()) {
+			if(t == 0 && key.contains("qa")){
+				aud = mfmap.getFirst(key);
+				Question question = questionService.load(Long.valueOf(id));
+				audio.setQuestion(question);
+				String originalFilename = aud.getOriginalFilename();
+				String genePath = request.getSession().getServletContext().getRealPath("/upload/audio/");
+				audio.setSrc(request.getContextPath()+"/audio/"+originalFilename);
+				audio.setPath(genePath+"/"+originalFilename);
+				audioService.save(audio, aud);
+				question.setAudio(audioService.getByQue(question.getId()));
+				questionService.edit(question);
+			}else if(t == 1 && key.contains("ia")){
+				aud = mfmap.getFirst(key);
+				Intervention intervention = interventionService.load(Long.valueOf(id));
+				audio.setIntervention(intervention);
+				String originalFilename = aud.getOriginalFilename();
+				String genePath = request.getSession().getServletContext().getRealPath("/upload/audio/");
+				audio.setSrc(request.getContextPath()+"/audio/"+originalFilename);
+				audio.setPath(genePath+"/"+originalFilename);
+				audioService.save(audio, aud);
+				intervention.setAudio(audioService.getByIn(intervention.getId()));
+				interventionService.edit(intervention);
+			}
+		}
+		return 0;
 	}
 }
