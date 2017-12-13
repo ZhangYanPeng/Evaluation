@@ -171,21 +171,28 @@ public class EnglishController {
 		exer.setType(typeService.load(jsonObj.getLong("type")));
 		exer.setDescription(jsonObj.getString("description"));
 		exer.setText(jsonObj.getString("text"));
-		JSONArray option =  jsonObj.getJSONArray("option");
-		JSONArray answer =  jsonObj.getJSONArray("answer");
-		JSONArray in_text =  jsonObj.getJSONArray("in_text");
-		for(Question q : exer.getQuestions()){
-			int qn = q.getQ_num();
-			q.setAnswer(answer.getInt(qn));
-			String op = "";
-			for(int i=qn*5; i<(qn+1)*5; i++){
-				op += "||" + option.getString(i);
+		if(exer.getQuestions().size()>0){
+			JSONArray answer = new JSONArray();
+			if(exer.getQuestions().size()>1){
+				jsonObj.getJSONArray("answer");
+			}else{
+				answer.put(jsonObj.getInt("answer"));
 			}
-			q.setOptions(op);
-			questionService.edit(q);
-			for(Intervention i : q.getInterventions()){
-				i.setText(in_text.getString(qn*5+i.getLevel()));
-				interventionService.edit(i);
+			JSONArray option =  jsonObj.getJSONArray("option");
+			JSONArray in_text =  jsonObj.getJSONArray("in_text");
+			for(Question q : exer.getQuestions()){
+				int qn = q.getQ_num();
+				q.setAnswer(answer.getInt(qn));
+				String op = "";
+				for(int i=qn*5; i<(qn+1)*5; i++){
+					op += "||" + option.getString(i);
+				}
+				q.setOptions(op);
+				questionService.edit(q);
+				for(Intervention i : q.getInterventions()){
+					i.setText(in_text.getString(qn*4+i.getLevel()));
+					interventionService.edit(i);
+				}
 			}
 		}
 		return exerciseService.edit(exer);

@@ -89,6 +89,7 @@
 											$.each(value.interventions, function(ind,val){
 												if(val.level == ii){
 													var in_in = $("<textarea></textarea>").attr('name','in_text').attr('style','width:250px;margin:3px;').val(val.text);
+
 													td_in.append((ii+1)+"级干预:").append(in_in).append("<br>");
 													if(val.level>0 && val.level<3){
 														td_in.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
@@ -199,7 +200,6 @@
 		}
 
 		function save() {
-			console.log($("#content").serializeObject());
 			$.ajax({
 				sync : false,
 				cache : false,
