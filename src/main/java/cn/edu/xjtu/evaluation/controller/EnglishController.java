@@ -174,7 +174,7 @@ public class EnglishController {
 		if(exer.getQuestions().size()>0){
 			JSONArray answer = new JSONArray();
 			if(exer.getQuestions().size()>1){
-				jsonObj.getJSONArray("answer");
+				answer = jsonObj.getJSONArray("answer");
 			}else{
 				answer.put(jsonObj.getInt("answer"));
 			}

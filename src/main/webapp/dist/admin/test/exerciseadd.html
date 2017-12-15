@@ -53,7 +53,11 @@
 						success : function(data) {
 							$("#id").val(data.id);
 							$("#text").val(data.text);
-							$("#type").val(data.type.id);
+							if(data.type != null){
+								$("#type").val(data.type.id);
+							}else{
+								$("#type").val(-1);
+							}
 							$("#description").val(data.description);
 							$("#quelist").html("<tr>"
 								+"<td width='66px' class='tdColor'>题目序号</td>"
@@ -215,7 +219,7 @@
 					alert("网络错误，请重试");
 				},
 				success : function(data) {
-
+					init();
 				}
 			});
 		}
