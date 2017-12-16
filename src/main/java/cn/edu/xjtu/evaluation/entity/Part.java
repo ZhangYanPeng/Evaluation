@@ -32,18 +32,19 @@ public class Part {
 	@JsonIgnore
 	private Test test;
 	
-	@OneToMany(fetch = FetchType.EAGER)
-	@JoinColumn(name = "part_id")
-	private Set<Exercise> exercises;
-
-	private String exerciseType;
+	@OneToMany( fetch = FetchType.EAGER )
+	@JoinColumn( name = "part_id" )
+	private Set<PartExer> partExers;
 	
-	public Set<Exercise> getExercises() {
-		return exercises;
+	@ManyToOne(fetch = FetchType.EAGER)
+	private Type type;
+
+	public Set<PartExer> getPartExers() {
+		return partExers;
 	}
 
-	public void setExercises(Set<Exercise> exercises) {
-		this.exercises = exercises;
+	public void setPartExers(Set<PartExer> partExers) {
+		this.partExers = partExers;
 	}
 
 	public Part() {
@@ -82,12 +83,12 @@ public class Part {
 		this.p_no = p_no;
 	}
 
-	public String getExerciseType() {
-		return exerciseType;
+	public Type getType() {
+		return type;
 	}
 
-	public void setExerciseType(String exerciseType) {
-		this.exerciseType = exerciseType;
+	public void setType(Type type) {
+		this.type = type;
 	}
-	
+
 }

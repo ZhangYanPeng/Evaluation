@@ -10,7 +10,7 @@ import cn.edu.xjtu.evaluation.entity.Test;
 import cn.edu.xjtu.evaluation.support.PageResults;
 
 public interface ITestService {
-	int add(Test test);
+	Test add(Test test);
 	int remove(Long id);
 	Test get(long id);
 	List<Test> getAll();

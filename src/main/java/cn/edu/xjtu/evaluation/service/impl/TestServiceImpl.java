@@ -12,6 +12,7 @@ import cn.edu.xjtu.evaluation.dao.impl.AnswerDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.ExerciseDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.InterventionDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.PartDAOImpl;
+import cn.edu.xjtu.evaluation.dao.impl.PartExerDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.QuestionDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.RecordDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.StudentDAOImpl;
@@ -20,6 +21,7 @@ import cn.edu.xjtu.evaluation.entity.Answer;
 import cn.edu.xjtu.evaluation.entity.Exercise;
 import cn.edu.xjtu.evaluation.entity.Intervention;
 import cn.edu.xjtu.evaluation.entity.Part;
+import cn.edu.xjtu.evaluation.entity.PartExer;
 import cn.edu.xjtu.evaluation.entity.Question;
 import cn.edu.xjtu.evaluation.entity.Record;
 import cn.edu.xjtu.evaluation.entity.Test;
@@ -45,19 +47,15 @@ public class TestServiceImpl implements ITestService {
 	RecordDAOImpl recordDAO;
 	@Autowired
 	StudentDAOImpl studentDAO;
-	
+	@Autowired
+	PartExerDAOImpl partExerDAO;
+
 	@Override
 	@Transactional
-	public int add(Test test) {
+	public Test add(Test test) {
 		// TODO Auto-generated method stub
-		try {
-			testDAO.saveOrUpdate(test);
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-			return 0;
-		}
-		return 1;
+		testDAO.saveOrUpdate(test);
+		return test;
 	}
 
 	@Override
@@ -66,15 +64,17 @@ public class TestServiceImpl implements ITestService {
 		// TODO Auto-generated method stub
 		try {
 			Test t = testDAO.get(id);
-			for(Part p : t.getParts()) {
-				for(Exercise e : p.getExercises()) {
-					for(Question q : e.getQuestions()) {
-						for(Intervention i : q.getInterventions()) {
+			for (Part p : t.getParts()) {
+				for (PartExer pe : p.getPartExers()) {
+					Exercise e = pe.getExercise();
+					for (Question q : e.getQuestions()) {
+						for (Intervention i : q.getInterventions()) {
 							interventionDAO.delete(i);
 						}
 						questionDAO.delete(q);
 					}
 					exerciseDAO.delete(e);
+					partExerDAO.delete(pe);
 				}
 				partDAO.delete(p);
 			}
@@ -130,8 +130,8 @@ public class TestServiceImpl implements ITestService {
 		// TODO Auto-generated method stub
 		String hql = "from Test where choose = 1";
 		List<Test> tl = testDAO.getListByHQL(hql, null);
-		if(tl!=null) {
-			for(Test t : tl) {
+		if (tl != null) {
+			for (Test t : tl) {
 				t.setChoose(0);
 				testDAO.update(t);
 			}
@@ -147,9 +147,9 @@ public class TestServiceImpl implements ITestService {
 	public int check(Integer type, Long tid, Long uid) {
 		// TODO Auto-generated method stub
 		String hql = "from Answer where type = ? and student.id = ? and test.id = ?";
-		Object[] values = {type, uid, tid};
+		Object[] values = { type, uid, tid };
 		Answer a = answerDAO.getByHQL(hql, values);
-		if( a==null )
+		if (a == null)
 			return 0;
 		return 1;
 	}
@@ -171,18 +171,18 @@ public class TestServiceImpl implements ITestService {
 		answer.setTest(testDAO.get(tid));
 		answer.setStudent(studentDAO.get(uid));
 		answerDAO.save(answer);
-		for(Part p : testDAO.get(tid).getParts()){
-			for(Exercise e : p.getExercises()){
-				for(Question q : e.getQuestions()){
-					int i = q.getQ_num()-1;
-					Record record = new Record();
-					record.setAnswer(answer);
-					record.setQuestion(q);
-					record.setResult(records[i]);
-					record.setReason(reasons[i]);
-					recordDAO.save(record);
-				}
-			}
+		for (Part p : testDAO.get(tid).getParts()) {
+//			for (Exercise e : p.getExercises()) {
+//				for (Question q : e.getQuestions()) {
+//					int i = q.getQ_num() - 1;
+//					Record record = new Record();
+//					record.setAnswer(answer);
+//					record.setQuestion(q);
+//					record.setResult(records[i]);
+//					record.setReason(reasons[i]);
+//					recordDAO.save(record);
+//				}
+//			}
 		}
 		return 0;
 	}
@@ -192,7 +192,7 @@ public class TestServiceImpl implements ITestService {
 	public List<Part> loadParts(Long id) {
 		// TODO Auto-generated method stub
 		String hqlString = "from Part where test.id = ? order by p_no asc";
-		Object[] values = {id};
+		Object[] values = { id };
 		return partDAO.getListByHQL(hqlString, values);
 	}
 
@@ -201,7 +201,7 @@ public class TestServiceImpl implements ITestService {
 	public List<Exercise> loadExercises(Long id) {
 		// TODO Auto-generated method stub
 		String hqlString = "from Exercise where part.id = ? order by e_no asc";
-		Object[] values = {id};
+		Object[] values = { id };
 		return exerciseDAO.getListByHQL(hqlString, values);
 	}
 
@@ -210,7 +210,7 @@ public class TestServiceImpl implements ITestService {
 	public List<Question> loadQuestions(Long id) {
 		// TODO Auto-generated method stub
 		String hqlString = "from Question where exercise.id = ? order by q_no asc";
-		Object[] values = {id};
+		Object[] values = { id };
 		return questionDAO.getListByHQL(hqlString, values);
 	}
 
@@ -219,7 +219,7 @@ public class TestServiceImpl implements ITestService {
 	public List<Intervention> loadInterventions(Long id) {
 		// TODO Auto-generated method stub
 		String hqlString = "from Intervention where question.id = ? order by level asc";
-		Object[] values = {id};
+		Object[] values = { id };
 		return interventionDAO.getListByHQL(hqlString, values);
 	}
 

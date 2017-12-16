@@ -58,19 +58,12 @@ public class EnglishController {
 	}
 	
 	@RequestMapping(value = "/add_test" , method = RequestMethod.POST)
-	public @ResponseBody int addTest(HttpServletRequest request) {
-		String basePath = request.getSession().getServletContext().getRealPath("/res/");
-		try {
-			List<Test> tl = DealExcel.loadInTest(basePath+"/test_in.xlsx");
-			for( Test t : tl){
-				testService.importTest(t);
-			}
-			return 1;
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return 0;
-		}
+	public @ResponseBody Test addTest(HttpServletRequest request) {
+		Test t = new Test();
+		t.setChoose(0);
+		t.setCollect(0);
+		t.setId(System.currentTimeMillis());
+		return testService.add(t);
 	}
 	
 	@RequestMapping(value = "/delete_test" , method = RequestMethod.POST)
@@ -83,23 +76,10 @@ public class EnglishController {
 		return testService.chooseTest(Long.valueOf(id));
 	}
 	
-	
-	@RequestMapping(value = "/get_status" , method = RequestMethod.POST)
-	public @ResponseBody int getStatus() {
-		return Constants.COLLECT;
-	}
-	
-	@RequestMapping(value = "/set_status" , method = RequestMethod.POST)
-	public @ResponseBody int setStatus(String status) {
-		return Constants.COLLECT = Integer.valueOf(status);
-	}
-	
 	@RequestMapping(value = "/loadParts" )
 	public @ResponseBody List<Part> loadParts( String id) {
 		return testService.loadParts(Long.valueOf(id));
 	}
-	
-
 	
 	@RequestMapping(value = "/getTypes")
 	public @ResponseBody List<Type> getTypes() {
@@ -146,7 +126,15 @@ public class EnglishController {
 	public @ResponseBody PageResults<Exercise> listExercise(String page, String type) {
 		if(type == "" || type == null)
 			type = "-1";
-		return exerciseService.getPageList(Integer.valueOf(page), Long.valueOf(type));
+		PageResults<Exercise> pr=  exerciseService.getPageList(Integer.valueOf(page), Long.valueOf(type));
+		Exercise e = pr.getResults().get(0);
+		try{
+			JSONObject j = new JSONObject(e);
+		}catch (Exception e1) {
+			// TODO: handle exception
+			e1.printStackTrace();
+		}
+		return pr;
 	}
 	
 	@RequestMapping(value = "/loadExercise" )

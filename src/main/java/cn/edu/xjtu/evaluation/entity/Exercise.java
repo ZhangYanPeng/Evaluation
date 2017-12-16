@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -29,6 +30,11 @@ public class Exercise {
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinColumn( name = "exercise_id")
 	private Set<Question> questions;
+	
+	@OneToMany
+	@JoinColumn( name = "exercise_id")
+	@JsonIgnore
+	private Set<PartExer> partExers;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Type type;
@@ -75,5 +81,14 @@ public class Exercise {
 	public void setType(Type type) {
 		this.type = type;
 	}
+
+	public Set<PartExer> getPartExers() {
+		return partExers;
+	}
+
+	public void setPartExers(Set<PartExer> partExers) {
+		this.partExers = partExers;
+	}
+	
 	
 }

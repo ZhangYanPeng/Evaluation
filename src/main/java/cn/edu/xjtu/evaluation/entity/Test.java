@@ -18,10 +18,11 @@ import org.hibernate.annotations.GenericGenerator;
 public class Test {
 	@Id
 	@GeneratedValue( generator = "testgenerator" )
-	@GenericGenerator( name = "testgenerator", strategy = "increment")
+	@GenericGenerator( name = "testgenerator", strategy = "assigned")
 	private long id;
 	
 	private int choose;
+	private int collect;
 	private String title;
 	private String description;
 	private String remarks;
@@ -93,6 +94,14 @@ public class Test {
 
 	public void setChoose(int choose) {
 		this.choose = choose;
+	}
+
+	public int getCollect() {
+		return collect;
+	}
+
+	public void setCollect(int collect) {
+		this.collect = collect;
 	}
 	
 	
