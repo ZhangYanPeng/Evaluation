@@ -71,9 +71,14 @@ public class EnglishController {
 		return testService.remove(Long.valueOf(id));
 	}
 	
-	@RequestMapping(value = "/choose_test" , method = RequestMethod.POST)
+	@RequestMapping(value = "/choose" , method = RequestMethod.POST)
 	public @ResponseBody int chooseTest(String id) {
 		return testService.chooseTest(Long.valueOf(id));
+	}
+	
+	@RequestMapping(value = "/collect" , method = RequestMethod.POST)
+	public @ResponseBody int collect(String id, String state) {
+		return testService.collect(Long.valueOf(id),Integer.valueOf(state));
 	}
 	
 	@RequestMapping(value = "/loadParts" )
@@ -126,15 +131,7 @@ public class EnglishController {
 	public @ResponseBody PageResults<Exercise> listExercise(String page, String type) {
 		if(type == "" || type == null)
 			type = "-1";
-		PageResults<Exercise> pr=  exerciseService.getPageList(Integer.valueOf(page), Long.valueOf(type));
-		Exercise e = pr.getResults().get(0);
-		try{
-			JSONObject j = new JSONObject(e);
-		}catch (Exception e1) {
-			// TODO: handle exception
-			e1.printStackTrace();
-		}
-		return pr;
+		return exerciseService.getPageList(Integer.valueOf(page), Long.valueOf(type));
 	}
 	
 	@RequestMapping(value = "/loadExercise" )

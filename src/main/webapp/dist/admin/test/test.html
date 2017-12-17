@@ -16,7 +16,6 @@
 		var total_num = 0;
 		$(document).ready(function(){
 			list(1);
-			loadStatus();
 		});
 
 		function list(p) {
@@ -52,9 +51,14 @@
 						var td_n = $('<td></td>').append(
 							value.title);
 						if( value.choose ==1 )
-							td_n.append("(选定测试)").append("<a href='javascript:choose("+value.id+")' ></a>");
+							td_n.append("&nbsp;(选定测试)");
 						else{
-							td_n.append($("<a></a>").attr('href','javascript:chooseTest('+value.id+');').append("设为目标测试"));
+							td_n.append($("<a></a>").attr('href','javascript:choose('+value.id+');').append("&nbsp;设为目标测试"));
+						}
+						if( value.collect ==1 )
+							td_n.append("<a href='javascript:collect("+value.id+",0)' >&nbsp;设为不采集信息</a>");
+						else{
+							td_n.append($("<a></a>").attr('href','javascript:collect('+value.id+',1);').append("&nbsp;设为采集信息"));
 						}
 						var td_op = $('<td></td>')
 							.append(
@@ -86,11 +90,7 @@
 					alert("网络错误，请重试");
 				},
 				success : function(data) {
-					if (data == 1) {
-						alert("添加成功！");
-						page_num = 1;
-						list(1);
-					}
+					window.location.href = "testadd.html?id=" + data.id;
 				}
 			});
 		}
@@ -119,13 +119,13 @@
 			});
 		}
 
-		function chooseTest(tid) {
+		function choose(tid) {
 			$.ajax({
 				sync : false,
 				cache : false,
 				type : 'POST',
 				crossDomain : true,
-				url : "choose_test",
+				url : "choose",
 				data : {
 					id : tid
 				},
@@ -135,12 +135,33 @@
 					alert("网络错误，请重试");
 				},
 				success : function(data) {
-					list(1);
-					page_num = 1;
+					list(page_num);
 				}
 			});
 		}
-		
+
+		function collect(tid, s) {
+			$.ajax({
+				sync : false,
+				cache : false,
+				type : 'POST',
+				crossDomain : true,
+				url : "collect",
+				data : {
+					id : tid,
+					state : s
+				},
+				dataType : "json",
+				contentType : "application/x-www-form-urlencoded;charset=utf-8",
+				error : function(e) {
+					alert("网络错误，请重试");
+				},
+				success : function(data) {
+					list(page_num);
+				}
+			});
+		}
+
 		function first() {
 			if (page_num == 1)
 				return;
@@ -186,10 +207,6 @@
 					<form>
 						<div class="cfD">
 							<button class="userbtn" onclick="javascript:add();">添加</button>
-						</div>
-						
-						<div class="cfD">
-							<button class="userbtn" style="width:400px;" id="statusbtn" onclick="javascript:change();"></button>
 						</div>
 					</form>
 				</div>

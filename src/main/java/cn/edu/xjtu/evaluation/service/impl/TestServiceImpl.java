@@ -54,7 +54,7 @@ public class TestServiceImpl implements ITestService {
 	@Transactional
 	public Test add(Test test) {
 		// TODO Auto-generated method stub
-		testDAO.saveOrUpdate(test);
+		testDAO.save(test);
 		return test;
 	}
 
@@ -221,6 +221,16 @@ public class TestServiceImpl implements ITestService {
 		String hqlString = "from Intervention where question.id = ? order by level asc";
 		Object[] values = { id };
 		return interventionDAO.getListByHQL(hqlString, values);
+	}
+
+	@Override
+	@Transactional
+	public int collect(long id, Integer state) {
+		// TODO Auto-generated method stub
+		Test t = testDAO.get(id);
+		t.setCollect(state);
+		testDAO.update(t);
+		return 0;
 	}
 
 }

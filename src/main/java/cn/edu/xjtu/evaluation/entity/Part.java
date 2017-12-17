@@ -35,9 +35,6 @@ public class Part {
 	@OneToMany( fetch = FetchType.EAGER )
 	@JoinColumn( name = "part_id" )
 	private Set<PartExer> partExers;
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	private Type type;
 
 	public Set<PartExer> getPartExers() {
 		return partExers;
@@ -82,13 +79,4 @@ public class Part {
 	public void setP_no(int p_no) {
 		this.p_no = p_no;
 	}
-
-	public Type getType() {
-		return type;
-	}
-
-	public void setType(Type type) {
-		this.type = type;
-	}
-
 }

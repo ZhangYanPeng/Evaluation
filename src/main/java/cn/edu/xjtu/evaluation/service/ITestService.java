@@ -24,4 +24,5 @@ public interface ITestService {
 	List<Exercise> loadExercises(Long id);
 	List<Question> loadQuestions(Long id);
 	List<Intervention> loadInterventions(Long id);
+	int collect(long id, Integer state);
 }

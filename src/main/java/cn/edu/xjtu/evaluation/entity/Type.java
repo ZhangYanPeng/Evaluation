@@ -31,11 +31,6 @@ public class Type {
 	@JsonIgnore
 	private Set<Exercise> exercises;
 
-	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name = "type_id")
-	@JsonIgnore
-	private Set<Part> Parts;
-
 	public long getId() {
 		return id;
 	}
@@ -68,14 +63,4 @@ public class Type {
 		this.direction = direction;
 	}
 
-	public Set<Part> getParts() {
-		return Parts;
-	}
-
-	public void setParts(Set<Part> parts) {
-		Parts = parts;
-	}
-
-	
-	
 }
