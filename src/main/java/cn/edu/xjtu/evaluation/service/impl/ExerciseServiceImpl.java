@@ -144,5 +144,19 @@ public class ExerciseServiceImpl implements IExerciseService {
 		return e;
 	}
 
+	@Override
+	@Transactional
+	public List<Exercise> getList(long type) {
+		// TODO Auto-generated method stub
+		if( type == -1){
+			String hql = "from Exercise";
+			Object[] values = {};
+			return exerciseDAO.getListByHQL(hql, values);
+		}else{
+			String hql = "from Exercise where type.id = ? ";
+			Object[] values = {type};
+			return exerciseDAO.getListByHQL(hql, values);
+		}
+	}
 
 }

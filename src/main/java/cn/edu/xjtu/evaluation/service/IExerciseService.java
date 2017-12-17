@@ -14,4 +14,5 @@ public interface IExerciseService {
 	List<Exercise> list();
 	PageResults<Exercise> getPageList(Integer page, long type);
 	Exercise create();
+	List<Exercise> getList(long type);
 }

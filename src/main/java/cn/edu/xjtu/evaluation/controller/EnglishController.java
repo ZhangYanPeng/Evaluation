@@ -28,6 +28,7 @@ import cn.edu.xjtu.evaluation.entity.Type;
 import cn.edu.xjtu.evaluation.service.IAudioService;
 import cn.edu.xjtu.evaluation.service.IExerciseService;
 import cn.edu.xjtu.evaluation.service.IInterventionService;
+import cn.edu.xjtu.evaluation.service.IPartService;
 import cn.edu.xjtu.evaluation.service.IQuestionService;
 import cn.edu.xjtu.evaluation.service.ITestService;
 import cn.edu.xjtu.evaluation.service.ITypeService;
@@ -40,6 +41,8 @@ public class EnglishController {
 
 	@Autowired
 	ITestService testService;
+	@Autowired
+	IPartService partService;
 	@Autowired
 	ITypeService typeService;
 	@Autowired
@@ -79,6 +82,11 @@ public class EnglishController {
 	@RequestMapping(value = "/collect" , method = RequestMethod.POST)
 	public @ResponseBody int collect(String id, String state) {
 		return testService.collect(Long.valueOf(id),Integer.valueOf(state));
+	}
+	
+	@RequestMapping(value = "/loadTest" )
+	public @ResponseBody Test loadTest( String id) {
+		return testService.get(Long.valueOf(id));
 	}
 	
 	@RequestMapping(value = "/loadParts" )
@@ -132,6 +140,13 @@ public class EnglishController {
 		if(type == "" || type == null)
 			type = "-1";
 		return exerciseService.getPageList(Integer.valueOf(page), Long.valueOf(type));
+	}
+	
+	@RequestMapping(value = "/listAllExercise" )
+	public @ResponseBody List<Exercise> listAllExercise( String type) {
+		if(type == "" || type == null)
+			type = "-1";
+		return exerciseService.getList(Long.valueOf(type));
 	}
 	
 	@RequestMapping(value = "/loadExercise" )
@@ -221,5 +236,10 @@ public class EnglishController {
 			}
 		}
 		return 0;
+	}
+	
+	@RequestMapping(value = "/addTestExercise" )
+	public @ResponseBody int deleteAudio(String id, String eid){
+		return testService.addExercise(Long.valueOf(id), Long.valueOf(eid));
 	}
 }

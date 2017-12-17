@@ -233,4 +233,40 @@ public class TestServiceImpl implements ITestService {
 		return 0;
 	}
 
+	@Override
+	@Transactional
+	public int addExercise(long id, long eid) {
+		// TODO Auto-generated method stub
+		Test test = testDAO.get(id);
+		Exercise exercise = exerciseDAO.get(eid);
+		int check = 0;
+		for(Part p : test.getParts()) {
+			if(p.getPartExers().iterator().next().getExercise().getType().getId() == exercise.getType().getId()) {
+				PartExer pe = new PartExer();
+				pe.setExercise(exercise);
+				pe.setPart(p);
+				pe.setE_no(p.getPartExers().size());
+				partExerDAO.save(pe);
+				check = 1;
+				break;
+			}
+		}
+		if( check == 0 ) {
+			Part p = new Part();
+			p.setP_no(test.getParts().size());
+			p.setTest(test);
+			partDAO.save(p);
+			for(Part pt : test.getParts()) {
+				if(pt.getPartExers().size() == 0) {
+					PartExer pe = new PartExer();
+					pe.setExercise(exercise);
+					pe.setPart(p);
+					pe.setE_no(0);
+					partExerDAO.save(pe);
+				}
+			}
+		}
+		return 0;
+	}
+
 }
