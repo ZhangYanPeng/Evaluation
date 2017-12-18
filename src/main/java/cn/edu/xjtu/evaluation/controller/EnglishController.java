@@ -61,8 +61,9 @@ public class EnglishController {
 	}
 	
 	@RequestMapping(value = "/add_test" , method = RequestMethod.POST)
-	public @ResponseBody Test addTest(HttpServletRequest request) {
+	public @ResponseBody Test addTest(String name) {
 		Test t = new Test();
+		t.setTitle(name);
 		t.setChoose(0);
 		t.setCollect(0);
 		t.setId(System.currentTimeMillis());
@@ -241,5 +242,10 @@ public class EnglishController {
 	@RequestMapping(value = "/addTestExercise" )
 	public @ResponseBody int deleteAudio(String id, String eid){
 		return testService.addExercise(Long.valueOf(id), Long.valueOf(eid));
+	}
+	
+	@RequestMapping(value = "/removeTestExercise" )
+	public @ResponseBody int removeTestExercise(String id, String eid){
+		return testService.removeExercise(Long.valueOf(id), Long.valueOf(eid));
 	}
 }

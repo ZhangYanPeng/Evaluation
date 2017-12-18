@@ -1,7 +1,6 @@
 package cn.edu.xjtu.evaluation.service.impl;
 
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +22,6 @@ import cn.edu.xjtu.evaluation.entity.Intervention;
 import cn.edu.xjtu.evaluation.entity.Part;
 import cn.edu.xjtu.evaluation.entity.PartExer;
 import cn.edu.xjtu.evaluation.entity.Question;
-import cn.edu.xjtu.evaluation.entity.Record;
 import cn.edu.xjtu.evaluation.entity.Test;
 import cn.edu.xjtu.evaluation.service.ITestService;
 import cn.edu.xjtu.evaluation.support.PageResults;
@@ -172,17 +170,17 @@ public class TestServiceImpl implements ITestService {
 		answer.setStudent(studentDAO.get(uid));
 		answerDAO.save(answer);
 		for (Part p : testDAO.get(tid).getParts()) {
-//			for (Exercise e : p.getExercises()) {
-//				for (Question q : e.getQuestions()) {
-//					int i = q.getQ_num() - 1;
-//					Record record = new Record();
-//					record.setAnswer(answer);
-//					record.setQuestion(q);
-//					record.setResult(records[i]);
-//					record.setReason(reasons[i]);
-//					recordDAO.save(record);
-//				}
-//			}
+			// for (Exercise e : p.getExercises()) {
+			// for (Question q : e.getQuestions()) {
+			// int i = q.getQ_num() - 1;
+			// Record record = new Record();
+			// record.setAnswer(answer);
+			// record.setQuestion(q);
+			// record.setResult(records[i]);
+			// record.setReason(reasons[i]);
+			// recordDAO.save(record);
+			// }
+			// }
 		}
 		return 0;
 	}
@@ -240,8 +238,8 @@ public class TestServiceImpl implements ITestService {
 		Test test = testDAO.get(id);
 		Exercise exercise = exerciseDAO.get(eid);
 		int check = 0;
-		for(Part p : test.getParts()) {
-			if(p.getPartExers().iterator().next().getExercise().getType().getId() == exercise.getType().getId()) {
+		for (Part p : test.getParts()) {
+			if (p.getPartExers().iterator().next().getExercise().getType().getId() == exercise.getType().getId()) {
 				PartExer pe = new PartExer();
 				pe.setExercise(exercise);
 				pe.setPart(p);
@@ -251,21 +249,48 @@ public class TestServiceImpl implements ITestService {
 				break;
 			}
 		}
-		if( check == 0 ) {
+		if (check == 0) {
 			Part p = new Part();
 			p.setP_no(test.getParts().size());
 			p.setTest(test);
 			partDAO.save(p);
-			for(Part pt : test.getParts()) {
-				if(pt.getPartExers().size() == 0) {
-					PartExer pe = new PartExer();
-					pe.setExercise(exercise);
-					pe.setPart(p);
-					pe.setE_no(0);
-					partExerDAO.save(pe);
+			PartExer pe = new PartExer();
+			pe.setExercise(exercise);
+			pe.setPart(p);
+			pe.setE_no(0);
+			partExerDAO.save(pe);
+		}
+		return 0;
+	}
+
+	@Override
+	@Transactional
+	public int removeExercise(long id, long eid) {
+		// TODO Auto-generated method stub
+		Test test = testDAO.get(id);
+		for (Part p : test.getParts()) {
+			for(PartExer pe : p.getPartExers()){
+				if(pe.getId() == eid){
+					for(PartExer tpe : p.getPartExers()){
+						if(tpe.getE_no()>pe.getE_no()){
+							tpe.setE_no(tpe.getE_no()-1);
+							partExerDAO.update(tpe);
+						}
+					}
+					partExerDAO.delete(pe);
+					if(p.getPartExers().size()==1){
+						for (Part tp : test.getParts()) {
+							if(tp.getP_no()>p.getP_no()){
+								tp.setP_no(tp.getP_no()-1);
+								partDAO.update(tp);
+							}
+						}
+						partDAO.delete(p);
+					}
 				}
 			}
 		}
+		
 		return 0;
 	}
 

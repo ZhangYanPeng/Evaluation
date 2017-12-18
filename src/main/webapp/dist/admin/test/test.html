@@ -39,8 +39,8 @@
 					$("#page_num").val(p);
 
 					var tab_title = "<tr>"
-						+ "<td width='366px' class='tdColor tdC'>序号</td>"
-						+ "<td width='930px' class='tdColor'>测试名</td>"
+						+ "<td width='206px' class='tdColor tdC'>序号</td>"
+						+ "<td width='430px' class='tdColor'>测试名</td>"
 						+ "<td width='430px' class='tdColor'>操作</td>"
 						+ "	</tr>";
 					$("#testlist").html(tab_title);
@@ -83,6 +83,7 @@
 				crossDomain : true,
 				url : "add_test",
 				data : {
+					name : $("#name").val()
 				},
 				dataType : "json",
 				contentType : "application/x-www-form-urlencoded;charset=utf-8",
@@ -206,6 +207,7 @@
 				<div class="conform">
 					<form>
 						<div class="cfD">
+							<input class="userinput" id="name" type="text" placeholder="请输入新增试题名称" />
 							<button class="userbtn" onclick="javascript:add();">添加</button>
 						</div>
 					</form>

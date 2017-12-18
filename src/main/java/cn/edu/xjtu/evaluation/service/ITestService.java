@@ -26,4 +26,5 @@ public interface ITestService {
 	List<Intervention> loadInterventions(Long id);
 	int collect(long id, Integer state);
 	int addExercise(long id, long eid);
+	int removeExercise(long id, long eid);
 }
