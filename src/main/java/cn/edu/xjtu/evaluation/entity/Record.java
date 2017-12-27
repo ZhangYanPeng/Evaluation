@@ -20,6 +20,7 @@ public class Record {
 	
 	private String result;
 	private String reason;
+	private int no;
 	
 	@ManyToOne( fetch = FetchType.LAZY )
 	@JsonIgnore
@@ -28,6 +29,14 @@ public class Record {
 	@ManyToOne( fetch = FetchType.LAZY )
 	private Question question;
 	
+	public int getNo() {
+		return no;
+	}
+
+	public void setNo(int no) {
+		this.no = no;
+	}
+
 	public Record() {
 		super();
 	}

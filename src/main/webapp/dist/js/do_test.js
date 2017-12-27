@@ -1,12 +1,13 @@
 function presentBaseTest(){
 	$$("#part_list").html("");
-	for( var i=1;i<=c_test.parts.length;i++){
+	for( var i=0;i<c_test.parts.length;i++){
 		var a_part = $$("<a></a>").attr('class',"button").attr('id','part'+i).attr('href',"#");
 		$$("#part_list").append(a_part);
 	}
 	for( var i=0;i<c_test.parts.length;i++){
 		var p = c_test.parts[i];
-		$$('#part'+p.p_no).append(p.exerciseType);
+		var t = c_test.parts[i].partExers[0].exercise.type;
+		$$('#part'+p.p_no).append(t.name);
 	}
 	$$('#t_title').html(c_test.title);
 	if(c_type==1){
@@ -42,15 +43,14 @@ function count(qid) {
 	}
 }
 
-function presentQuestion(qno){
-	presentBaseTest();
+function findCurrent(){
 	for(var ti=0; ti<c_test.parts.length; ti++){
 		var part = c_test.parts[ti];
-		for(var pi=0; pi<part.exercises.length; pi++){
-			var exer = part.exercises[pi];
+		for(var pi=0; pi<part.partExers.length; pi++){
+			var exer = part.partExers[pi].exercise;
 			for( var ei=0; ei<exer.questions.length; ei++){
 				var ques = exer.questions[ei];
-				if( ques.q_num == qno ){
+				if( ques.q_num == c_qno && part.p_no == c_pno && part.partExers[pi].e_no == c_eno){
 					c_part = part;
 					c_exercise = exer;
 					c_question = ques;
@@ -58,16 +58,19 @@ function presentQuestion(qno){
 			}
 		}
 	}
+}
 
-	
+function presentQuestion(pno,eno,qno){
+	presentBaseTest();
+	findCurrent();
+
 	$$('#part'+c_part.p_no).attr("class","button active");
-	$$('#progress').html(qno+"/"+q_total);
-	myApp.setProgressbar($$('.progressbar'), qno*100/q_total);
-	$$('#part_description').html(c_part.description);
+	$$('#progress').html(c_pro+"/"+q_total);
+	myApp.setProgressbar($$('.progressbar'), c_pro*100/q_total);
 	$$('#exercise_description').html(c_exercise.description);
 	$$('#exercise_text').html(c_exercise.text);
 	
-	$$('#q_text').html(c_question.q_num+".");
+	$$('#q_text').html((c_pro+1)+".");
 	var options = c_question.options.split("||");
 	$$('#q_op').html("");
 	for(var i=1; i<options.length; i++){
@@ -100,13 +103,15 @@ function nextQuestion(t){
 	if(t==0 &&op == undefined){
 		op=-1;
 	}
-	
+
 	if(c_type==0){
 		// evaluation
 		c_record = "||"+op;
-		records[c_question.q_num-1] = c_record;
+		console.log(c_record);
+		records[c_pro] = c_record;
+		console.log(records);
 		c_record="";
-		reasons[c_question.q_num-1] = "";
+		reasons[c_pro] = "";
 		ToNextQue();
 	}else{
 		// intervention
@@ -114,19 +119,19 @@ function nextQuestion(t){
 		if(op == c_question.answer){
 			if(c_record.split("||").length == 2){
 				reasonQue(0);
-				records[c_question.q_num-1] = c_record;
+				records[c_pro] = c_record;
 				c_record="";
 				ToNextQue();
 			}else{
 				reasonQue(1);
-				records[c_question.q_num-1] = c_record;
+				records[c_pro] = c_record;
 				c_record="";
 			}
 		}else{
 			alert("很遗憾，回答错误！");
 			if(c_record.split("||").length > c_question.interventions.length + 1){
 				reasonQue(1);
-				records[c_question.q_num-1] = c_record;
+				records[c_pro] = c_record;
 				c_record="";
 			}
 			else{
@@ -138,24 +143,33 @@ function nextQuestion(t){
 }
 
 function ToNextQue(){
-	if( c_question.q_num == q_total ){
+	c_pro = c_pro+1;
+	if( c_pro == q_total ){
 		finishTest();
 		return;
 	}
-	
-	presentQuestion(c_question.q_num+1);
+	c_qno = c_qno+1;
+	if(c_qno == c_exercise.questions.length){
+		c_qno=0;
+		c_eno = c_eno+1;
+		if(c_eno == c_part.partExers.length){
+			c_eno=0;
+			c_pno = c_pno+1;
+		}
+	}
+	presentQuestion();
 }
 
 function reasonQue(type){
 	if( type == 0 ){
-		reasons[c_question.q_num-1]="";
+		reasons[c_pro]="";
 	}else{
 		myApp.popup('.popup-reason');
 	}
 }
 
 function reasonSubmit(){
-	reasons[c_question.q_num-1]=$$("#reason_text").val();
+	reasons[c_pro]=$$("#reason_text").val();
 	myApp.closeModal('.popup-reason');
 	ToNextQue();
 }
@@ -165,10 +179,10 @@ function interventnionQue(num){
 		var intervention = c_question.interventions[i];
 		if(intervention.level==num){
 			$$('#inte_text').html(intervention.text);
-			if( intervention.audio_path == null || intervention.audio_path=="" || intervention.audio_path.length == 0){
+			if( intervention.audio == null || intervention.audio.src=="" || intervention.audio.src.length == 0){
 				$$('#i_audio').hide();
 			}else{
-				$$('#i_audio').attr('src',baseUrl + "/audio/" +intervention.audio_path);
+				$$('#i_audio').attr('src',severUrl +intervention.audio.src);
 				$$('#i_audio').show();
 			}
 			break;

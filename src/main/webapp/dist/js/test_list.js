@@ -176,7 +176,6 @@ function loadAnswers(type) {
 				var icon = $("<i></i>").attr("class", "fa fa-check");
 				d_icon.append(icon);
 				var btn = $("<a></a>").attr('class', 'button').append('查看记录');
-				console.log(value.id);
 				btn.attr('href', 'test_result.html?tid=' + test.id + "&type="+ type);
 				d_after.append(btn);
 				d_in.append(d_title).append(d_after);
