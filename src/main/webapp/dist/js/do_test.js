@@ -107,9 +107,7 @@ function nextQuestion(t){
 	if(c_type==0){
 		// evaluation
 		c_record = "||"+op;
-		console.log(c_record);
 		records[c_pro] = c_record;
-		console.log(records);
 		c_record="";
 		reasons[c_pro] = "";
 		ToNextQue();

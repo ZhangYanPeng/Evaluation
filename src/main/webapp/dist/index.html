@@ -8,14 +8,14 @@
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<title>大学英语听力评估</title>
 	<!-- Path to Framework7 Library CSS-->
-	<link rel="stylesheet" href="css/framework7.ios.min.css">
-	<link rel="stylesheet" href="css/framework7.ios.colors.min.css">
+	<link rel="stylesheet" href="css/framework7.material.min.css">
+	<link rel="stylesheet" href="css/framework7.material.colors.min.css">
 	<!-- Path to your custom app styles-->
 	<link rel="stylesheet" href="./lib/font-awesome/css/font-awesome.min.css">
 	<link rel="stylesheet" href="css/my-app.css">
 	<script type="text/javascript" src="lib/jquery/jquery.js"></script>
 </head>
-<body>
+<body class="theme-teal">
 	<!-- Status bar overlay for fullscreen mode-->
 	<div class="statusbar-overlay"></div>
 	<!-- Panels overlay-->
@@ -27,9 +27,9 @@
 		</div>
 	</div>
 	<!-- Right panel with cover effect-->
-	<div class="panel panel-right panel-cover">
+	<div class="panel panel-right panel-cover" style="background: #D0D0D0;">
 		<div class="content-block">
-			<p id="inte_text"></p>
+			<font size="5" color="black"><p id="inte_text"></p></font>
 			<audio controls="controls" id="i_audio">
 			</audio>
 		</div>
