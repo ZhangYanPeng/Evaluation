@@ -27,7 +27,12 @@ var baseUrl = getRootPath();
 var severUrl = getSeverUrl();
 
 //Initialize your app
-var myApp = new Framework7();
+var myApp = new Framework7(
+	{
+          modalCloseByOutside: false,
+          actionsCloseByOutside: false,
+          popupCloseByOutside: false
+	});
 
 // Export selectors engine
 var $$ = Dom7;
