@@ -13,4 +13,5 @@ public interface IAnswerService {
 	List getByTest(Test test);
 	Answer getAnswer(Long tid, Long uid, Integer type);
 	List<Answer> getAnswers(Long uid, Integer type);
+	int FinishQue(Long id, String ques);
 }

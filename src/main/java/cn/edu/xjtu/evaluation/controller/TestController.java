@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -70,5 +71,17 @@ public class TestController {
 	@RequestMapping(value = "/getAnswers" )
 	public @ResponseBody List<Answer> getAnswers(String type, String uid) {
 		return answerService.getAnswers(Long.valueOf(uid),Integer.valueOf(type));
+	}
+	
+	@RequestMapping(value = "/RateSubmit" )
+	public @ResponseBody int RateSubmit(String ansId, String ques) {
+		String questionaire = "";
+		JSONArray jsonArr = new JSONArray(ques);
+		List<Object> quesstr = jsonArr.toList();
+		for(int i=0; i<quesstr.size(); i++){
+			questionaire += (String)quesstr.get(i) + "||";
+		}
+		answerService.FinishQue(Long.valueOf(ansId),questionaire);
+		return 1;
 	}
 }

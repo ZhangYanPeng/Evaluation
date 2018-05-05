@@ -28,6 +28,14 @@ public class StudentController {
 		return student;
 	}
 	
+	@RequestMapping(value = "/QueSubmit", method = RequestMethod.POST)
+	public @ResponseBody int QueSubmit(String userId, String questionaire) {
+		Student student = studentService.get(Long.valueOf(userId));
+		student.setQuestionaire(questionaire);
+		studentService.edit(student);
+		return 1;
+	}
+	
 	@RequestMapping(value = "/modifypassword", method = RequestMethod.POST)
 	public @ResponseBody int modifyPassword(String id, String password) {
 		Student std = studentService.get(Long.valueOf(id));

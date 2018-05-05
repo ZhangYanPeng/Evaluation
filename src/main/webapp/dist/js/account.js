@@ -98,7 +98,6 @@ function initBar() {
 		$$('#user_name').html("你好！    " + user.name);
 		if(user.questionaire == null){
 			myApp.popup('.popup-questionaire');
-			return;
 		}
 		var tmpstr = "身份：";
 		if (userType === "student") {

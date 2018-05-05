@@ -119,7 +119,7 @@
 					var option = $("<option></option>").attr("value","-1").attr("selected","true").append("-------请选择习题类型--------");
 					$("#exercise").html(option);
 					$.each(data, function(index,value){
-						var op = $("<option></option>").attr("value",value.id).append(value.description);
+						var op = $("<option></option>").attr("value",value.id).append(value.text);
 						$("#exercise").append(op);
 					});
 				}

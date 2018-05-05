@@ -21,7 +21,6 @@ function finishTest(){
 			console.log(e);
 		},
 		success : function(data){
-
 			mainView.router.loadPage("test_result.html?tid="+c_test.id+"&type="+c_type);
 		}
 	});
@@ -46,6 +45,10 @@ function calculate_result(tid, type){
 		},
 		success : function(data){
 			var t_score=0;
+			if(data.questionaire == null){
+				$$("#test_id").val(data.id);
+				myApp.popup('.popup-rate');
+			}
 			for (var ri =0; ri <data.records.length; ri++){
 				$.each(data.records, function(index, value){
 					if(ri == value.no){

@@ -24,9 +24,11 @@ public class Answer {
 	@GenericGenerator( name = "answergenerator" , strategy = "increment" )
 	private long id;
 	
+	private String questionaire;
+	
 	private int type;
 	
-	@OneToMany( fetch = FetchType.EAGER, cascade = CascadeType.ALL )
+	@OneToMany( fetch = FetchType.EAGER)
 	@JoinColumn( name = "answer_id" )
 	private List<Record> records;
 	
@@ -79,6 +81,14 @@ public class Answer {
 
 	public void setType(int type) {
 		this.type = type;
+	}
+
+	public String getQuestionaire() {
+		return questionaire;
+	}
+
+	public void setQuestionaire(String questionaire) {
+		this.questionaire = questionaire;
 	}
 	
 	

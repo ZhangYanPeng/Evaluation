@@ -68,7 +68,6 @@ function presentQuestion(pno,eno,qno){
 	$$('#progress').html(c_pro+"/"+q_total);
 	myApp.setProgressbar($$('.progressbar'), c_pro*100/q_total);
 	$$('#exercise_description').html(c_exercise.description);
-	$$('#exercise_text').html(c_exercise.text);
 	
 	$$('#q_text').html((c_pro+1)+".");
 	var options = c_question.options.split("||");
@@ -128,7 +127,7 @@ function nextQuestion(t){
 		}else{
 			alert("很遗憾，回答错误！");
 			if(c_record.split("||").length > c_question.interventions.length + 1){
-				reasonQue(1);
+				reasonQue(0)
 				records[c_pro] = c_record;
 				c_record="";
 			}
@@ -159,7 +158,7 @@ function ToNextQue(){
 }
 
 function reasonQue(type){
-	if( type == 0 ){
+	if( type == 0  || c_test.collect == 0){
 		reasons[c_pro]="";
 	}else{
 		myApp.popup('.popup-reason');
@@ -175,7 +174,7 @@ function reasonSubmit(){
 function interventnionQue(num){
 	for(var i=0; i<c_question.interventions.length;i++){
 		var intervention = c_question.interventions[i];
-		if(intervention.level==num){
+		if(intervention.level==num-1){
 			$$('#inte_text').html(intervention.text);
 			if( intervention.audio == null || intervention.audio.src=="" || intervention.audio.src.length == 0){
 				$$('#i_audio').hide();

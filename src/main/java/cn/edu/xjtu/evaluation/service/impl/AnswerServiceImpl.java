@@ -1,6 +1,5 @@
 package cn.edu.xjtu.evaluation.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,6 +79,18 @@ public class AnswerServiceImpl implements IAnswerService {
 		String hql = "from Answer where student.id = ? and type = ?";
 		Object[] values = {uid, type};
 		return answerDAO.getListByHQL(hql, values);
+	}
+
+	@Override
+	@Transactional
+	public int FinishQue(Long id, String ques) {
+		// TODO Auto-generated method stub
+
+		// TODO Auto-generated method stub
+		Answer answer = answerDAO.load(id);
+		answer.setQuestionaire(ques);
+		answerDAO.update(answer);
+		return 0;
 	}
 
 }
