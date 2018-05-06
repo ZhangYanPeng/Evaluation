@@ -123,6 +123,8 @@ function nextQuestion(t){
 				reasonQue(1);
 				records[c_pro] = c_record;
 				c_record="";
+				if(c_test.collect == 0)
+					ToNextQue();
 			}
 		}else{
 			alert("很遗憾，回答错误！");
