@@ -1,0 +1,236 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>编辑试题</title>
+	<link rel="stylesheet" type="text/css" href="../css/css.css" />
+	<script type="text/javascript" src="../js/jquery.min.js"></script>
+	<script type="text/javascript" src="../js/common.js"></script>
+	<script src="../js/ajaxfileupload.js"></script>
+	<script type="text/javascript">
+		var tid;
+		$(document).ready(function(){
+			tid = getQueryString("id");
+			loadType();
+			init();
+		});
+
+		function init(){
+			$.ajax({
+				sync : true,
+				cache : false,
+				type : 'POST',
+				crossDomain : true,
+				url : "loadTest",
+				data : {
+					id : tid
+				},
+				dataType : "json",
+				contentType : "application/x-www-form-urlencoded; charset=utf-8",
+				error : function(e) {
+					alert("网络错误，请重试");
+				},
+				success : function(data) {
+					$("#id").val(data.id);
+					$("#title").val(data.title);
+					var tab_title = "<tr>"
+						+ "<td width='200px' class='tdColor tdC'>序号</td>"
+						+ "<td width='200px' class='tdColor tdC'>类型</td>"
+						+ "<td width='600px' class='tdColor'>内容</td>"
+						+ "	</tr>";
+					$("#partlist").html(tab_title);
+					for(var i=0; i<data.parts.length; i++){
+						$.each(data.parts, function(index,value){
+							if(value.p_no == i){
+								var td_part = $("<td></td>").append("Section "+(value.p_no+1));
+								var td_type = $("<td></td>").append((value.partExers[0]).exercise.type.name);
+
+								var tab_etitle = "<tr>"
+									+ "<td width='100px' class='tdColor tdC'>序号</td>"
+									+ "<td width='400px' class='tdColor'>内容</td>"
+									+ "<td width='200px' class='tdColor'>操作</td>"
+									+ "	</tr>";
+								var tab_exer = $("<table></table>").html(tab_etitle);
+
+								for(var j=0; j<value.partExers.length; j++){
+									$.each(value.partExers, function(ind,val){
+										if(val.e_no == j){
+											var td_eno = $("<td></td>").append(val.e_no+1);
+											var td_exer = $("<td></td>").append(val.exercise.text);
+											var tr_exer = $("<tr></tr>").append(td_eno).append(td_exer).append($("<td></td>").append(
+												"<img class='operation delban' src='../img/delete.png' onclick='javascript:removeExercise("
+												+ val.id
+												+ ");' />"));
+											tab_exer.append(tr_exer);
+										}
+									});
+								}
+
+								var tr_part = $("<tr></tr>").append(td_part).append(td_type).append($("<td></td>").append(tab_exer));
+								$("#partlist").append(tr_part);
+							}
+						});
+					}
+				}
+			});
+		}
+
+		function loadType(){
+			$.ajax({
+				sync : false,
+				cache : false,
+				type : 'POST',
+				crossDomain : true,
+				url : "getTypes",
+				data : {
+				},
+				dataType : "json",
+				contentType : "application/x-www-form-urlencoded; charset=utf-8",
+				error : function(e) {
+					alert("网络错误，请重试");
+				},
+				success : function(data) {
+					var option = $("<option></option>").attr("value","-1").attr("selected","true").append("-------请选择习题类型--------");
+					$("#type").html(option);
+					$.each(data,function(index,value){
+						var op = $("<option></option>").attr("value",value.id).append(value.name);
+						$("#type").append(op);
+					});
+				}
+			});
+		}
+
+		function loadExercise(){
+			$.ajax({
+				sync : true,
+				cache : false,
+				type : 'POST',
+				crossDomain : true,
+				url : "listAllExercise",
+				data : {
+					type : $("#type").val()
+				},
+				dataType : "json",
+				contentType : "application/x-www-form-urlencoded; charset=utf-8",
+				error : function(e) {
+					alert("网络错误，请重试");
+				},
+				success : function(data) {
+					var option = $("<option></option>").attr("value","-1").attr("selected","true").append("-------请选择习题类型--------");
+					$("#exercise").html(option);
+					$.each(data, function(index,value){
+						var op = $("<option></option>").attr("value",value.id).append(value.text);
+						$("#exercise").append(op);
+					});
+				}
+			});
+		}
+
+		function addExercise(){
+			$.ajax({
+				sync : true,
+				cache : false,
+				type : 'POST',
+				crossDomain : true,
+				url : "addTestExercise",
+				data : {
+					id : $("#id").val(),
+					eid : $("#exercise").val()
+				},
+				dataType : "json",
+				contentType : "application/x-www-form-urlencoded; charset=utf-8",
+				error : function(e) {
+					alert("网络错误，请重试");
+				},
+				success : function(data) {
+					init();
+				}
+			});
+		}
+
+		function removeExercise(peid){
+			$.ajax({
+				sync : true,
+				cache : false,
+				type : 'POST',
+				crossDomain : true,
+				url : "removeTestExercise",
+				data : {
+					id : $("#id").val(),
+					eid : peid
+				},
+				dataType : "json",
+				contentType : "application/x-www-form-urlencoded; charset=utf-8",
+				error : function(e) {
+					alert("网络错误，请重试");
+				},
+				success : function(data) {
+					init();
+				}
+			});
+		}
+
+
+		function save() {
+			$.ajax({
+				sync : false,
+				cache : false,
+				type : 'POST',
+				crossDomain : true,
+				url : "editExercise",
+				data : {
+					
+				},
+				dataType : "json",
+				contentType : "application/x-www-form-urlencoded; charset=utf-8",
+				error : function(e) {
+					alert("网络错误，请重试");
+				},
+				success : function(data) {
+					init();
+				}
+			});
+		}
+
+		
+	</script>
+</head>
+<body>
+	<div id="pageAll">
+		<div class="pageTop">
+			<div class="page">
+				<img src="../img/coin02.png" /><span><a href="#">首页</a>&nbsp;-&nbsp;<a
+					href="#">试题管理</a>&nbsp;-</span>&nbsp;试题编辑
+				</div>
+			</div>
+			<div class="page ">
+				<!-- 会员注册页面样式 -->
+				<div class="banneradd bor">
+					<div class="baTopNo">
+						<span>习题编辑</span>
+					</div>
+					<form id="content">
+						<div class="baBody">
+							<input id="id" type="hidden" name="id" class="input3" />
+							<div class="bbD">
+								&nbsp;&nbsp;&nbsp;&nbsp;试题名称<input class="input3" id="title" name="title" type="text" />
+							</div>
+							<div class="bbD">
+								&nbsp;&nbsp;&nbsp;&nbsp;题目类型<select class="input3" name="type" id="type" onchange="javascript:loadExercise();"></select>
+								&nbsp;&nbsp;&nbsp;&nbsp;习题名称<select class="input3" name="exercise" id="exercise" >
+									<option>-------请选择习题类型--------</option>
+								</select>
+								<button class="btn_ok btn_yes" href="#" onclick="javascript:addExercise();">添加习题</button>
+							</div>
+							<div class="conShow">
+								<table id="partlist">
+								</table>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			<!-- 会员注册页面样式end -->
+		</div>
+	</body>
+	</html>

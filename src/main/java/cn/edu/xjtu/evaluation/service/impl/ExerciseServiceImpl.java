@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,8 +59,9 @@ public class ExerciseServiceImpl implements IExerciseService {
 
 	@Override
 	@Transactional
-	public int remove(Exercise exercise) {
+	public int remove(long id) {
 		// TODO Auto-generated method stub
+		Exercise exercise = exerciseDAO.get(id);
 		try {
 			Iterator it = exercise.getQuestions().iterator();
 			while(it.hasNext()){
@@ -74,6 +76,7 @@ public class ExerciseServiceImpl implements IExerciseService {
 			exerciseDAO.delete(exercise);
 		} catch (Exception e) {
 			// TODO: handle exception
+			e.printStackTrace();
 			return 0;
 		}
 		return 1;
@@ -97,7 +100,7 @@ public class ExerciseServiceImpl implements IExerciseService {
 	public Exercise get(long id) {
 		// TODO Auto-generated method stub
 		try {
-			Exercise e = exerciseDAO.load(id);
+			Exercise e = exerciseDAO.get(id);
 			return e;
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -114,13 +117,46 @@ public class ExerciseServiceImpl implements IExerciseService {
 	}
 
 	@Override
-	public PageResults<Exercise> getPageList(Integer page, String type) {
+	@Transactional
+	public PageResults<Exercise> getPageList(Integer page, long type) {
 		// TODO Auto-generated method stub
-		String hql = "from Exercise e where e.exerciseType.description = ? ";
-		String countHql = "select count(*) from Exercise";
-		String[] values = {type};
-		return exerciseDAO.findPageByFetchedHql(hql, countHql, page, Constants.PAGE_SIZE, values);
+		if( type == -1){
+			String hql = "from Exercise";
+			String countHql = "select count(*) from Exercise";
+			Object[] values = {};
+			return exerciseDAO.findPageByFetchedHql(hql, countHql, page, Constants.PAGE_SIZE, values);
+		}else{
+			String hql = "from Exercise where type.id = ? ";
+			String countHql = "select count(*) from Exercise where type.id = ? ";
+			Object[] values = {type};
+			return exerciseDAO.findPageByFetchedHql(hql, countHql, page, Constants.PAGE_SIZE, values);
+		}
 	}
 
+	@Override
+	@Transactional
+	public Exercise create() {
+		// TODO Auto-generated method stub
+		Exercise e = new Exercise();
+		long id = System.currentTimeMillis();
+		e.setId(id);
+		exerciseDAO.save(e);
+		return e;
+	}
+
+	@Override
+	@Transactional
+	public List<Exercise> getList(long type) {
+		// TODO Auto-generated method stub
+		if( type == -1){
+			String hql = "from Exercise";
+			Object[] values = {};
+			return exerciseDAO.getListByHQL(hql, values);
+		}else{
+			String hql = "from Exercise where type.id = ? ";
+			Object[] values = {type};
+			return exerciseDAO.getListByHQL(hql, values);
+		}
+	}
 
 }

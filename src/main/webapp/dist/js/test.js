@@ -31,8 +31,8 @@ function loadData(data){
 	$("#load_complete").hide();
 	for(var ti=0; ti<c_test.parts.length; ti++){
 		var part = c_test.parts[ti];
-		for(var pi=0; pi<part.exercises.length; pi++){
-			var exer = part.exercises[pi];
+		for(var pi=0; pi<part.partExers.length; pi++){
+			var exer = part.partExers[pi].exercise;
 			q_total = q_total+exer.questions.length;
 			for( var qi=0; qi<exer.questions.length; qi++){
 				loadAudio(exer.questions[qi]);
@@ -46,7 +46,7 @@ function loadData(data){
 function loadAudio(que){
 //加载所有音频信息（题目和干预）
 	var aud = $("<audio></audio>").attr('id','que-'+que.id).attr('onended','javascript:count('+que.id+');').attr('controls','controls').attr('oncanplaythrough','javascript:loaded();');
-	aud.attr("preload","preload").attr('src', baseUrl + "/audio/" + que.audio_path);
+	aud.attr("preload","preload").attr('src', severUrl + que.audio.src);
 	$("#audios").append(aud);
 }
 

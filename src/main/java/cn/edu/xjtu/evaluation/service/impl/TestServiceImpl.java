@@ -1,7 +1,6 @@
 package cn.edu.xjtu.evaluation.service.impl;
 
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +11,7 @@ import cn.edu.xjtu.evaluation.dao.impl.AnswerDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.ExerciseDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.InterventionDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.PartDAOImpl;
+import cn.edu.xjtu.evaluation.dao.impl.PartExerDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.QuestionDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.RecordDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.StudentDAOImpl;
@@ -20,6 +20,7 @@ import cn.edu.xjtu.evaluation.entity.Answer;
 import cn.edu.xjtu.evaluation.entity.Exercise;
 import cn.edu.xjtu.evaluation.entity.Intervention;
 import cn.edu.xjtu.evaluation.entity.Part;
+import cn.edu.xjtu.evaluation.entity.PartExer;
 import cn.edu.xjtu.evaluation.entity.Question;
 import cn.edu.xjtu.evaluation.entity.Record;
 import cn.edu.xjtu.evaluation.entity.Test;
@@ -45,19 +46,15 @@ public class TestServiceImpl implements ITestService {
 	RecordDAOImpl recordDAO;
 	@Autowired
 	StudentDAOImpl studentDAO;
-	
+	@Autowired
+	PartExerDAOImpl partExerDAO;
+
 	@Override
 	@Transactional
-	public int add(Test test) {
+	public Test add(Test test) {
 		// TODO Auto-generated method stub
-		try {
-			testDAO.saveOrUpdate(test);
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-			return 0;
-		}
-		return 1;
+		testDAO.save(test);
+		return test;
 	}
 
 	@Override
@@ -66,15 +63,17 @@ public class TestServiceImpl implements ITestService {
 		// TODO Auto-generated method stub
 		try {
 			Test t = testDAO.get(id);
-			for(Part p : t.getParts()) {
-				for(Exercise e : p.getExercises()) {
-					for(Question q : e.getQuestions()) {
-						for(Intervention i : q.getInterventions()) {
+			for (Part p : t.getParts()) {
+				for (PartExer pe : p.getPartExers()) {
+					Exercise e = pe.getExercise();
+					for (Question q : e.getQuestions()) {
+						for (Intervention i : q.getInterventions()) {
 							interventionDAO.delete(i);
 						}
 						questionDAO.delete(q);
 					}
 					exerciseDAO.delete(e);
+					partExerDAO.delete(pe);
 				}
 				partDAO.delete(p);
 			}
@@ -121,41 +120,6 @@ public class TestServiceImpl implements ITestService {
 	@Override
 	@Transactional
 	public int importTest(Test test) {
-		// TODO Auto-generated method stub
-		if(test == null){
-			return 0;
-		}
-		try {
-			Set<Part> ps = test.getParts();
-			test.setParts(null);
-			testDAO.saveOrUpdate(test);
-			for( Part p : ps){
-				Set<Exercise> es = p.getExercises();
-				p.setExercises(null);
-				p.setTest(test);
-				partDAO.save(p);
-				for( Exercise e : es){
-					Set<Question> qs = e.getQuestions();
-					e.setQuestions(null);
-					e.setPart(p);
-					exerciseDAO.save(e);
-					for( Question q : qs){
-						Set<Intervention> is = q.getInterventions();
-						q.setInterventions(null);
-						q.setExercise(e);
-						questionDAO.save(q);
-						for( Intervention i : is){
-							i.setQuestion(q);
-							interventionDAO.save(i);
-						}
-					}
-				}
-			}
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-			return 0;
-		}
 		return 1;
 	}
 
@@ -165,8 +129,8 @@ public class TestServiceImpl implements ITestService {
 		// TODO Auto-generated method stub
 		String hql = "from Test where choose = 1";
 		List<Test> tl = testDAO.getListByHQL(hql, null);
-		if(tl!=null) {
-			for(Test t : tl) {
+		if (tl != null) {
+			for (Test t : tl) {
 				t.setChoose(0);
 				testDAO.update(t);
 			}
@@ -182,9 +146,9 @@ public class TestServiceImpl implements ITestService {
 	public int check(Integer type, Long tid, Long uid) {
 		// TODO Auto-generated method stub
 		String hql = "from Answer where type = ? and student.id = ? and test.id = ?";
-		Object[] values = {type, uid, tid};
+		Object[] values = { type, uid, tid };
 		Answer a = answerDAO.getByHQL(hql, values);
-		if( a==null )
+		if (a == null)
 			return 0;
 		return 1;
 	}
@@ -206,16 +170,42 @@ public class TestServiceImpl implements ITestService {
 		answer.setTest(testDAO.get(tid));
 		answer.setStudent(studentDAO.get(uid));
 		answerDAO.save(answer);
-		for(Part p : testDAO.get(tid).getParts()){
-			for(Exercise e : p.getExercises()){
-				for(Question q : e.getQuestions()){
-					int i = q.getQ_num()-1;
-					Record record = new Record();
-					record.setAnswer(answer);
-					record.setQuestion(q);
-					record.setResult(records[i]);
-					record.setReason(reasons[i]);
-					recordDAO.save(record);
+		int c_pn=0;
+		int c_en=0;
+		int c_qn=0;
+		boolean check = true;
+		for(int i=0; i<records.length; i++){
+			check = true;
+			for (Part p : testDAO.get(tid).getParts()) {
+				if(!check)
+					break;
+				for (PartExer pe : p.getPartExers() ) {
+					if(!check)
+						break;
+					for (Question q : pe.getExercise().getQuestions()) {
+						if(!check)
+							break;
+						if(p.getP_no()==c_pn && pe.getE_no()==c_en && q.getQ_num()==c_qn){
+							Record record = new Record();
+							record.setAnswer(answer);
+							record.setQuestion(q);
+							record.setResult(records[i]);
+							record.setReason(reasons[i]);
+							record.setNo(i);
+							recordDAO.save(record);
+							c_qn++;
+							if(c_qn == pe.getExercise().getQuestions().size()){
+								c_qn=0;
+								c_en++;
+								if(c_en == p.getPartExers().size()){
+									c_en=0;
+									c_pn++;
+								}
+							}
+							check = false;
+							break;
+						}
+					}
 				}
 			}
 		}
@@ -227,7 +217,7 @@ public class TestServiceImpl implements ITestService {
 	public List<Part> loadParts(Long id) {
 		// TODO Auto-generated method stub
 		String hqlString = "from Part where test.id = ? order by p_no asc";
-		Object[] values = {id};
+		Object[] values = { id };
 		return partDAO.getListByHQL(hqlString, values);
 	}
 
@@ -236,7 +226,7 @@ public class TestServiceImpl implements ITestService {
 	public List<Exercise> loadExercises(Long id) {
 		// TODO Auto-generated method stub
 		String hqlString = "from Exercise where part.id = ? order by e_no asc";
-		Object[] values = {id};
+		Object[] values = { id };
 		return exerciseDAO.getListByHQL(hqlString, values);
 	}
 
@@ -245,7 +235,7 @@ public class TestServiceImpl implements ITestService {
 	public List<Question> loadQuestions(Long id) {
 		// TODO Auto-generated method stub
 		String hqlString = "from Question where exercise.id = ? order by q_no asc";
-		Object[] values = {id};
+		Object[] values = { id };
 		return questionDAO.getListByHQL(hqlString, values);
 	}
 
@@ -254,8 +244,81 @@ public class TestServiceImpl implements ITestService {
 	public List<Intervention> loadInterventions(Long id) {
 		// TODO Auto-generated method stub
 		String hqlString = "from Intervention where question.id = ? order by level asc";
-		Object[] values = {id};
+		Object[] values = { id };
 		return interventionDAO.getListByHQL(hqlString, values);
+	}
+
+	@Override
+	@Transactional
+	public int collect(long id, Integer state) {
+		// TODO Auto-generated method stub
+		Test t = testDAO.get(id);
+		t.setCollect(state);
+		testDAO.update(t);
+		return 0;
+	}
+
+	@Override
+	@Transactional
+	public int addExercise(long id, long eid) {
+		// TODO Auto-generated method stub
+		Test test = testDAO.get(id);
+		Exercise exercise = exerciseDAO.get(eid);
+		int check = 0;
+		for (Part p : test.getParts()) {
+			if (p.getPartExers().iterator().next().getExercise().getType().getId() == exercise.getType().getId()) {
+				PartExer pe = new PartExer();
+				pe.setExercise(exercise);
+				pe.setPart(p);
+				pe.setE_no(p.getPartExers().size());
+				partExerDAO.save(pe);
+				check = 1;
+				break;
+			}
+		}
+		if (check == 0) {
+			Part p = new Part();
+			p.setP_no(test.getParts().size());
+			p.setTest(test);
+			partDAO.save(p);
+			PartExer pe = new PartExer();
+			pe.setExercise(exercise);
+			pe.setPart(p);
+			pe.setE_no(0);
+			partExerDAO.save(pe);
+		}
+		return 0;
+	}
+
+	@Override
+	@Transactional
+	public int removeExercise(long id, long eid) {
+		// TODO Auto-generated method stub
+		Test test = testDAO.get(id);
+		for (Part p : test.getParts()) {
+			for (PartExer pe : p.getPartExers()) {
+				if (pe.getId() == eid) {
+					for (PartExer tpe : p.getPartExers()) {
+						if (tpe.getE_no() > pe.getE_no()) {
+							tpe.setE_no(tpe.getE_no() - 1);
+							partExerDAO.update(tpe);
+						}
+					}
+					partExerDAO.delete(pe);
+					if (p.getPartExers().size() == 1) {
+						for (Part tp : test.getParts()) {
+							if (tp.getP_no() > p.getP_no()) {
+								tp.setP_no(tp.getP_no() - 1);
+								partDAO.update(tp);
+							}
+						}
+						partDAO.delete(p);
+					}
+				}
+			}
+		}
+
+		return 0;
 	}
 
 }

@@ -1,0 +1,291 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>编辑习题</title>
+	<link rel="stylesheet" type="text/css" href="../css/css.css" />
+	<script type="text/javascript" src="../js/jquery.min.js"></script>
+	<script type="text/javascript" src="../js/common.js"></script>
+	<script src="../js/ajaxfileupload.js"></script>
+	<script type="text/javascript">
+		var eid;
+		$(document).ready(function(){
+			eid = getQueryString("id");
+			init()
+		});
+
+		function init(){
+			$.ajax({
+				sync : true,
+				cache : false,
+				type : 'POST',
+				crossDomain : true,
+				url : "getTypes",
+				data : {
+				},
+				dataType : "json",
+				contentType : "application/x-www-form-urlencoded; charset=utf-8",
+				error : function(e) {
+					alert("网络错误，请重试");
+				},
+				success : function(data) {
+					var option = $("<option></option>").attr("value","-1").attr("selected","true").append("-------请选择习题类型--------");
+					$("#type").html(option);
+					$.each(data,function(index,value){
+						var op = $("<option></option>").attr("value",value.id).append(value.name);
+						$("#type").append(op);
+					});
+
+					$.ajax({
+						sync : false,
+						cache : false,
+						type : 'POST',
+						crossDomain : true,
+						url : "loadExercise",
+						data : {
+							id : eid
+						},
+						dataType : "json",
+						contentType : "application/x-www-form-urlencoded;charset=utf-8",
+						error : function(e) {
+							alert("网络错误，请重试");
+						},
+						success : function(data) {
+							$("#id").val(data.id);
+							$("#text").val(data.text);
+							if(data.type != null){
+								$("#type").val(data.type.id);
+							}else{
+								$("#type").val(-1);
+							}
+							$("#description").val(data.description);
+							$("#quelist").html("<tr>"
+								+"<td width='66px' class='tdColor'>题目序号</td>"
+								+"<td width='300px' class='tdColor'>题目音频</td>"
+								+"<td width='300px' class='tdColor'>题目选项</td>"
+								+"<td width='350px' class='tdColor'>干预</td>"
+								+"<td width='100px' class='tdColor'>操作</td>"
+								+"</tr>");
+							for (var i=0; i<data.questions.length; i++){
+								$.each(data.questions, function(index,value){
+									if( value.q_num == i){
+										var td_no = $("<td></td>").append(i+1);
+
+										var td_aud =  $("<td></td>");
+										if(value.audio != null ){
+											var aud_in = $("<audio></audio>").attr('src',value.audio.src).attr('controls','controls');
+											td_aud.append(aud_in);
+										}else{
+											td_aud.append("<input type='file' id='qa"+value.id+"' name='qa"+value.id+"' class='file' />").append("<a href='javascript:upload("+value.id+",0"+");' >上传</a>");
+										}
+
+										var ops = value.options.split("||");
+										var td_op = $("<td></td>");
+										for( var oi=1; oi<=5; oi++){
+											var in_op = $("<input></input>").attr('type','text').attr('name','option').attr('style','width:250px;margin:3px;').val(ops[oi]);
+											td_op.append(oi+":   ").append(in_op).append("<br>");
+										}
+										var in_an = $("<input></input>").attr('type','text').attr('name','answer').attr('style','width:100px;margin:3px;').attr('placeholder','正确答案').val(value.answer);
+										td_op.append("答案:").append(in_an);
+
+										var td_in = $("<td></td>");
+										for( var ii=0; ii<4; ii++){
+											$.each(value.interventions, function(ind,val){
+												if(val.level == ii){
+													var in_in = $("<textarea></textarea>").attr('name','in_text').attr('style','width:250px;margin:3px;').val(val.text);
+
+													td_in.append((ii+1)+"级干预:").append(in_in).append("<br>");
+													td_in.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+													if(val.audio !=null ){
+														var aud_in = $("<audio></audio>").attr('src',val.audio.src).attr('controls','controls');
+														td_in.append(aud_in);
+													}else{
+														td_in.append("<input type='file' id='ia"+val.id+"' name='ia"+val.id+"' class='file' />").append("<a href='javascript:upload("+val.id+",1"+");' >上传</a>");
+													}
+													td_in.append("<br>");
+												}
+											});
+										}
+
+										var td_de = $("<td></td>").append("<img class='operation delban' src='../img/delete.png' onclick='javascript:deleteQue("+value.id+");'></img>");
+										
+										var tr = $("<tr></tr>").append(td_no).append(td_aud).append(td_op).append(td_in).append(td_de);
+										
+										$("#quelist").append(tr);
+									}
+								});
+							}
+							
+						}
+					});
+				}
+			});
+}
+
+function upload(aid,t){
+	var feid = "";
+	if(t == 0){
+		if( $("#qa"+aid).val() =="" ){
+			alert("请选择文件");
+			return;
+		}
+		feid = feid + "qa"+aid;
+	}else{
+		if( $("#ia"+aid).val() =="" ){
+			alert("请选择文件");
+			return;
+		}
+		feid = feid + "ia"+aid;
+	}
+	$.ajaxFileUpload({
+		type : 'post',
+				url : 'uploadAudio', //用于文件上传的服务器端请求地址
+				secureuri : false, //是否需要安全协议，一般设置为false
+				fileElementId : feid, //文件上传域的ID
+				data : {
+					id : aid,
+					type : t
+				},//要传到后台的参数，没有可以不写  
+				async : false,
+				dataType : 'json',
+				processData : false,
+				contentType : false,
+				success : function(data) //服务器成功响应处理函数
+				{
+					init(); 
+				},
+				error : function(data, status, e)//服务器响应失败处理函数
+				{
+					console.log(data,status,e);
+				}
+			});
+}
+
+function addQuestion(){
+	$.ajax({
+		sync : false,
+		cache : false,
+		type : 'POST',
+		crossDomain : true,
+		url : "addQuestion",
+		data : {id : eid},
+		dataType : "json",
+		contentType : "application/x-www-form-urlencoded; charset=utf-8",
+		error : function(e) {
+			alert("网络错误，请重试");
+		},
+		success : function(data) {
+			init();
+		}
+	});
+}
+
+function deleteQue(qid){
+	$.ajax({
+		sync : false,
+		cache : false,
+		type : 'POST',
+		crossDomain : true,
+		url : "deleteQuestion",
+		data : {
+			id : qid
+		},
+		dataType : "json",
+		contentType : "application/x-www-form-urlencoded; charset=utf-8",
+		error : function(e) {
+			alert("网络错误，请重试");
+		},
+		success : function(data) {
+			init();
+		}
+	});
+}
+
+function save() {
+	$.ajax({
+		sync : false,
+		cache : false,
+		type : 'POST',
+		crossDomain : true,
+		url : "editExercise",
+		data : {
+			exercise : JSON.stringify($("#content").serializeObject())
+		},
+		dataType : "json",
+		contentType : "application/x-www-form-urlencoded; charset=utf-8",
+		error : function(e) {
+			alert("网络错误，请重试");
+		},
+		success : function(data) {
+			init();
+		}
+	});
+}
+
+$.fn.serializeObject = function()
+{
+	var o = {};
+	var a = this.serializeArray();
+	$.each(a, function() {
+		if (o[this.name] !== undefined) {
+			if (!o[this.name].push) {
+				o[this.name] = [o[this.name]];
+			}
+			o[this.name].push(this.value || '');
+		} else {
+			o[this.name] = this.value || '';
+		}
+	});
+	return o;
+};
+</script>
+</head>
+<body>
+	<div id="pageAll">
+		<div class="pageTop">
+			<div class="page">
+				<img src="../img/coin02.png" /><span><a href="#">首页</a>&nbsp;-&nbsp;<a
+					href="#">试题管理</a>&nbsp;-</span>&nbsp;习题编辑
+				</div>
+			</div>
+			<div class="page ">
+				<!-- 会员注册页面样式 -->
+				<div class="banneradd bor">
+					<div class="baTopNo">
+						<span>习题编辑</span>
+					</div>
+					<form id="content">
+						<div class="baBody">
+							<input id="id" type="hidden" name="id" class="input3" />
+							<div class="bbD">
+								&nbsp;&nbsp;&nbsp;&nbsp;题目名称<input class="input3" id="text" name="text" type="text" />
+							</div>
+							<div class="bbD">
+								&nbsp;&nbsp;&nbsp;&nbsp;题目类型<select class="input3" name="type" id="type" >
+								</select>
+							</div>
+							<div class="bbD">
+								&nbsp;&nbsp;&nbsp;&nbsp;题目描述<input id="description" name="description" type="text" class="input3"/>
+							</div>
+							<div class="conShow">
+								<button onclick="javascript:addQuestion();">新增问题</button>
+								<table id="quelist">
+								</table>
+							</div>
+							<div class="bbD">
+								<p class="bbDP">
+									<button class="btn_ok btn_yes" href="#"
+									onclick="javascript:save();">提交</button>
+									<a class="btn_ok btn_no" href="exercise.html">取消</a>
+								</p>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+
+			<!-- 会员注册页面样式end -->
+		</div>
+	</div>
+</body>
+</html>

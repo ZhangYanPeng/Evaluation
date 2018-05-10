@@ -12,21 +12,47 @@
 	<script type="text/javascript" src="../js/common.js"></script>
 	<script type="text/javascript">
 		var page_num = 1;
-		var status;
 		var total_num = 0;
-		$(document).ready(function(){
+		$(document).ready(function() {
+			loadExercise();
 			list(1);
 		});
 
-		function list(p) {
+		function loadExercise(){
 			$.ajax({
 				sync : false,
 				cache : false,
 				type : 'POST',
 				crossDomain : true,
-				url : "list_test",
+				url : "getTypes",
 				data : {
-					page : p
+				},
+				dataType : "json",
+				contentType : "application/x-www-form-urlencoded; charset=utf-8",
+				error : function(e) {
+					alert("网络错误，请重试");
+				},
+				success : function(data) {
+					var option = $("<option></option>").attr("value","-1").attr("selected","true").append("-------请选择习题类型--------");
+					$("#type").html(option);
+					$.each(data,function(index,value){
+						var op = $("<option></option>").attr("value",value.id).append(value.name);
+						$("#type").append(op);
+					});
+				}
+			});
+		}
+
+		function list(p) {
+			$.ajax({
+				sync : true,
+				cache : false,
+				type : 'POST',
+				crossDomain : true,
+				url : "listExercise",
+				data : {
+					page : p,
+					type : $("#type").val()
 				},
 				dataType : "json",
 				contentType : "application/x-www-form-urlencoded; charset=utf-8",
@@ -35,130 +61,73 @@
 				},
 				success : function(data) {
 					total_num = data.pageCount;
-					page_num=p;
+					page_num = p;
 					$("#page_num").val(p);
 
 					var tab_title = "<tr>"
-						+ "<td width='206px' class='tdColor tdC'>序号</td>"
-						+ "<td width='430px' class='tdColor'>测试名</td>"
-						+ "<td width='430px' class='tdColor'>操作</td>"
-						+ "	</tr>";
-					$("#testlist").html(tab_title);
+					+ "<td width='66px' class='tdColor tdC'>序号</td>"
+					+ "<td width='730px' class='tdColor'>习题名</td>"
+					+ "<td width='130px' class='tdColor'>操作</td>"
+					+ "	</tr>";
+					$("#exerciselist").html(tab_title);
 
 					$.each(data.results,function(index, value) {
-						var td_id = $('<td></td>').append(
-							value.id);
-						var td_n = $('<td></td>').append(
-							value.title);
-						if( value.choose ==1 )
-							td_n.append("&nbsp;(选定测试)");
-						else{
-							td_n.append($("<a></a>").attr('href','javascript:choose('+value.id+');').append("&nbsp;设为目标测试"));
-						}
-						if( value.collect ==1 )
-							td_n.append("<a href='javascript:collect("+value.id+",0)' >&nbsp;设为不采集信息</a>");
-						else{
-							td_n.append($("<a></a>").attr('href','javascript:collect('+value.id+',1);').append("&nbsp;设为采集信息"));
-						}
-						var td_op = $('<td></td>')
+						var td_id = $('<td></td>').append(value.id);
+						var td_un = $('<td></td>').append(value.text);
+						var a_edit = $('<a></a>').attr('href',"exerciseadd.html?id="+ value.id);
+						a_edit.append("<img class='operation' src='../img/update.png'></a>");
+						var td_op = $('<td></td>').append(a_edit)
 							.append(
-								"<a href='testadd.html?id="+value.id+"'><img class='operation delban' src='../img/update.png' /></td></a>")
-							.append(
-								"<img class='operation delban' src='../img/delete.png' onclick='javascript:removeTest("
+								"<img class='operation delban' src='../img/delete.png' onclick='javascript:DeleteExercise("
 								+ value.id
 								+ ");' /></td>");
 						var tr = $('<tr></tr>').attr('height', "40px");
-						tr.append(td_id).append(td_n).append(td_op);
-						$("#testlist").append(tr);
+						tr.append(td_id).append(td_un).append(td_op);
+						$("#exerciselist").append(tr);
 					});
 				}
 			});
 		}
 
-		function add() {
-			$.ajax({
-				async : false,
-				cache : false,
-				type : 'POST',
-				crossDomain : true,
-				url : "add_test",
-				data : {
-					name : $("#name").val()
-				},
-				dataType : "json",
-				contentType : "application/x-www-form-urlencoded;charset=utf-8",
-				error : function(e) {
-					alert("网络错误，请重试");
-				},
-				success : function(data) {
-					window.location.href = "testadd.html?id=" + data.id;
-				}
-			});
-		}
-
-		function removeTest(tid) {
+		function DeleteExercise(eid){
 			$.ajax({
 				sync : false,
 				cache : false,
 				type : 'POST',
 				crossDomain : true,
-				url : "delete_test",
+				url : "deleteExercise",
 				data : {
-					id : tid
+					id : eid
 				},
 				dataType : "json",
-				contentType : "application/x-www-form-urlencoded;charset=utf-8",
+				contentType : "application/x-www-form-urlencoded; charset=utf-8",
 				error : function(e) {
 					alert("网络错误，请重试");
 				},
 				success : function(data) {
-					if (data == true) {
-						list(1);
-						page_num = 1;
-					}
-				}
-			});
-		}
-
-		function choose(tid) {
-			$.ajax({
-				sync : false,
-				cache : false,
-				type : 'POST',
-				crossDomain : true,
-				url : "choose",
-				data : {
-					id : tid
-				},
-				dataType : "json",
-				contentType : "application/x-www-form-urlencoded;charset=utf-8",
-				error : function(e) {
-					alert("网络错误，请重试");
-				},
-				success : function(data) {
+					//load Exercise
 					list(page_num);
 				}
 			});
 		}
 
-		function collect(tid, s) {
+		function add(){
 			$.ajax({
 				sync : false,
 				cache : false,
 				type : 'POST',
 				crossDomain : true,
-				url : "collect",
+				url : "addExercise",
 				data : {
-					id : tid,
-					state : s
 				},
 				dataType : "json",
-				contentType : "application/x-www-form-urlencoded;charset=utf-8",
+				contentType : "application/x-www-form-urlencoded; charset=utf-8",
 				error : function(e) {
 					alert("网络错误，请重试");
 				},
 				success : function(data) {
-					list(page_num);
+					//load Exercise
+					window.location.href = "exerciseadd.html?id=" + data.id;
 				}
 			});
 		}
@@ -197,7 +166,7 @@
 	<div id="pageAll">
 		<div class="pageTop">
 			<div class="page">
-				<img src="../img/coin02.png" /><span><a href="#">首页</a>&nbsp;-&nbsp;-</span>&nbsp;试题管理
+				<img src="../img/coin02.png" /><span><a href="#">首页</a>&nbsp;-&nbsp;-</span>&nbsp;习题管理
 			</div>
 		</div>
 
@@ -207,14 +176,15 @@
 				<div class="conform">
 					<form>
 						<div class="cfD">
-							<input class="userinput" id="name" type="text" placeholder="请输入新增试题名称" />
-							<button class="userbtn" onclick="javascript:add();">添加</button>
+							<select class="userinput" id="type" onchange="javascript:list(1);">
+							</select>
+							<a href="javascript:add();"><button class="userbtn" disabled="disabled">添加</button></a>
 						</div>
 					</form>
 				</div>
 				<!-- user 表格 显示 -->
 				<div class="conShow">
-					<table id="testlist" border="1" cellspacing="0" cellpadding="0">
+					<table id="exerciselist" border="1" cellspacing="0" cellpadding="0">
 					</table>
 				</div>
 				<div class="paging">

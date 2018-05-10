@@ -8,14 +8,14 @@
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<title>大学英语听力评估</title>
 	<!-- Path to Framework7 Library CSS-->
-	<link rel="stylesheet" href="css/framework7.ios.min.css">
-	<link rel="stylesheet" href="css/framework7.ios.colors.min.css">
+	<link rel="stylesheet" href="css/framework7.material.min.css">
+	<link rel="stylesheet" href="css/framework7.material.colors.min.css">
 	<!-- Path to your custom app styles-->
 	<link rel="stylesheet" href="./lib/font-awesome/css/font-awesome.min.css">
 	<link rel="stylesheet" href="css/my-app.css">
 	<script type="text/javascript" src="lib/jquery/jquery.js"></script>
 </head>
-<body>
+<body class="theme-teal">
 	<!-- Status bar overlay for fullscreen mode-->
 	<div class="statusbar-overlay"></div>
 	<!-- Panels overlay-->
@@ -27,9 +27,9 @@
 		</div>
 	</div>
 	<!-- Right panel with cover effect-->
-	<div class="panel panel-right panel-cover">
+	<div class="panel panel-right panel-cover" style="background: #D0D0D0;">
 		<div class="content-block">
-			<p id="inte_text"></p>
+			<font size="5" color="black"><p id="inte_text"></p></font>
 			<audio controls="controls" id="i_audio">
 			</audio>
 		</div>
@@ -267,7 +267,8 @@
 	<div class="popup popup-reason">
 		<div class="content-block">
 			<p>请填写您答对或答错的原因</p>
-			<textarea rows="5" cols="40" id="reason_text"></textarea>
+			<textarea rows="5" cols="76" id="reason_text"></textarea>
+			<br>
 			<p><a href="#" class="button button-round" onclick="javascript:reasonSubmit();">提交</a></p>
 		</div>
 	</div>
@@ -275,6 +276,328 @@
 	<div id="audios">
 	</div>
 
+	<!-- questionaire  modal -->
+	<div class="popup popup-questionaire">
+		<div class="content-block">
+			<div class="login-screen-title">请您先完善一下个人信息</div>
+			<form>
+				<div class="list-block">
+					<ul>
+						<li class="item-content">
+							<div class="item-inner">
+								<div >
+									你学习英语有多长时间了？
+									<input type="text" name="q1" id="q1" placeholder="请输入几年">
+								</div>
+							</div>
+						</li>
+						<li class="item-content">
+							<div class="item-inner">
+								<div class="item-title">
+									你对英语感兴趣的程度：
+									<select name="q2" id="q2">
+										<option value="0" selected="selected">请选择</option>
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+										<option value="4">4</option>
+										<option value="5">5</option>
+										<option value="6">6</option>
+									</select>
+								</div>
+							</div>
+						</li>
+						<li class="item-content" >
+							<div class="item-inner">
+								<div class="item-title"> 
+									进入大学后，你所在的学校是否有开设专门的英语听力课程？
+									<select name="q3" id="q3" onchange="Q3()">
+										<option value="0" selected="selected">请选择</option>
+										<option value="1">否</option>
+										<option value="2">是</option>
+									</select>
+								</div>
+							</div>
+						</li>
+						<li class="item-content" id="q4-content" style="display: none;">
+							<div class="item-inner">
+								<div class="item-title"> 
+									所开设课程名称是：
+									<input type="text" name="q4" id="q4" placeholder="请输入。。。">
+								</div>
+							</div>
+						</li>
+						<li class="item-content" id="q5-content" style="display: none;">
+							<div class="item-inner">
+								<div class="item-title">
+									每周开设几节课听力课程？
+									<input type="text" name="q5" id="q5" placeholder="请输入。。。">
+								</div>
+							</div>
+						</li>
+						<li class="item-content">
+							<div class="item-inner">
+								<div class="item-title">你每周接触英语听力的时间是多久？（包括做听力练习、听英语电台、英语新闻、看英/美剧等的时间）
+									<select name="q6" id="q6">
+										<option value="0" selected="selected">请选择</option>
+										<option value="1">0-2小时</option>
+										<option value="2">2-4小时</option>
+										<option value="3">4-6小时</option>
+										<option value="4">6-8小时</option>
+										<option value="5">8小时以上</option>
+									</select>
+								</div>
+							</div>
+						</li>
+						<li class="item-content">
+							<div class="item-inner">
+								<div class="item-title">你最喜欢的练习英语听力的方式是什么？
+									<input type="text" name="q7" id="q7"
+									placeholder="请输入。。。">
+								</div>
+							</div>
+						</li>
+						<li class="item-content">
+							<div class="item-inner">
+								<div class="item-title">
+									你认为你目前的英语听力能力处于什么水平？
+									<select name="q8" id="q8">
+										<option value="0" selected="selected">请选择</option>
+										<option value="1">初级</option>
+										<option value="2">中级</option>
+										<option value="3">高级</option>
+									</select>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div class="list-block">
+					<p><a href="javascript:QueSubmit();" class="button button-round">提交</a></p>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<!-- rate  modal -->
+	<div class="popup popup-rate">
+		<div class="content-block">
+			<div class="login-screen-title">
+				以下问卷主要用于了解学生的听力理解过程，请根据你的情况如实作答. <br>
+			</div>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;①完全不符合 ②很不符合 ③不太符合 ④有点符合 ⑤比较符合 ⑥完全符合
+			<form id="#rate-form">
+				<input type="hidden" name="test_id" id="test_id">
+				<div class="list-block">
+					<ul>
+						<li class="item-content">
+							<div class="item-inner">
+								<div class="item-title">
+									你听力开始之前，我会根据题目来计划我应该如何去听。
+									<div class="range-slider" style="width: 300px;">
+										<input type="range" min="1" max="6" value="6" step="1" name="rates">
+									</div>
+								</div>
+							</div>
+						</li>
+						<li class="item-content">
+							<div class="item-inner">
+								<div class="item-title">
+									听力开始之前，我看到题目会回想以前听过的类似内容。
+									<div class="range-slider" style="width: 300px;">
+										<input type="range" min="1" max="6" value="6" step="1" name="rates">
+									</div>
+								</div>
+							</div>
+						</li>
+						<li class="item-content">
+							<div class="item-inner">
+								<div class="item-title">
+									听的过程中,我会时不时问自己是否满意对当前题目的理解。
+									<div class="range-slider" style="width: 300px;">
+										<input type="range" min="1" max="6" value="6" step="1" name="rates">
+									</div>
+								</div>
+							</div>
+						</li>
+						<li class="item-content">
+							<div class="item-inner">
+								<div class="item-title">
+									听的过程中,我头脑里有清晰的听力目标。
+									<div class="range-slider" style="width: 300px;">
+										<input type="range" min="1" max="6" value="6" step="1" name="rates">
+									</div>
+								</div>
+							</div>
+						</li>
+						<li class="item-content">
+							<div class="item-inner">
+								<div class="item-title">
+									听力结束后，我会回想听的过程,并思考下次再听时我可能会做哪些改变。
+									<div class="range-slider" style="width: 300px;">
+										<input type="range" min="1" max="6" value="6" step="1" name="rates">
+									</div>
+								</div>
+							</div>
+						</li>
+						<li class="item-content">
+							<div class="item-inner">
+								<div class="item-title">
+									当听不懂的时候，我对听力内容的注意力会更集中。
+									<div class="range-slider" style="width: 300px;">
+										<input type="range" min="1" max="6" value="6" step="1" name="rates">
+									</div>
+								</div>
+							</div>
+						</li>
+						<li class="item-content">
+							<div class="item-inner">
+								<div class="item-title">
+									当意识到自己走神时,我能立刻重新集中注意力到所听内容上来。
+									<div class="range-slider" style="width: 300px;">
+										<input type="range" min="1" max="6" value="6" step="1" name="rates">
+									</div>
+								</div>
+							</div>
+						</li>
+						<li class="item-content">
+							<div class="item-inner">
+								<div class="item-title">
+									当发现注意力分散时,我努力回到所听内容上来。
+									<div class="range-slider" style="width: 300px;">
+										<input type="range" min="1" max="6" value="6" step="1" name="rates">
+									</div>
+								</div>
+							</div>
+						</li>
+						<li class="item-content">
+							<div class="item-inner">
+								<div class="item-title">
+									我会用我知道的词汇去推断生词的词义。
+									<div class="range-slider" style="width: 300px;">
+										<input type="range" min="1" max="6" value="6" step="1" name="rates">
+									</div>
+								</div>
+							</div>
+						</li>
+						<li class="item-content">
+							<div class="item-inner">
+								<div class="item-title">
+									我把所听到的内容同自己对题目相关的已有知识进行对比。
+									<div class="range-slider" style="width: 300px;">
+										<input type="range" min="1" max="6" value="6" step="1" name="rates">
+									</div>
+								</div>
+							</div>
+						</li>
+						<li class="item-content">
+							<div class="item-inner">
+								<div class="item-title">
+									我利用自己的经历和已有知识来帮助理解。 
+									<div class="range-slider" style="width: 300px;">
+										<input type="range" min="1" max="6" value="6" step="1" name="rates">
+									</div>
+								</div>
+							</div>
+						</li>
+						<li class="item-content">
+							<div class="item-inner">
+								<div class="item-title">
+									在意识到自己的理解不对时,我会迅速调整自己的理解。
+									<div class="range-slider" style="width: 300px;">
+										<input type="range" min="1" max="6" value="6" step="1" name="rates">
+									</div>
+								</div>
+							</div>
+						</li>
+						<li class="item-content">
+							<div class="item-inner">
+								<div class="item-title">
+									我利用文章的大意来帮助推断词汇的含义。
+									<div class="range-slider" style="width: 300px;">
+										<input type="range" min="1" max="6" value="6" step="1" name="rates">
+									</div>
+								</div>
+							</div>
+						</li>
+						<li class="item-content">
+							<div class="item-inner">
+								<div class="item-title">
+									我会回想前面听到的内容,帮助自己判断现在所猜测的词汇意义是否正确。
+									<div class="range-slider" style="width: 300px;">
+										<input type="range" min="1" max="6" value="6" step="1" name="rates">
+									</div>
+								</div>
+							</div>
+						</li>
+						<li class="item-content">
+							<div class="item-inner">
+								<div class="item-title">
+									相比英语读、写 、说的能力，我感觉听力更难。
+									<div class="range-slider" style="width: 300px;">
+										<input type="range" min="1" max="6" value="6" step="1" name="rates">
+									</div>
+								</div>
+							</div>
+						</li>
+						<li class="item-content">
+							<div class="item-inner">
+								<div class="item-title">
+									我觉得英语听力对我是个挑战。
+									<div class="range-slider" style="width: 300px;">
+										<input type="range" min="1" max="6" value="6" step="1" name="rates">
+									</div>
+								</div>
+							</div>
+						</li>
+						<li class="item-content">
+							<div class="item-inner">
+								<div class="item-title">
+									我在听英语时感觉很紧张。 
+									<div class="range-slider" style="width: 300px;">
+										<input type="range" min="1" max="6" value="6" step="1" name="rates">
+									</div>
+								</div>
+							</div>
+						</li>
+						<li class="item-content">
+							<div class="item-inner">
+								<div class="item-title">
+									我会一边听一边在头脑中翻译。
+									<div class="range-slider" style="width: 300px;">
+										<input type="range" min="1" max="6" value="6" step="1" name="rates">
+									</div>
+								</div>
+							</div>
+						</li>
+						<li class="item-content">
+							<div class="item-inner">
+								<div class="item-title">
+									听听力时，我会把关键词翻译成中文。
+									<div class="range-slider" style="width: 300px;">
+										<input type="range" min="1" max="6" value="6" step="1" name="rates">
+									</div>
+								</div>
+							</div>
+						</li>
+						<li class="item-content">
+							<div class="item-inner">
+								<div class="item-title">
+									听听力时,我会在头脑中将所听到的逐字翻译。 
+									<div class="range-slider" style="width: 300px;">
+										<input type="range" min="1" max="6" value="6" step="1" name="rates">
+									</div>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div class="list-block">
+					<p><a href="javascript:RateSubmit();" class="button button-round">提交</a></p>
+				</div>
+			</form>
+		</div>
+	</div>
 
 	<!-- Path to Framework7 Library JS-->
 	<script type="text/javascript" src="js/framework7.min.js"></script>
@@ -282,6 +605,7 @@
 	<!-- Path to your app js-->
 	<script type="text/javascript" src="js/common.js"></script>
 	<script type="text/javascript" src="js/account.js"></script>
+	<script type="text/javascript" src="js/questionaire.js"></script>
 	<script type="text/javascript" src="js/exercise_management.js"></script>
 	<script type="text/javascript" src="js/do_test.js"></script>
 	<script type="text/javascript" src="js/test_list.js"></script>

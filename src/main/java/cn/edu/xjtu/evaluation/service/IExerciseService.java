@@ -8,9 +8,11 @@ import cn.edu.xjtu.evaluation.support.PageResults;
 
 public interface IExerciseService {
 	int add(Exercise exercise);
-	int remove(Exercise exercise);
+	int remove(long id);
 	int edit(Exercise exercise);
 	Exercise get(long id);
 	List<Exercise> list();
-	PageResults<Exercise> getPageList(Integer page, String type);
+	PageResults<Exercise> getPageList(Integer page, long type);
+	Exercise create();
+	List<Exercise> getList(long type);
 }

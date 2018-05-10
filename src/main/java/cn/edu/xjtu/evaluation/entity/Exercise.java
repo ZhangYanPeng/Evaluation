@@ -18,25 +18,26 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Table( name = "t_exercise")
 public class Exercise {
-	
 	@Id
 	@GeneratedValue(generator = "exegenerator")
-	@GenericGenerator(name = "exegenerator", strategy = "increment")
+	@GenericGenerator(name = "exegenerator", strategy = "assigned")
 	private long id;
 	
-	private String audio_path;
 	private String text;
 	@Column(length=10000)
 	private String description;
-	private int e_no;
 	
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinColumn( name = "exercise_id")
 	private Set<Question> questions;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@OneToMany
+	@JoinColumn( name = "exercise_id")
 	@JsonIgnore
-	private Part part;
+	private Set<PartExer> partExers;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	private Type type;
 
 	public Exercise() {
 		super();
@@ -49,15 +50,7 @@ public class Exercise {
 	public void setId(long id) {
 		this.id = id;
 	}
-
-	public String getAudio_path() {
-		return audio_path;
-	}
-
-	public void setAudio_path(String audio_path) {
-		this.audio_path = audio_path;
-	}
-
+	
 	public String getText() {
 		return text;
 	}
@@ -73,14 +66,6 @@ public class Exercise {
 		this.questions = questions;
 	}
 
-	public Part getPart() {
-		return part;
-	}
-
-	public void setPart(Part part) {
-		this.part = part;
-	}
-
 	public String getDescription() {
 		return description;
 	}
@@ -89,13 +74,21 @@ public class Exercise {
 		this.description = description;
 	}
 
-	public int getE_no() {
-		return e_no;
+	public Type getType() {
+		return type;
 	}
 
-	public void setE_no(int e_no) {
-		this.e_no = e_no;
+	public void setType(Type type) {
+		this.type = type;
 	}
 
+	public Set<PartExer> getPartExers() {
+		return partExers;
+	}
+
+	public void setPartExers(Set<PartExer> partExers) {
+		this.partExers = partExers;
+	}
+	
 	
 }

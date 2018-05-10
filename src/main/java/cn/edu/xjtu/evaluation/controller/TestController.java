@@ -5,15 +5,19 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.edu.xjtu.evaluation.entity.Answer;
 import cn.edu.xjtu.evaluation.entity.Test;
+import cn.edu.xjtu.evaluation.entity.Type;
 import cn.edu.xjtu.evaluation.service.IAnswerService;
 import cn.edu.xjtu.evaluation.service.ITestService;
+import cn.edu.xjtu.evaluation.service.ITypeService;
 
 @Controller
 @RequestMapping("/test")
@@ -69,4 +73,15 @@ public class TestController {
 		return answerService.getAnswers(Long.valueOf(uid),Integer.valueOf(type));
 	}
 	
+	@RequestMapping(value = "/RateSubmit" )
+	public @ResponseBody int RateSubmit(String ansId, String ques) {
+		String questionaire = "";
+		JSONArray jsonArr = new JSONArray(ques);
+		List<Object> quesstr = jsonArr.toList();
+		for(int i=0; i<quesstr.size(); i++){
+			questionaire += (String)quesstr.get(i) + "||";
+		}
+		answerService.FinishQue(Long.valueOf(ansId),questionaire);
+		return 1;
+	}
 }

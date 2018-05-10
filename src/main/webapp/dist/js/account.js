@@ -31,8 +31,8 @@ function login(username, password, type) {
 				userType = type;
 				if (userId > 0) {
 					myApp.closeModal('.login-screen');
+					initBar();
 				}
-				initBar();
 			} else {
 				myApp.alert("用户名或密码错误，请检查后重试", "抱歉");
 			}
@@ -96,6 +96,9 @@ function initBar() {
 		$$("#personal_func").hide();
 	} else {
 		$$('#user_name').html("你好！    " + user.name);
+		if(user.questionaire == null){
+			myApp.popup('.popup-questionaire');
+		}
 		var tmpstr = "身份：";
 		if (userType === "student") {
 			tmpstr += "学生";
