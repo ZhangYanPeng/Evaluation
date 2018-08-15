@@ -95,16 +95,14 @@
 													var in_in = $("<textarea></textarea>").attr('name','in_text').attr('style','width:250px;margin:3px;').val(val.text);
 
 													td_in.append((ii+1)+"级干预:").append(in_in).append("<br>");
-													if(val.level>0 && val.level<3){
-														td_in.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
-														if(val.audio !=null ){
-															var aud_in = $("<audio></audio>").attr('src',val.audio.src).attr('controls','controls');
-															td_in.append(aud_in);
-														}else{
-															td_in.append("<input type='file' id='ia"+val.id+"' name='ia"+val.id+"' class='file' />").append("<a href='javascript:upload("+val.id+",1"+");' >上传</a>");
-														}
-														td_in.append("<br>");
+													td_in.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+													if(val.audio !=null ){
+														var aud_in = $("<audio></audio>").attr('src',val.audio.src).attr('controls','controls');
+														td_in.append(aud_in);
+													}else{
+														td_in.append("<input type='file' id='ia"+val.id+"' name='ia"+val.id+"' class='file' />").append("<a href='javascript:upload("+val.id+",1"+");' >上传</a>");
 													}
+													td_in.append("<br>");
 												}
 											});
 										}
@@ -122,25 +120,25 @@
 					});
 				}
 			});
-		}
+}
 
-		function upload(aid,t){
-			var feid = "";
-			if(t == 0){
-				if( $("#qa"+aid).val() =="" ){
-					alert("请选择文件");
-					return;
-				}
-				feid = feid + "qa"+aid;
-			}else{
-				if( $("#ia"+aid).val() =="" ){
-					alert("请选择文件");
-					return;
-				}
-				feid = feid + "ia"+aid;
-			}
-			$.ajaxFileUpload({
-				type : 'post',
+function upload(aid,t){
+	var feid = "";
+	if(t == 0){
+		if( $("#qa"+aid).val() =="" ){
+			alert("请选择文件");
+			return;
+		}
+		feid = feid + "qa"+aid;
+	}else{
+		if( $("#ia"+aid).val() =="" ){
+			alert("请选择文件");
+			return;
+		}
+		feid = feid + "ia"+aid;
+	}
+	$.ajaxFileUpload({
+		type : 'post',
 				url : 'uploadAudio', //用于文件上传的服务器端请求地址
 				secureuri : false, //是否需要安全协议，一般设置为false
 				fileElementId : feid, //文件上传域的ID
@@ -161,86 +159,86 @@
 					console.log(data,status,e);
 				}
 			});
-		}
+}
 
-		function addQuestion(){
-			$.ajax({
-				sync : false,
-				cache : false,
-				type : 'POST',
-				crossDomain : true,
-				url : "addQuestion",
-				data : {id : eid},
-				dataType : "json",
-				contentType : "application/x-www-form-urlencoded; charset=utf-8",
-				error : function(e) {
-					alert("网络错误，请重试");
-				},
-				success : function(data) {
-					init();
-				}
-			});
+function addQuestion(){
+	$.ajax({
+		sync : false,
+		cache : false,
+		type : 'POST',
+		crossDomain : true,
+		url : "addQuestion",
+		data : {id : eid},
+		dataType : "json",
+		contentType : "application/x-www-form-urlencoded; charset=utf-8",
+		error : function(e) {
+			alert("网络错误，请重试");
+		},
+		success : function(data) {
+			init();
 		}
+	});
+}
 
-		function deleteQue(qid){
-			$.ajax({
-				sync : false,
-				cache : false,
-				type : 'POST',
-				crossDomain : true,
-				url : "deleteQuestion",
-				data : {
-					id : qid
-				},
-				dataType : "json",
-				contentType : "application/x-www-form-urlencoded; charset=utf-8",
-				error : function(e) {
-					alert("网络错误，请重试");
-				},
-				success : function(data) {
-					init();
-				}
-			});
+function deleteQue(qid){
+	$.ajax({
+		sync : false,
+		cache : false,
+		type : 'POST',
+		crossDomain : true,
+		url : "deleteQuestion",
+		data : {
+			id : qid
+		},
+		dataType : "json",
+		contentType : "application/x-www-form-urlencoded; charset=utf-8",
+		error : function(e) {
+			alert("网络错误，请重试");
+		},
+		success : function(data) {
+			init();
 		}
+	});
+}
 
-		function save() {
-			$.ajax({
-				sync : false,
-				cache : false,
-				type : 'POST',
-				crossDomain : true,
-				url : "editExercise",
-				data : {
-					exercise : JSON.stringify($("#content").serializeObject())
-				},
-				dataType : "json",
-				contentType : "application/x-www-form-urlencoded; charset=utf-8",
-				error : function(e) {
-					alert("网络错误，请重试");
-				},
-				success : function(data) {
-					init();
-				}
-			});
+function save() {
+	$.ajax({
+		sync : false,
+		cache : false,
+		type : 'POST',
+		crossDomain : true,
+		url : "editExercise",
+		data : {
+			exercise : JSON.stringify($("#content").serializeObject())
+		},
+		dataType : "json",
+		contentType : "application/x-www-form-urlencoded; charset=utf-8",
+		error : function(e) {
+			alert("网络错误，请重试");
+		},
+		success : function(data) {
+			init();
 		}
+	});
+}
 
-		$.fn.serializeObject = function()
-		{
-			var o = {};
-			var a = this.serializeArray();
-			$.each(a, function() {
-				if (o[this.name] !== undefined) {
-					if (!o[this.name].push) {
-						o[this.name] = [o[this.name]];
-					}
-					o[this.name].push(this.value || '');
-				} else {
-					o[this.name] = this.value || '';
-				}
-			});
-			return o;
-		};
-	</script>
+$.fn.serializeObject = function()
+{
+	var o = {};
+	var a = this.serializeArray();
+	$.each(a, function() {
+		if (o[this.name] !== undefined) {
+			if (!o[this.name].push) {
+				o[this.name] = [o[this.name]];
+			}
+			o[this.name].push(this.value || '');
+		} else {
+			o[this.name] = this.value || '';
+		}
+	});
+	return o;
+};
+</script>
 </head>
 <body>
 	<div id="pageAll">

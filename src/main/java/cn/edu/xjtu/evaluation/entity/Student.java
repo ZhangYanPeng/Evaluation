@@ -32,6 +32,7 @@ public class Student {
 	private String student_no;
 	private String password;
 	private String major;
+	private String questionaire;
 	
 	private int english_level;// -1：未知 0：未通过四级 1：通过4级 2：通过六级 
 	
@@ -164,6 +165,14 @@ public class Student {
 
 	public void setEngClass(EngClass engClass) {
 		this.engClass = engClass;
+	}
+
+	public String getQuestionaire() {
+		return questionaire;
+	}
+
+	public void setQuestionaire(String questionaire) {
+		this.questionaire = questionaire;
 	}
 	
 }

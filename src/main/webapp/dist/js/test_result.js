@@ -7,7 +7,7 @@ function finishTest(){
 		cache : false,
 		type : 'POST',
 		crossDomain : true,
-	    traditional: true,
+		traditional: true,
 		url : baseUrl + "test/finishTest",
 		data : {
 			tid : c_test.id,
@@ -21,7 +21,6 @@ function finishTest(){
 			console.log(e);
 		},
 		success : function(data){
-
 			mainView.router.loadPage("test_result.html?tid="+c_test.id+"&type="+c_type);
 		}
 	});
@@ -33,7 +32,7 @@ function calculate_result(tid, type){
 		cache : false,
 		type : 'POST',
 		crossDomain : true,
-	    traditional: true,
+		traditional: true,
 		url : baseUrl + "test/testResult",
 		data : {
 			tid : tid,
@@ -46,11 +45,15 @@ function calculate_result(tid, type){
 		},
 		success : function(data){
 			var t_score=0;
-			for (var ri =1; ri <=data.records.length; ri++){
+			if(data.questionaire == null){
+				$$("#test_id").val(data.id);
+				myApp.popup('.popup-rate');
+			}
+			for (var ri =0; ri <data.records.length; ri++){
 				$.each(data.records, function(index, value){
-					if(ri == value.question.q_num){
+					if(ri == value.no){
 						if(type == 0){
-							var div_card_header = $("<div></div>").attr("class",'card-header').append(value.question.q_num);
+							var div_card_header = $("<div></div>").attr("class",'card-header').append(ri+1);
 							var re = "正确答案：" + NumToAlph(value.question.answer);
 							if(value.result.split("||").pop() == value.question.answer){
 								re = re +"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;你回答正确!";
@@ -63,7 +66,7 @@ function calculate_result(tid, type){
 							$("#test_result").append(div_card);
 						}
 						if(type == 1){
-							var div_card_header = $("<div></div>").attr("class",'card-header').append(value.question.q_num);
+							var div_card_header = $("<div></div>").attr("class",'card-header').append(ri+1);
 							var re = "正确答案：" + NumToAlph(value.question.answer);
 							if(value.result.split("||").pop() == value.question.answer){
 								re = re +"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;你用了"+(value.result.split("||").length-1)+"次回答正确!";
@@ -84,20 +87,19 @@ function calculate_result(tid, type){
 	});
 }
 
- function NumToAlph(c){
-	console.log(c);
+function NumToAlph(c){
 	switch(c){
-	case '1' : return 'A';break;
-	case '2' : return 'B';break;
-	case '3' : return 'C';break;
-	case '4' : return 'D';break;
-	case '5' : return 'E';break;
-	case '0' : return '未选择';break;
-	case 1 : return 'A';break;
-	case 2 : return 'B';break;
-	case 3 : return 'C';break;
-	case 4 : return 'D';break;
-	case 5 : return 'E';break;
-	defalult : return '未选择';break;
+		case '1' : return 'A';break;
+		case '2' : return 'B';break;
+		case '3' : return 'C';break;
+		case '4' : return 'D';break;
+		case '5' : return 'E';break;
+		case '0' : return '未选择';break;
+		case 1 : return 'A';break;
+		case 2 : return 'B';break;
+		case 3 : return 'C';break;
+		case 4 : return 'D';break;
+		case 5 : return 'E';break;
+		defalult : return '未选择';break;
 	}
 }

@@ -35,7 +35,11 @@ $$(document).on('pageInit', function(e) {
 		}
 		
 		if (page.name === 'test_content') {
-			presentQuestion(1);
+			c_pno=0;
+			c_eno=0;
+			c_qno=0;
+			c_pro=0;
+			presentQuestion();
 		}
 		
 		if (page.name === 'test-result') {
