@@ -98,7 +98,7 @@ function initTest(tid, type) {
 				crossDomain : true,
 				url : baseUrl + "test/getStatus",
 				data : {
-					type : 0,
+					type : 1,
 					tid : tstid,
 					uid : userId
 				},
@@ -107,42 +107,22 @@ function initTest(tid, type) {
 				},
 				success : function(data) {
 					if (data == 1) {
-						$$.ajax({
-							async : false,
-							cache : false,
-							type : 'POST',
-							crossDomain : true,
-							url : baseUrl + "test/getStatus",
-							data : {
-								type : 1,
-								tid : tstid,
-								uid : userId
-							},
-							dataType : "json",
-							error : function(e) {
-							},
-							success : function(data) {
-								if (data == 1) {
-									$("#op").append("您已经完成本测试评估");
-								} else {
-									var aop = $("<a></a>").attr('class',
-										'button button-big button-fill');
-									aop.append('开始试听干预诊断');
-									aop.attr('href', 'load_test.html?tid='
-										+ tstid + '&type=' + 1);
-									$("#op").append(aop);
-								}
-							}
-						});
-					} else {
-						if (type == 1) {
-							alert('请先进行试听诊断');
+						if (data == 1) {
+							$("#op").append("您已经完成本测试评估");
+						} else {
+							var aop = $("<a></a>").attr('class',
+								'button button-big button-fill');
+							aop.append('开始试听干预诊断');
+							aop.attr('href', 'load_test.html?tid='
+								+ tstid + '&type=' + 1);
+							$("#op").append(aop);
 						}
+					} else {
 						var aop = $("<a></a>").attr('class',
 							'button button-big button-fill');
 						aop.append('开始试听诊断');
 						aop.attr('href', 'load_test.html?tid=' + tstid
-							+ '&type=' + 0);
+							+ '&type=' + 1);
 						$("#op").append(aop);
 					}
 				}

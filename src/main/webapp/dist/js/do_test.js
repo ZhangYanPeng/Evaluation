@@ -21,9 +21,10 @@ function playSound(qid){
 }
 
 function count(qid) {
+	return;//不再倒计时
 	if(c_type!=0)
 		return;
-	var t = 15;
+	var t = 18;
 	var a = setInterval(daojishi, 1000);// 1000毫秒
 	function daojishi() {
 		if(qid != c_question.id){
@@ -80,7 +81,7 @@ function presentQuestion(pno,eno,qno){
 	}
 	
 	if(c_type==1){
-		$$('#intervention').html('<a href="#" data-panel="right" class="open-panel">查看干预</a>');
+		$$('#intervention').html('<a href="#" data-popover=".picker-intervention" class="open-picker">查看干预</a>');
 		$$('#inte_text').html("");
 		$$('#i_audio').hide();
 	}
@@ -187,5 +188,5 @@ function interventnionQue(num){
 			break;
 		}
 	}
-	myApp.openPanel('right');
+	myApp.pickerModal('.picker-intervention', $$('#intervention'));
 }

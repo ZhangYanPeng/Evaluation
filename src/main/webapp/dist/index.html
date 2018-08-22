@@ -28,11 +28,6 @@
 	</div>
 	<!-- Right panel with cover effect-->
 	<div class="panel panel-right panel-cover" style="background: #D0D0D0;">
-		<div class="content-block">
-			<font size="5" color="black"><p id="inte_text"></p></font>
-			<audio controls="controls" id="i_audio">
-			</audio>
-		</div>
 	</div>
 	<!-- Views-->
 	<div class="views">
@@ -118,7 +113,8 @@
 														<div class="item-title">试听诊断结果</div>
 													</div>
 												</div>
-											</a></li><li><a href="test_rlist.html?type=1" data-view=".view-main"
+											</a></li>
+											<li><a href="test_rlist.html?type=1" data-view=".view-main"
 												class="item-link">
 												<div class="item-content">
 													<div class="item-inner">
@@ -189,12 +185,15 @@
 				<div data-page="index-right" class="page">
 					<!-- Scrollable page content-->
 					<div class="page-content">
-						<div class="content-block-title">你好</div>
-						<div class="content-block">
-							
-						</div>
-						<div class="list-block">
-							
+						<div class="content-block-title" id="test_title"></div>
+						<div class="content-block" align="center">
+							<div>
+								<p>
+									<font size="12" >
+										Welcome！
+									</font>
+								</p>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -272,7 +271,32 @@
 			<p><a href="#" class="button button-round" onclick="javascript:reasonSubmit();">提交</a></p>
 		</div>
 	</div>
-	
+
+	<!-- 干预弹窗 -->
+	<div class="picker-modal picker-intervention" align="right">
+		<div style="width: 800px; border: solid;">
+			<div class="toolbar">
+				<div class="toolbar-inner">
+					<div class="left"></div>
+					<div class="center">
+						<a href="#" class="close-picker" style="color: white;">
+							隐藏干预
+						</a>
+					</div>
+	        		<div class="right"></div>
+				</div>
+			</div>
+			<div class="picker-modal-inner" align="left">
+				<div class="content-block">
+					<font size="3" color="black"><p id="inte_text"></p></font>
+					<audio controls="controls" id="i_audio">
+					</audio>
+				</div>
+			</div>
+		</div>
+	</div>
+
+		
 	<div id="audios">
 	</div>
 
@@ -287,7 +311,7 @@
 							<div class="item-inner">
 								<div >
 									你学习英语有多长时间了？
-									<input type="text" name="q1" id="q1" placeholder="请输入几年">
+									<input type="text" name="q1" id="q1" placeholder="请输入几年" style="border: solid;">
 								</div>
 							</div>
 						</li>
@@ -295,7 +319,7 @@
 							<div class="item-inner">
 								<div class="item-title">
 									你对英语感兴趣的程度：
-									<select name="q2" id="q2">
+									<select name="q2" id="q2" style="border: solid;">
 										<option value="0" selected="selected">请选择</option>
 										<option value="1">1</option>
 										<option value="2">2</option>
@@ -311,7 +335,7 @@
 							<div class="item-inner">
 								<div class="item-title"> 
 									进入大学后，你所在的学校是否有开设专门的英语听力课程？
-									<select name="q3" id="q3" onchange="Q3()">
+									<select name="q3" id="q3" onchange="Q3()" style="border: solid;">
 										<option value="0" selected="selected">请选择</option>
 										<option value="1">否</option>
 										<option value="2">是</option>
@@ -321,7 +345,7 @@
 						</li>
 						<li class="item-content" id="q4-content" style="display: none;">
 							<div class="item-inner">
-								<div class="item-title"> 
+								<div class="item-title" style="border: solid;"> 
 									所开设课程名称是：
 									<input type="text" name="q4" id="q4" placeholder="请输入。。。">
 								</div>
@@ -331,14 +355,14 @@
 							<div class="item-inner">
 								<div class="item-title">
 									每周开设几节课听力课程？
-									<input type="text" name="q5" id="q5" placeholder="请输入。。。">
+									<input type="text" name="q5" id="q5" placeholder="请输入。。。" style="border: solid;">
 								</div>
 							</div>
 						</li>
 						<li class="item-content">
 							<div class="item-inner">
 								<div class="item-title">你每周接触英语听力的时间是多久？（包括做听力练习、听英语电台、英语新闻、看英/美剧等的时间）
-									<select name="q6" id="q6">
+									<select name="q6" id="q6" style="border: solid; width: 400 px;">
 										<option value="0" selected="selected">请选择</option>
 										<option value="1">0-2小时</option>
 										<option value="2">2-4小时</option>
@@ -352,8 +376,7 @@
 						<li class="item-content">
 							<div class="item-inner">
 								<div class="item-title">你最喜欢的练习英语听力的方式是什么？
-									<input type="text" name="q7" id="q7"
-									placeholder="请输入。。。">
+									<input type="text" name="q7" id="q7" placeholder="请输入。。。" style="border: solid;">
 								</div>
 							</div>
 						</li>
@@ -361,7 +384,7 @@
 							<div class="item-inner">
 								<div class="item-title">
 									你认为你目前的英语听力能力处于什么水平？
-									<select name="q8" id="q8">
+									<select name="q8" id="q8" style="border: solid;">
 										<option value="0" selected="selected">请选择</option>
 										<option value="1">初级</option>
 										<option value="2">中级</option>
