@@ -221,7 +221,7 @@ public class AccountController {
 			String originalFilename = stu_list.getOriginalFilename();
 			String genePath = request.getSession().getServletContext().getRealPath("/upload/stu_list/");
 			FileUtils.copyInputStreamToFile(stu_list.getInputStream(), new File(genePath,originalFilename));
-			List<String[]> s_info = DealExcel.loadInStudentInfo(Long.valueOf(id),genePath+originalFilename);
+			List<String[]> s_info = DealExcel.loadInStudentInfo(Long.valueOf(id),genePath+"/"+originalFilename);
 			return engClassService.importStudent(s_info,Long.valueOf(id));
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -250,17 +250,20 @@ public class AccountController {
 	
 	@RequestMapping(value = "/edit_student" , method = RequestMethod.POST)
 	public @ResponseBody int editStudent(String id, String name, String student_no, String password, String organization, String engClass) {
+		long sid = Long.valueOf(id);
 		Student student = new Student();
+		if(sid>=0){
+			student = studentService.get(sid);
+		}
 		student.setName(name);
 		student.setStudent_no(student_no);
+		student.setUsername(student_no);
 		student.setPassword(password);
 		student.setOrganization(organizationService.load(Long.valueOf(organization)));
 		student.setEngClass(engClassService.get(Long.valueOf(engClass)));
-		long sid = Long.valueOf(id);
 		if(sid==-1){
 			return studentService.add(student);
 		}else{
-			student.setId(sid);
 			return studentService.edit(student);
 		}
 	}
