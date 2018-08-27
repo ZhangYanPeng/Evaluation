@@ -39,7 +39,7 @@ function count(qid) {
 			clearInterval(a);
 			$$("#count").html("&nbsp;");
 			if(qid == c_question.id)
-				nextQuestion(0);
+				submitAnswer(0);
 		}
 	}
 }
@@ -64,6 +64,7 @@ function findCurrent(){
 function presentQuestion(pno,eno,qno){
 	presentBaseTest();
 	findCurrent();
+	ButtonSwitch(false);
 
 	$$('#part'+c_part.p_no).attr("class","button active");
 	$$('#progress').html(c_pro+"/"+q_total);
@@ -92,7 +93,7 @@ function presentQuestion(pno,eno,qno){
 	playSound(c_question.id);
 }
 
-function nextQuestion(t){
+function submitAnswer(t){
 	$$('#inte_text').html("");
 	var op = $("input[name='answer']:checked").val();  
 	if(op == undefined && t!=0){
@@ -110,7 +111,7 @@ function nextQuestion(t){
 		records[c_pro] = c_record;
 		c_record="";
 		reasons[c_pro] = "";
-		ToNextQue();
+		ButtonSwitch(true);
 	}else{
 		// intervention
 		c_record = c_record + "||" +op;
@@ -119,13 +120,13 @@ function nextQuestion(t){
 				reasonQue(0);
 				records[c_pro] = c_record;
 				c_record="";
-				ToNextQue();
+				ButtonSwitch(true);
 			}else{
 				reasonQue(1);
 				records[c_pro] = c_record;
 				c_record="";
 				if(c_test.collect == 0)
-					ToNextQue();
+					ButtonSwitch(true);
 			}
 		}else{
 			alert("很遗憾，回答错误！");
@@ -139,6 +140,17 @@ function nextQuestion(t){
 			}
 		}
 		return;
+	}
+}
+
+function ButtonSwitch(check){
+	if(check){
+		$$("#SubmitButton").attr("style","display:none;");
+		$$("#NextButton").attr("style","display:;");
+	}
+	else{
+		$$("#SubmitButton").attr("style","display:;");
+		$$("#NextButton").attr("style","display:none;");	
 	}
 }
 
@@ -171,7 +183,7 @@ function reasonQue(type){
 function reasonSubmit(){
 	reasons[c_pro]=$$("#reason_text").val();
 	myApp.closeModal('.popup-reason');
-	ToNextQue();
+	ButtonSwitch(true);
 }
 
 function interventnionQue(num){

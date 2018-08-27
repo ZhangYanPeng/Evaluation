@@ -47,6 +47,7 @@ function logout(){
 	userId = "";
 	user = "";
 	userType = "";
+	mainView.router.loadPage("welcome.html");
 	myApp.loginScreen();
 }
 
