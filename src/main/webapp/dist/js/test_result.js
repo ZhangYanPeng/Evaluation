@@ -26,6 +26,22 @@ function finishTest(){
 	});
 }
 
+var test_report_id;
+
+function set_type(tid){
+	test_report_id = tid;
+	myApp.popover('.popover-test-type', $$('#'+'tr'+tid));
+}
+
+function test_report(){
+	myApp.closeModal('.popover-test-type');
+	mainView.router.loadPage("result_page/test_report.html");
+}
+
+function evaluation_report(){
+	
+}
+
 function calculate_result(tid, type){
 	$.ajax({
 		async : false,

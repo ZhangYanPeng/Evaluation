@@ -32,6 +32,7 @@ function login(username, password, type) {
 				if (userId > 0) {
 					myApp.closeModal('.login-screen');
 					initBar();
+					mainView.router.loadPage("welcome.html");
 				}
 			} else {
 				myApp.alert("用户名或密码错误，请检查后重试", "抱歉");
@@ -46,6 +47,7 @@ function logout(){
 	userId = "";
 	user = "";
 	userType = "";
+	mainView.router.loadPage("welcome.html");
 	myApp.loginScreen();
 }
 
@@ -78,11 +80,11 @@ function getUserIdentification() {
 
 //init left view and top bar information
 function initBar() {
-	var barString = "你好,";
+	var barString = "你好!";
 	if (userId < 0) {
 		barString += "<a href='#' class='open-login-screen' >请先登录</a>";
 	} else {
-		barString += "<a href='#' >" + user.name + "</a>";
+		barString += user.name ;
 	}
 	$$('#bar_right').html(barString);
 

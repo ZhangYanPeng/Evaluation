@@ -33,6 +33,7 @@
 				success : function(data) {
 					$("#id").val(data.id);
 					$("#title").val(data.title);
+					console.log(data);
 					for(var i=0; i<data.parts.length; i++){
 						$.each(data.parts, function(index,value){
 							if(value.p_no == i){
