@@ -14,6 +14,22 @@
 	<link rel="stylesheet" href="./lib/font-awesome/css/font-awesome.min.css">
 	<link rel="stylesheet" href="css/my-app.css">
 	<script type="text/javascript" src="lib/jquery/jquery.js"></script>
+	<style>
+		table, td, th
+		{
+			border:1px solid white;
+		}
+		th
+		{
+			background-color:#009688;
+			color:white;
+		}
+		td
+		{
+			background-color:#AAEEDD;
+			color:black;
+		}
+	</style>
 </head>
 <body class="theme-teal">
 	<!-- Status bar overlay for fullscreen mode-->
@@ -110,7 +126,15 @@
 												class="item-link">
 												<div class="item-content">
 													<div class="item-inner">
-														<div class="item-title">干预诊断结果</div>
+														<div class="item-title">单次测试报告</div>
+													</div>
+												</div>
+											</a></li>
+											<li><a href="test_rlist.html?type=1" data-view=".view-main"
+												class="item-link">
+												<div class="item-content">
+													<div class="item-inner">
+														<div class="item-title">总结报告</div>
 													</div>
 												</div>
 											</a></li>
@@ -733,6 +757,19 @@
 			</form>
 		</div>
 	</div>
+
+	<div class="popover popover-test-type">
+		<div class="popover-angle"></div>
+		<div class="popover-inner">
+			<div class="list-block">
+				<ul>
+					<li><a href="javascript:test_report();" class="list-button item-link">测试报告</a></li>
+					<li><a href="javascript:evaluation_report();" class="list-button item-link">动态评估报告</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
 
 	<!-- Path to Framework7 Library JS-->
 	<script type="text/javascript" src="js/framework7.min.js"></script>

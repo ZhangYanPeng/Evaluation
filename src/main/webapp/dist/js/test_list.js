@@ -155,8 +155,9 @@ function loadAnswers(type) {
 				var d_after = $("<div></div>").attr("class", "item-after");
 				var icon = $("<i></i>").attr("class", "fa fa-check");
 				d_icon.append(icon);
-				var btn = $("<a></a>").attr('class', 'button').append('查看记录');
-				btn.attr('href', 'test_result.html?tid=' + test.id + "&type="+ type);
+				var btn = $("<a></a>").attr('class', 'button').append('查看报告');
+				//btn.attr('href', 'result_page/result_type.html?tid=' + test.id + "&type="+ type);
+				btn.attr('href','javascript:set_type('+test.id+');').attr('id','tr'+test.id);
 				d_after.append(btn);
 				d_in.append(d_title).append(d_after);
 				li.append(d_icon).append(d_in);
