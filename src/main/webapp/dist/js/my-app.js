@@ -1,5 +1,4 @@
 // update user info in status bar
-initBar();
 
 // handler for all initiations fo pages
 $$(document).on('pageInit', function(e) {

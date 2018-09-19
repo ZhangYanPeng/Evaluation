@@ -9,6 +9,7 @@ function login(username, password, type) {
 	} else {
 		url += "teacher/login";
 	}
+
 	$$.ajax({
 		async : false,
 		cache : false,
@@ -22,8 +23,11 @@ function login(username, password, type) {
 		dataType : "json",
 		error : function(e) {
 			myApp.alert("登陆失败，请重试", "抱歉");
+			console.log(username + password);
+			myApp.loginScreen();
 		},
 		success : function(data) {
+			console.log(data);
 			if (data.id >= 0) {
 				storeUserIdentification(data, data.id, type)
 				userId = data.id;
@@ -31,11 +35,13 @@ function login(username, password, type) {
 				userType = type;
 				if (userId > 0) {
 					myApp.closeModal('.login-screen');
+					myApp.closeModal('.popup-questionaire');
 					initBar();
 					mainView.router.loadPage("welcome.html");
 				}
 			} else {
 				myApp.alert("用户名或密码错误，请检查后重试", "抱歉");
+				myApp.loginScreen();
 			}
 		}
 	});
@@ -69,7 +75,7 @@ function getUserIdentification() {
 		if (userId >= 0) {
 			user = JSON.parse(storage["identification"]);
 			userType = storage["userType"];
-			myApp.closeModal('.login-screen');
+			login(user.username, user.password, 'student');
 		}
 	} else {
 		userId = -1;
@@ -90,8 +96,7 @@ function initBar() {
 
 	// left view init
 	if (userId < 0) {
-		$$('#user_name').html(
-				"你好,<a href='#'  class='open-login-screen' >请先登录</a>");
+		$$('#user_name').html("你好,<a href='#'  class='open-login-screen' >请先登录</a>");
 		$$('#user_type').text("");
 		$$("#stu_func_list").hide();
 		$$("#tea_func_list").hide();

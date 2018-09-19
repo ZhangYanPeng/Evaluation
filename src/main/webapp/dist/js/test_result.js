@@ -21,7 +21,7 @@ function finishTest(){
 			console.log(e);
 		},
 		success : function(data){
-			mainView.router.loadPage("test_result.html?tid="+c_test.id+"&type="+c_type);
+			mainView.router.loadPage("welcom.html");
 		}
 	});
 }
