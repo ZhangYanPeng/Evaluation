@@ -52,6 +52,11 @@ $$(document).on('pageInit', function(e) {
 		if( page.name === 'info' ){
 			loadAccountInfo();
 		}
+
+		
+		if( page.name === 'test_report' ){
+			init_report();
+		}
 	}
 });
 
