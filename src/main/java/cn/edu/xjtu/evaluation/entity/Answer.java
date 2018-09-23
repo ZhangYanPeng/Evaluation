@@ -1,5 +1,6 @@
 package cn.edu.xjtu.evaluation.entity;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -27,6 +28,9 @@ public class Answer {
 	private String questionaire;
 	
 	private int type;
+	
+	private Date start_time;
+	private Date end_time;
 	
 	@OneToMany( fetch = FetchType.EAGER)
 	@JoinColumn( name = "answer_id" )
@@ -89,6 +93,22 @@ public class Answer {
 
 	public void setQuestionaire(String questionaire) {
 		this.questionaire = questionaire;
+	}
+
+	public Date getStart_time() {
+		return start_time;
+	}
+
+	public void setStart_time(Date start_time) {
+		this.start_time = start_time;
+	}
+
+	public Date getEnd_time() {
+		return end_time;
+	}
+
+	public void setEnd_time(Date end_time) {
+		this.end_time = end_time;
 	}
 	
 	

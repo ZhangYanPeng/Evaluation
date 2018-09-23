@@ -1,5 +1,7 @@
 package cn.edu.xjtu.evaluation.service.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -163,9 +165,17 @@ public class TestServiceImpl implements ITestService {
 
 	@Override
 	@Transactional
-	public int finishTest(int type, long tid, long uid, String[] records, String[] reasons) {
+	public int finishTest(int type, long tid, long uid, String[] records, String[] reasons, String stime, String etime) {
 		// TODO Auto-generated method stub
 		Answer answer = new Answer();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d H:m:s");
+		try {
+			answer.setStart_time(sdf.parse(stime));
+			answer.setEnd_time(sdf.parse(etime));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		answer.setType(type);
 		answer.setTest(testDAO.get(tid));
 		answer.setStudent(studentDAO.get(uid));

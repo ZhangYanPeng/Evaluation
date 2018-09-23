@@ -59,8 +59,8 @@ public class TestController {
 	}
 	
 	@RequestMapping(value = "/finishTest" )
-	public @ResponseBody int finishTest(HttpServletRequest request, String type, String tid, String uid, String[] records, String[] reasons) {
-		return testService.finishTest(Integer.valueOf(type), Long.valueOf(tid), Long.valueOf(uid), (String[])records,(String[]) reasons);
+	public @ResponseBody int finishTest(HttpServletRequest request, String type, String tid, String uid, String[] records, String[] reasons, String start_time, String end_time) {
+		return testService.finishTest(Integer.valueOf(type), Long.valueOf(tid), Long.valueOf(uid), (String[])records,(String[]) reasons,start_time, end_time);
 	}
 	
 	@RequestMapping(value = "/testResult" )

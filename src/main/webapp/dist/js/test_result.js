@@ -1,4 +1,12 @@
+function gettimestr(time){
+	var timestr = "";
+	timestr = time.getFullYear()+"-"+time.getMonth()+"-"+time.getDate();
+	timestr = timestr + " " + time.getHours() +":" + time.getMinutes() + ":" + time.getSeconds();
+	return timestr;
+}
+
 function finishTest(){
+	test_end_time = new Date();
 	$.each($("#audios").children(),function(index,value){
 		value.pause();
 	});
@@ -14,14 +22,16 @@ function finishTest(){
 			uid : userId,
 			type : c_type,
 			records : records,
-			reasons : reasons
+			reasons : reasons,
+			start_time: gettimestr(test_start_time),
+			end_time: gettimestr(test_end_time)
 		},
 		dataType : "json",
 		error : function(e) {
 			console.log(e);
 		},
 		success : function(data){
-			mainView.router.loadPage("welcom.html");
+			mainView.router.loadPage("welcome.html");
 		}
 	});
 }

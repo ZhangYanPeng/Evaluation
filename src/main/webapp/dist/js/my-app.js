@@ -1,5 +1,6 @@
 // update user info in status bar
 
+
 // handler for all initiations fo pages
 $$(document).on('pageInit', function(e) {
 	var page = e.detail.page;
@@ -38,6 +39,7 @@ $$(document).on('pageInit', function(e) {
 			c_eno=0;
 			c_qno=0;
 			c_pro=0;
+			test_start_time = new Date();
 			presentQuestion();
 		}
 		

@@ -22,6 +22,9 @@ var reasons="";
 
 var load_progress=0;
 
+var test_start_time;
+var test_end_time;
+
 // base url
 var baseUrl = getRootPath();
 var severUrl = getSeverUrl();

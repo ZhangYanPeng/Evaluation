@@ -174,7 +174,7 @@ function ToNextQue(){
 
 function reasonQue(type){
 	if( type == 0  || c_test.collect == 0){
-		reasons[c_pro]="";
+		reasons[c_pro]=" ";
 	}else{
 		myApp.popup('.popup-reason');
 	}
