@@ -98,7 +98,7 @@ function initTest(tid, type) {
 				crossDomain : true,
 				url : baseUrl + "test/getStatus",
 				data : {
-					type : 0,
+					type : 1,
 					tid : tstid,
 					uid : userId
 				},
@@ -107,42 +107,22 @@ function initTest(tid, type) {
 				},
 				success : function(data) {
 					if (data == 1) {
-						$$.ajax({
-							async : false,
-							cache : false,
-							type : 'POST',
-							crossDomain : true,
-							url : baseUrl + "test/getStatus",
-							data : {
-								type : 1,
-								tid : tstid,
-								uid : userId
-							},
-							dataType : "json",
-							error : function(e) {
-							},
-							success : function(data) {
-								if (data == 1) {
-									$("#op").append("您已经完成本测试评估");
-								} else {
-									var aop = $("<a></a>").attr('class',
-										'button button-big button-fill');
-									aop.append('开始试听干预诊断');
-									aop.attr('href', 'load_test.html?tid='
-										+ tstid + '&type=' + 1);
-									$("#op").append(aop);
-								}
-							}
-						});
-					} else {
-						if (type == 1) {
-							alert('请先进行试听诊断');
+						if (data == 1) {
+							$("#op").append("您已经完成本测试评估");
+						} else {
+							var aop = $("<a></a>").attr('class',
+								'button button-big button-fill');
+							aop.append('开始试听干预诊断');
+							aop.attr('href', 'load_test.html?tid='
+								+ tstid + '&type=' + 1);
+							$("#op").append(aop);
 						}
+					} else {
 						var aop = $("<a></a>").attr('class',
 							'button button-big button-fill');
 						aop.append('开始试听诊断');
 						aop.attr('href', 'load_test.html?tid=' + tstid
-							+ '&type=' + 0);
+							+ '&type=' + 1);
 						$("#op").append(aop);
 					}
 				}
@@ -175,8 +155,9 @@ function loadAnswers(type) {
 				var d_after = $("<div></div>").attr("class", "item-after");
 				var icon = $("<i></i>").attr("class", "fa fa-check");
 				d_icon.append(icon);
-				var btn = $("<a></a>").attr('class', 'button').append('查看记录');
-				btn.attr('href', 'test_result.html?tid=' + test.id + "&type="+ type);
+				var btn = $("<a></a>").attr('class', 'button').append('查看报告');
+				//btn.attr('href', 'result_page/result_type.html?tid=' + test.id + "&type="+ type);
+				btn.attr('href','javascript:set_type('+test.id+');').attr('id','tr'+test.id);
 				d_after.append(btn);
 				d_in.append(d_title).append(d_after);
 				li.append(d_icon).append(d_in);

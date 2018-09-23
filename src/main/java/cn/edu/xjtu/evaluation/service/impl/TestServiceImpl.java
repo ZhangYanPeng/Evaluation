@@ -279,6 +279,7 @@ public class TestServiceImpl implements ITestService {
 		if (check == 0) {
 			Part p = new Part();
 			p.setP_no(test.getParts().size());
+			p.setDescription(exercise.getType().getName());
 			p.setTest(test);
 			partDAO.save(p);
 			PartExer pe = new PartExer();
