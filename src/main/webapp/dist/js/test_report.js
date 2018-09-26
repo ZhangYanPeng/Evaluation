@@ -20,8 +20,8 @@ function init_report(){
 		},
 		showpercent:true,
 		decimalsnum:2,
-		width : 300,
-		height : 300,
+		width : 400,
+		height : 200,
 		radius:140
 	}).draw();
 
@@ -34,8 +34,8 @@ function init_report(){
 		},
 		showpercent:true,
 		decimalsnum:2,
-		width : 300,
-		height : 300,
+		width : 400,
+		height : 200,
 		radius:140
 	}).draw();
 }

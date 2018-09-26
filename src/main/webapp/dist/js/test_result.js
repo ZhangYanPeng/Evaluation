@@ -39,7 +39,8 @@ function test_report(){
 }
 
 function evaluation_report(){
-	
+	myApp.closeModal('.popover-test-type');
+	mainView.router.loadPage("result_page/evaluation_report.html");
 }
 
 function calculate_result(tid, type){
