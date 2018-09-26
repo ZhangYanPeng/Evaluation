@@ -27,15 +27,13 @@ function login(username, password, type) {
 			myApp.loginScreen();
 		},
 		success : function(data) {
-			console.log(data);
 			if (data.id >= 0) {
 				storeUserIdentification(data, data.id, type)
 				userId = data.id;
 				user = data;
 				userType = type;
 				if (userId > 0) {
-					myApp.closeModal('.login-screen');
-					myApp.closeModal('.popup-questionaire');
+					myApp.closeModal();
 					initBar();
 					mainView.router.loadPage("welcome.html");
 				}
