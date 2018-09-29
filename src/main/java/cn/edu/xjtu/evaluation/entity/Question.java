@@ -16,6 +16,8 @@ import javax.persistence.Table;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
+import cn.edu.xjtu.evaluation.common.Definition;
+
 @Entity
 @Table(name = "t_question")
 public class Question {
@@ -31,6 +33,9 @@ public class Question {
 	private int answer;
 	int q_num;
 	
+	private Definition.QUESTION_TYPE type;
+	private Definition.QUESTION_LEVEL level;
+
 	@OneToOne
 	private Audio audio;
 
@@ -123,6 +128,19 @@ public class Question {
 		this.audio = audio;
 	}
 	
-	
+	public Definition.QUESTION_TYPE getType() {
+		return type;
+	}
 
+	public void setType(Definition.QUESTION_TYPE type) {
+		this.type = type;
+	}
+
+	public Definition.QUESTION_LEVEL getLevel() {
+		return level;
+	}
+
+	public void setLevel(Definition.QUESTION_LEVEL level) {
+		this.level = level;
+	}
 }
