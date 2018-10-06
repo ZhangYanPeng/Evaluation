@@ -13,9 +13,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.edu.xjtu.evaluation.entity.Answer;
+import cn.edu.xjtu.evaluation.entity.EvaluationResult;
+import cn.edu.xjtu.evaluation.entity.OverallReport;
 import cn.edu.xjtu.evaluation.entity.Test;
+import cn.edu.xjtu.evaluation.entity.TestResult;
 import cn.edu.xjtu.evaluation.entity.Type;
 import cn.edu.xjtu.evaluation.service.IAnswerService;
+import cn.edu.xjtu.evaluation.service.IResultService;
 import cn.edu.xjtu.evaluation.service.ITestService;
 import cn.edu.xjtu.evaluation.service.ITypeService;
 
@@ -26,6 +30,8 @@ public class TestController {
 	ITestService testService;
 	@Autowired
 	IAnswerService answerService;
+	@Autowired
+	IResultService resultService;
 	
 	@RequestMapping(value = "/getAllTest" )
 	public @ResponseBody List<Test> listTest() {
@@ -83,5 +89,20 @@ public class TestController {
 		}
 		answerService.FinishQue(Long.valueOf(ansId),questionaire);
 		return 1;
+	}
+	
+	@RequestMapping(value = "/getTestReport" )
+	public @ResponseBody TestResult getTestReport(String uid, String tid) {
+		return resultService.getTestResult(Long.valueOf(uid), Long.valueOf(tid));
+	}
+	
+	@RequestMapping(value = "/getEvaluationReport" )
+	public @ResponseBody EvaluationResult getEvaluationReport(String uid, String tid) {
+		return resultService.getEvaluationReport(Long.valueOf(uid), Long.valueOf(tid));
+	}
+	
+	@RequestMapping(value = "/getOverallReport" )
+	public @ResponseBody OverallReport getOverallReport(String uid) {
+		return resultService.getOverallReport(Long.valueOf(uid));
 	}
 }

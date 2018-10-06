@@ -5,18 +5,16 @@
 		<div class="page-content">
 			<div class="card">
 				<div class="card-header" style="background-color: #009688;">
-					<div>
-						学号：姓名：Test1
+					<div id="information">
 					</div>
 				</div>
 				<div class="card-content">
 					<div class="card-content-inner">
 						<div class="row">
 							<div>
-								在本次测试中，<br>
-								我的总得分：<br>
-								在全部作答的学生中，我排在xx%。<br>
-								我共答对xx道题目。其中不同难度题目所占百分比如右图一所示。
+								在本次测试中，我的总得分：<a id="score"></a><br>
+								在全部作答的学生中，我排在<a id="rank"></a>%。<br>
+								我共答对<a id="r_sum"></a>道题目。其中不同难度题目所占百分比如图一所示。
 							</div>
 						</div>
 						<div class="row">
@@ -41,40 +39,7 @@
 					以下是我在不同难度题目上的表现，红色字体代表的是做错的答案哦。
 				</div>
 				<div class="card-content">
-					<table>
-						<tr>
-							<th>题号
-							</th>
-							<th>1
-							</th>
-							<th>2
-							</th>
-						</tr>
-						<tr>
-							<td>题目难度
-							</td>
-							<td>
-							</td>
-							<td>
-							</td>
-						</tr>
-						<tr>
-							<td>我的答案
-							</td>
-							<td>
-							</td>
-							<td>
-							</td>
-						</tr>
-						<tr>
-							<td>正确答案
-							</td>
-							<td>
-							</td>
-							<td>
-							</td>
-						</tr>
-				</table>
+					<table id="details"></table>
 				</div>
 			</div>
 			

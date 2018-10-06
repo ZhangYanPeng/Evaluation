@@ -45,12 +45,12 @@ function set_type(tid){
 
 function test_report(){
 	myApp.closeModal('.popover-test-type');
-	mainView.router.loadPage("result_page/test_report.html");
+	mainView.router.loadPage("result_page/test_report.html?tid="+test_report_id);
 }
 
 function evaluation_report(){
 	myApp.closeModal('.popover-test-type');
-	mainView.router.loadPage("result_page/evaluation_report.html");
+	mainView.router.loadPage("result_page/evaluation_report.html?tid="+test_report_id);
 }
 
 function calculate_result(tid, type){
