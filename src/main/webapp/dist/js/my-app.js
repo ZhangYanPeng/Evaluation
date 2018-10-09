@@ -55,9 +55,16 @@ $$(document).on('pageInit', function(e) {
 			loadAccountInfo();
 		}
 
-		
 		if( page.name === 'test_report' ){
-			init_report();
+			init_report(userId, page.query.tid);
+		}
+
+		if( page.name === 'evaluation_report' ){
+			init_evaluation(userId, page.query.tid);
+		}
+
+		if( page.name === 'overall_report' ){
+			init_overall(userId);
 		}
 	}
 });

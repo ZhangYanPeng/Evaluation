@@ -1,0 +1,65 @@
+
+<!-- We don't need full layout here, because this page will be parsed with Ajax-->
+<!-- Top Navbar-->
+<div class="navbar">
+  <div class="navbar-inner">
+    <div class="left"></div>
+    <div class="center sliding"></div>
+    <div class="right">
+      <!-- Right link contains only icon - additional "icon-only" class--><a href="#" class="link icon-only open-panel"></a>
+    </div>
+  </div>
+</div>
+<div class="pages">
+  <!-- Page, data-page contains page name-->
+  <div data-page="overall_report" class="page">
+    <!-- Scrollable page content-->
+    <div class="page-content">
+      <div class="content-block">
+        <div class="content-block-inner" >
+          <table style="width: 700px;">
+            <tr id="o_tab_r1">
+              <th></th>
+            </tr>
+            <tr id="o_tab_r2">
+              <th></th>
+            </tr>
+            <tr id="o_tab_r3">
+              <th>分数</th>
+            </tr>
+            <tr id="o_tab_r4">
+              <th>总提示频率</th>
+            </tr>
+            <tr id="o_tab_r5">
+              <th>学习潜能分数</th>
+            </tr>
+          </table>
+          <div id="scoreCanvas"></div>
+
+          <table style="width: 700px;">
+            <tr id="i_tab_r1">
+              <th>听力技能</th>
+            </tr>
+            <tr id="i_tab_r2">
+              <th>词汇与表达</th>
+            </tr>
+            <tr id="i_tab_r3">
+              <th>语法</th>
+            </tr>
+            <tr id="i_tab_r4">
+              <th>主旨大意</th>
+            </tr>
+            <tr id="i_tab_r5">
+              <th>细节</th>
+            </tr>
+            <tr id="i_tab_r6">
+              <th>推理</th>
+            </tr>
+          </table>
+
+          <div id="percentCanvas"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
