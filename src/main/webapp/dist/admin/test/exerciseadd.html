@@ -65,6 +65,7 @@
 								+"<td width='300px' class='tdColor'>题目选项</td>"
 								+"<td width='350px' class='tdColor'>干预</td>"
 								+"<td width='100px' class='tdColor'>操作</td>"
+								+"<td width='200px' class='tdColor'>设置</td>"
 								+"</tr>");
 							for (var i=0; i<data.questions.length; i++){
 								$.each(data.questions, function(index,value){
@@ -108,8 +109,27 @@
 										}
 
 										var td_de = $("<td></td>").append("<img class='operation delban' src='../img/delete.png' onclick='javascript:deleteQue("+value.id+");'></img>");
+
+										console.log(value);
+										var td_set =  $("<td></td>")
+											.append($("<select></select>").attr("style","width:100px;").attr('name','set_level')
+												.append($("<option></option>").append("容易").attr("value","easy"))
+												.append($("<option></option>").append("中等难度").attr("value","normal"))
+												.append($("<option></option>").append("高难度").attr("value","hard"))
+												.val(value.level))
+											.append($("<br>"))
+											.append($("<br>"))
+											.append($("<select></select>").attr("style","width:100px;").attr('name','set_type')
+												.append($("<option></option>").append("词汇与表达").attr("value","presentation"))
+												.append($("<option></option>").append("语法").attr("value","grammar"))
+												.append($("<option></option>").append("主旨大意").attr("value","comprehension"))
+												.append($("<option></option>").append("细节").attr("value","details"))
+												.append($("<option></option>").append("推理").attr("value","inference"))
+												.val(value.type));
+
+										var td_set_type =  $("<td></td>")
 										
-										var tr = $("<tr></tr>").append(td_no).append(td_aud).append(td_op).append(td_in).append(td_de);
+										var tr = $("<tr></tr>").append(td_no).append(td_aud).append(td_op).append(td_in).append(td_de).append(td_set);
 										
 										$("#quelist").append(tr);
 									}
@@ -267,6 +287,7 @@ $.fn.serializeObject = function()
 							<div class="bbD">
 								&nbsp;&nbsp;&nbsp;&nbsp;题目描述<input id="description" name="description" type="text" class="input3"/>
 							</div>
+
 							<div class="conShow">
 								<button onclick="javascript:addQuestion();">新增问题</button>
 								<table id="quelist">
