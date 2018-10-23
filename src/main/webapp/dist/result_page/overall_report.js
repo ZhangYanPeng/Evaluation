@@ -16,9 +16,9 @@ function init_overall(userid){
 			});
 			for(var i=0; i<data.test_result[0].length;i++){
 				$("#o_tab_r2").append($("<th></th>").append(data.test_result[0][i]));
-				$("#o_tab_r3").append($("<th></th>").append(data.test_result[1][i]));
-				$("#o_tab_r4").append($("<th></th>").append(data.test_result[2][i]));
-				$("#o_tab_r5").append($("<th></th>").append(data.test_result[3][i]));
+				$("#o_tab_r3").append($("<td></td>").append(data.test_result[1][i]));
+				$("#o_tab_r4").append($("<td></td>").append(data.test_result[2][i]));
+				$("#o_tab_r5").append($("<td></td>").append(data.test_result[3][i]));
 			}
 
 			for(var i=0; i<data.inter_freq[0].length;i++){
