@@ -9,4 +9,5 @@ public interface IAudioService {
 	int delete(long id);
 	Audio getByQue(long id);
 	Audio getByIn(long id);
+	int removeAud(Long aud_id);
 }

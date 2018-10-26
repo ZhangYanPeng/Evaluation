@@ -75,7 +75,10 @@
 										var td_aud =  $("<td></td>");
 										if(value.audio != null ){
 											var aud_in = $("<audio></audio>").attr('src',value.audio.src).attr('controls','controls');
+											var aud_del = $("<a></a>").attr('href',"javascript:del_aud("+value.audio.id+");").append("删除");
 											td_aud.append(aud_in);
+											td_aud.append($("<br/>"));
+											td_aud.append(aud_del);
 										}else{
 											td_aud.append("<input type='file' id='qa"+value.id+"' name='qa"+value.id+"' class='file' />").append("<a href='javascript:upload("+value.id+",0"+");' >上传</a>");
 										}
@@ -94,12 +97,14 @@
 											$.each(value.interventions, function(ind,val){
 												if(val.level == ii){
 													var in_in = $("<textarea></textarea>").attr('name','in_text').attr('style','width:250px;margin:3px;').val(val.text);
-
 													td_in.append((ii+1)+"级干预:").append(in_in).append("<br>");
 													td_in.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
 													if(val.audio !=null ){
 														var aud_in = $("<audio></audio>").attr('src',val.audio.src).attr('controls','controls');
+														var aud_del = $("<a></a>").attr('href',"javascript:del_aud("+val.audio.id+");").append("删除");
 														td_in.append(aud_in);
+														td_in.append($("<br/>"));
+														td_in.append(aud_del);
 													}else{
 														td_in.append("<input type='file' id='ia"+val.id+"' name='ia"+val.id+"' class='file' />").append("<a href='javascript:upload("+val.id+",1"+");' >上传</a>");
 													}
@@ -110,7 +115,6 @@
 
 										var td_de = $("<td></td>").append("<img class='operation delban' src='../img/delete.png' onclick='javascript:deleteQue("+value.id+");'></img>");
 
-										console.log(value);
 										var td_set =  $("<td></td>")
 											.append($("<select></select>").attr("style","width:100px;").attr('name','set_level')
 												.append($("<option></option>").append("容易").attr("value","easy"))
@@ -140,6 +144,25 @@
 					});
 				}
 			});
+}
+
+function del_aud(aud_id){
+	$.ajax({
+		sync : false,
+		cache : false,
+		type : 'POST',
+		crossDomain : true,
+		url : "del_audio",
+		data : {id : aud_id},
+		dataType : "json",
+		contentType : "application/x-www-form-urlencoded; charset=utf-8",
+		error : function(e) {
+			alert("网络错误，请重试");
+		},
+		success : function(data) {
+			init();
+		}
+	});
 }
 
 function upload(aid,t){

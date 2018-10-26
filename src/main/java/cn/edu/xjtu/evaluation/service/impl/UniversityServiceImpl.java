@@ -36,11 +36,7 @@ public class UniversityServiceImpl implements IUniversityService {
 		// TODO Auto-generated method stub
 		try {
 			University university = universityDAO.load(id);
-			if(university.getSchools()==null || university.getSchools().size()==0){
-				universityDAO.delete(university);
-			}else{
-				return -1;
-			}
+			universityDAO.delete(university);
 		} catch (Exception e) {
 			// TODO: handle exception
 			return 0;

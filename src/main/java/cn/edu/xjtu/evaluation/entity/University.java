@@ -25,9 +25,9 @@ public class University {
 	private String name;
 	
 	@OneToMany( fetch = FetchType.LAZY)
-	@JoinColumn( name = "university_id")
+	@JoinColumn( name = "organization_id")
 	@JsonIgnore
-	private Set<School> schools;
+	private Set<Student> students;
 	
 	@OneToMany( fetch = FetchType.LAZY)
 	@JoinColumn( name = "university_id")
@@ -53,15 +53,7 @@ public class University {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public Set<School> getSchools() {
-		return schools;
-	}
-
-	public void setSchools(Set<School> schools) {
-		this.schools = schools;
-	}
-
+	
 	public Set<EngClass> getEngclass() {
 		return engclass;
 	}
@@ -70,6 +62,11 @@ public class University {
 		this.engclass = engclass;
 	}
 
-	
+	public Set<Student> getStudents() {
+		return students;
+	}
 
+	public void setStudents(Set<Student> students) {
+		this.students = students;
+	}
 }

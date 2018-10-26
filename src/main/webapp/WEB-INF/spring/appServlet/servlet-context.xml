@@ -47,8 +47,8 @@
 		<beans:property name="url"
 			value="jdbc:mysql://localhost:3306/evaluation?useUnicode=true&amp;characterEncoding=UTF-8" />
 		<beans:property name="username" value="root" />
-		<!-- <beans:property name="password" value="" /> -->
 		<beans:property name="password" value="" />
+		<!-- <beans:property name="password" value="123.com" /> -->
 		<beans:property name="validationQuery" value="SELECT 1" />
 	</beans:bean>
 	<!-- Hibernate Session Factory -->

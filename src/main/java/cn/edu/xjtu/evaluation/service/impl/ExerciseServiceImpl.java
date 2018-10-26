@@ -158,5 +158,4 @@ public class ExerciseServiceImpl implements IExerciseService {
 			return exerciseDAO.getListByHQL(hql, values);
 		}
 	}
-
 }

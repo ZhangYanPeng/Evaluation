@@ -15,13 +15,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import cn.edu.xjtu.evaluation.entity.EngClass;
-import cn.edu.xjtu.evaluation.entity.Organization;
 import cn.edu.xjtu.evaluation.entity.School;
 import cn.edu.xjtu.evaluation.entity.Student;
 import cn.edu.xjtu.evaluation.entity.Teacher;
 import cn.edu.xjtu.evaluation.entity.University;
 import cn.edu.xjtu.evaluation.service.IEngClassService;
-import cn.edu.xjtu.evaluation.service.IOrganizationService;
 import cn.edu.xjtu.evaluation.service.ISchoolService;
 import cn.edu.xjtu.evaluation.service.IStudentService;
 import cn.edu.xjtu.evaluation.service.ITeacherService;
@@ -43,8 +41,6 @@ public class AccountController {
 	IUniversityService universityService;
 	@Autowired
 	IStudentService studentService;
-	@Autowired
-	IOrganizationService organizationService;
 
 	// account manage
 	@RequestMapping(value = "/list_university")
@@ -53,10 +49,9 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "/add_university")
-	public @ResponseBody int addAdmin(String name) {
+	public @ResponseBody int add_university(String name) {
 		University university = new University();
 		university.setName(name);
-		university.setSchools(null);
 		return universityService.add(university);
 	}
 
@@ -84,23 +79,15 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "/list_school")
-	public @ResponseBody PageResults<School> listSchool(int page, String university) {
-		return schoolService.list(page, Long.valueOf(university));
+	public @ResponseBody PageResults<School> listSchool(int page) {
+		return schoolService.list(page);
 	}
 
-	@RequestMapping(value = "/edit_school")
-	public @ResponseBody int editSchool(String id, String name, String university) {
-		Long sid = Long.valueOf(id);
+	@RequestMapping(value = "/add_school")
+	public @ResponseBody int addSchool(String name) {
 		School school = new School();
 		school.setName(name);
-		school.setOrganizations(null);
-		school.setUniversity(universityService.load(Long.valueOf(university)));
-		if (sid == -1) {
-			return schoolService.add(school);
-		} else {
-			school.setId(sid);
-			return schoolService.edit(school);
-		}
+		return schoolService.add(school);
 	}
 
 	@RequestMapping(value = "/load_school")
@@ -115,37 +102,8 @@ public class AccountController {
 
 	// class manage
 	@RequestMapping(value = "/get_all_school")
-	public @ResponseBody List getAllSchool(String university) {
-		return schoolService.getAll(Long.valueOf(university));
-	}
-
-	@RequestMapping(value = "/edit_class")
-	public @ResponseBody int editClass(String id, String name, String school) {
-		Long cid = Long.valueOf(id);
-		Organization organization = new Organization();
-		organization.setClassName(name);
-		organization.setSchool(schoolService.load(Long.valueOf(school)));
-		if (cid == -1) {
-			return organizationService.add(organization);
-		} else {
-			organization.setId(cid);
-			return organizationService.edit(organization);
-		}
-	}
-
-	@RequestMapping(value = "/list_class")
-	public @ResponseBody PageResults<Organization> listClass(int page, String university, String school) {
-		return organizationService.list(page, Long.valueOf(university), Long.valueOf(school));
-	}
-
-	@RequestMapping(value = "/load_class")
-	public @ResponseBody Organization loadClass(String id) {
-		return organizationService.load(Long.valueOf(id));
-	}
-
-	@RequestMapping(value = "/get_all_class")
-	public @ResponseBody List<Organization> getAllClass(String school) {
-		return organizationService.getAllClass(Long.valueOf(school));
+	public @ResponseBody List getAllSchool() {
+		return schoolService.getAll();
 	}
 	
 	private int getNum(EngClass ec) {
@@ -259,7 +217,6 @@ public class AccountController {
 		student.setStudent_no(student_no);
 		student.setUsername(student_no);
 		student.setPassword(password);
-		student.setOrganization(organizationService.load(Long.valueOf(organization)));
 		student.setEngClass(engClassService.get(Long.valueOf(engClass)));
 		if(sid==-1){
 			return studentService.add(student);

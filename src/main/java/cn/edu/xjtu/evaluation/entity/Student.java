@@ -44,11 +44,9 @@ public class Student {
 	private List<Answer> answers;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	private Organization organization;
-	
-	@ManyToOne(fetch = FetchType.EAGER)
 	private EngClass engClass;
-
+	@ManyToOne(fetch = FetchType.EAGER)
+	private School school;
 	
 	public Student() {
 		super();
@@ -151,14 +149,6 @@ public class Student {
 		this.english_level = english_level;
 	}
 
-	public Organization getOrganization() {
-		return organization;
-	}
-
-	public void setOrganization(Organization organization) {
-		this.organization = organization;
-	}
-
 	public EngClass getEngClass() {
 		return engClass;
 	}
@@ -174,5 +164,12 @@ public class Student {
 	public void setQuestionaire(String questionaire) {
 		this.questionaire = questionaire;
 	}
-	
+
+	public School getSchool() {
+		return school;
+	}
+
+	public void setSchool(School school) {
+		this.school = school;
+	}
 }

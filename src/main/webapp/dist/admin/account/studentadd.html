@@ -11,6 +11,7 @@
 			.ready(function(){
 						loadUniversity();
 						loadEngClass();
+						loadSchool();
 						var sid = getQueryString("id");
 						if (sid != "-1") {
 							$
@@ -30,13 +31,11 @@
 										},
 										success : function(data) {
 											$("#name").val(data.name);
-											$("#university").val(data.organization.school.university.id);
-											loadSchool();
-											$("#school").val(data.organization.school.id);
-											loadClass();
-											$("#class").val(data.organization.id);
+											$("#university").val(data.engClass.university.id);
+											$("#school").val(data.school.id);
 											$("#id").val(data.id);
 											$("#student_no").val(data.student_no);
+											loadEngClass();
 											$("#engClass").val(data.engClass.id);
 											$("#password").val(data.password);
 										}
@@ -74,11 +73,6 @@
 	}
 
 	function loadSchool() {
-		if($("#university").val()=='-1'){
-			var default_op = "<option selected='selected' value='-1'>----------请先选择学校----------</option>";
-			$("#school").html(default_op);
-			return;
-		}
 		var default_op = "<option selected='selected' value='-1'>----------请选择学院----------</option>";
 		$("#school").html(default_op);
 		$.ajax({
@@ -87,7 +81,7 @@
 			type : 'POST',
 			crossDomain : true,
 			url : "get_all_school",
-			data : {university:$("#university").val()},
+			data : {},
 			dataType : "json",
 			contentType : "application/x-www-form-urlencoded;charset=utf-8",
 			error : function(e) {
@@ -103,37 +97,13 @@
 		});
 	}
 	
-	function loadClass() {
-		if($("#school").val()=='-1'){
-			var default_op = "<option selected='selected' value='-1'>----------请先选择学院----------</option>";
-			$("#class").html(default_op);
-			return;
-		}
-		var default_op = "<option selected='selected' value='-1'>----------请选择班级----------</option>";
-		$("#class").html(default_op);
-		$.ajax({
-			async : false,
-			cache : false,
-			type : 'POST',
-			crossDomain : true,
-			url : "get_all_class",
-			data : {school:$("#school").val()},
-			dataType : "json",
-			contentType : "application/x-www-form-urlencoded;charset=utf-8",
-			error : function(e) {
-				alert("网络错误，请重试");
-			},
-			success : function(data) {
-				$.each(data, function(index, value) {
-					var op = $('<option></option>').attr('value', value.id)
-							.append(value.className);
-					$("#class").append(op);
-				});
-			}
-		});
-	}
 	
 	function loadEngClass() {
+		if($("#university").val()=='-1'){
+			var default_op = "<option selected='selected' value='-1'>----------请先选择学校----------</option>";
+			$("#school").html(default_op);
+			return;
+		}
 		var default_op = "<option selected='selected' value='-1'>---------请选择英语班级---------</option>";
 		$("#engClass").html(default_op);
 		$.ajax({
@@ -176,7 +146,6 @@
 			data : {
 				id : $("#id").val(),
 				name : $("#name").val(),
-				organization : $("#class").val(),
 				engClass : $("#engClass").val(),
 				student_no : $("#student_no").val(),
 				password : $("#password").val()
@@ -215,19 +184,13 @@
 					<div class="bbD">
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;学校名：<select
 							class="input3" id="university"
-							onchange="javascript:loadSchool();">
+							onchange="javascript:loadEngSchool();">
 						</select>
 					</div>
 					<div class="bbD">
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;学院名：<select
 							class="input3" id="school" onchange="javascript:loadClass();"><option
 								selected='selected' value='-1'>----------请先选择学校----------</option>
-						</select>
-					</div>
-					<div class="bbD">
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;班级名：<select
-							class="input3" id="class"><option selected='selected'
-								value='-1'>----------请先选择班级----------</option>
 						</select>
 					</div>
 					<div class="bbD">

@@ -7,9 +7,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.edu.xjtu.evaluation.entity.Admin;
 import cn.edu.xjtu.evaluation.service.IAdminService;
-import cn.edu.xjtu.evaluation.service.IOrganizationService;
-import cn.edu.xjtu.evaluation.service.ISchoolService;
-import cn.edu.xjtu.evaluation.service.IUniversityService;
 import cn.edu.xjtu.evaluation.support.PageResults;
 
 @Controller

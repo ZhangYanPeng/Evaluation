@@ -276,4 +276,9 @@ public class EnglishController {
 	public @ResponseBody int removeTestExercise(String id, String eid){
 		return testService.removeExercise(Long.valueOf(id), Long.valueOf(eid));
 	}
+	
+	@RequestMapping(value = "/del_audio" )
+	public @ResponseBody int del_audio(String id){
+		return audioService.removeAud(Long.valueOf(id));
+	}
 }
