@@ -144,4 +144,13 @@ public class EngClassServiceImpl implements IEngClassService {
 		return engClassDAO.getListByHQL(hql, values);
 	}
 
+	@Override
+	@Transactional
+	public EngClass getByName(String engclass_name) {
+		// TODO Auto-generated method stub
+		String hql = "from EngClass where name = ?";
+		Object[] values = {engclass_name};
+		return engClassDAO.getByHQL(hql, values);
+	}
+
 }

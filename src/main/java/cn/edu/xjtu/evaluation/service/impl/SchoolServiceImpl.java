@@ -86,4 +86,13 @@ public class SchoolServiceImpl implements ISchoolService {
 		return schoolDAO.getListByHQL(hqlString, values);
 	}
 
+	@Override
+	@Transactional
+	public School getSchool(String name) {
+		// TODO Auto-generated method stub
+		String hqlString = "from School where name = ?";
+		Object[] values = {name};
+		return schoolDAO.getByHQL(hqlString, values);
+	}
+
 }

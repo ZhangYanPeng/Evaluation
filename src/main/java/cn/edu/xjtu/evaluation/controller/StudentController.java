@@ -1,19 +1,35 @@
 package cn.edu.xjtu.evaluation.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.edu.xjtu.evaluation.dao.impl.StudentDAOImpl;
+import cn.edu.xjtu.evaluation.entity.EngClass;
+import cn.edu.xjtu.evaluation.entity.School;
 import cn.edu.xjtu.evaluation.entity.Student;
+import cn.edu.xjtu.evaluation.entity.University;
+import cn.edu.xjtu.evaluation.service.IEngClassService;
+import cn.edu.xjtu.evaluation.service.ISchoolService;
 import cn.edu.xjtu.evaluation.service.IStudentService;
+import cn.edu.xjtu.evaluation.service.IUniversityService;
+import cn.edu.xjtu.evaluation.support.PageResults;
 
 @Controller
 @RequestMapping("/student")
 public class StudentController {
 	@Autowired
 	IStudentService studentService;
+	@Autowired
+	IUniversityService universityService;
+	@Autowired
+	ISchoolService schoolService;
+	@Autowired
+	IEngClassService engClassService;
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public @ResponseBody Student login(String username, String password) {
@@ -42,27 +58,37 @@ public class StudentController {
 		std.setPassword(password);
 		return studentService.edit(std);
 	}
-
-	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public @ResponseBody Student register(String username, String password, String gender, String name, String school,
-			String major, String grade, String student_no, String english_level) {
-		Student student = new Student();
-		student.setUsername(username);
-		student.setPassword(password);
-		student.setGender(Integer.valueOf(gender));
-		student.setName(name);
-		student.setMajor(major);
-		student.setGrade(grade);
-		student.setStudent_no(student_no);
-		student.setEnglish_level(Integer.valueOf(english_level));
-		student.setStatus(1);
-		int status = studentService.add(student);
-		if (status == 1) {
-			student = studentService.login(student);
-			return student;
-		} else {
+	
+	@RequestMapping(value = "/list_university")
+	public @ResponseBody List<University> listUniversity() {
+		return universityService.getAll();
+	}
+	
+	@RequestMapping(value = "/register")
+	public @ResponseBody Student register(String r_username, String r_name, String r_university, String r_password, String r_school, String r_f_engclass, String r_b_engclass) {
+		Student student = studentService.getByStuNo(r_username);
+		if(student != null){
 			student = new Student();
-			student.setId(-1);
+			student.setStudent_no("-1");
+			return student;
+		}else{
+			student = new Student();
+			student.setName(r_name);
+			student.setStudent_no(r_username);
+			student.setUsername(r_username);
+			student.setPassword(r_password);
+			School school = schoolService.getSchool(r_school);
+			student.setSchool(school);
+			String engclass_name = r_f_engclass + r_b_engclass;
+			EngClass engClass = engClassService.getByName(engclass_name);
+			if(engClass == null){
+				engClass = new EngClass();
+				engClass.setName(engclass_name);
+				engClass.setUniversity(universityService.load(Long.valueOf(r_university)));
+				engClassService.add(engClass);
+			}
+			student.setEngClass(engClass);
+			studentService.add(student);
 			return student;
 		}
 	}

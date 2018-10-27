@@ -24,6 +24,7 @@
 	<resources mapping="/dist/**" location="/dist/**" />
 	<resources mapping="/audio/**" location="/upload/audio/**" />
 	<resources mapping="/**" location="/dist/**" />
+	<resources mapping="/img/**" location="/dist/img/**" />
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources 
 		in the /WEB-INF/views directory -->

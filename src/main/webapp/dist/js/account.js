@@ -23,7 +23,6 @@ function login(username, password, type) {
 		dataType : "json",
 		error : function(e) {
 			myApp.alert("登陆失败，请重试", "抱歉");
-			console.log(username + password);
 			myApp.loginScreen();
 		},
 		success : function(data) {
@@ -47,8 +46,8 @@ function login(username, password, type) {
 
 //logout
 function logout(){
-	storeUserIdentification("", "", "")
-	userId = "";
+	storeUserIdentification("", "-1", "")
+	userId = "-1";
 	user = "";
 	userType = "";
 	mainView.router.loadPage("welcome.html");
@@ -75,10 +74,17 @@ function getUserIdentification() {
 			userType = storage["userType"];
 			login(user.username, user.password, 'student');
 		}
+		else {
+			userId = -1;
+			storage["userId"] = userId;
+			user = null;
+			myApp.loginScreen();
+		}
 	} else {
 		userId = -1;
 		storage["userId"] = userId;
 		user = null;
+		myApp.loginScreen();
 	}
 }
 
@@ -155,6 +161,50 @@ function saveinfo(){
 		success : function(data) {
 			if (data > 0) {
 				login(user.username,  $("#password").val(), userType)
+			}
+		}
+	});
+}
+
+function register(){
+	var regdata = myApp.formToJSON("#register-form");
+	console.log(regdata);
+	if(regdata.r_password != regdata.r_repassword){
+		myApp.alert("两次输入密码不一致！","提示");
+		return;
+	}else if(regdata.r_university == "" || regdata.r_university == null){
+		myApp.alert("请选择学校！","提示");
+		return;
+	}else if(regdata.r_username == "" || regdata.r_username == null){
+		myApp.alert("请输入学号！","提示");
+		return;
+	}else if(regdata.r_password == "" || regdata.r_password == null){
+		myApp.alert("请输入密码！","提示");
+		return;
+	}else if(regdata.r_b_engclass == "" || regdata.r_b_engclass == null){
+		myApp.alert("请输入班级号！","提示");
+		return;
+	}else if(regdata.r_name == "" || regdata.r_name == null){
+		myApp.alert("请输入真实姓名！","提示");
+		return;
+	}
+	//初始化学校
+	$$.ajax({
+		async : false,
+		cache : false,
+		type : 'POST',
+		crossDomain : true,
+		contentType: "application/x-www-form-urlencoded; charset=utf-8",
+		url : baseUrl + "student/register",
+		data : regdata,
+		dataType : "json",
+		error : function(e) {
+		},
+		success : function(data) {
+			if(data.student_no == "-1"){
+				myApp.alert("该用户已经注册过！","提示");
+			}else{
+				login(data.username, data.password, 'student');
 			}
 		}
 	});

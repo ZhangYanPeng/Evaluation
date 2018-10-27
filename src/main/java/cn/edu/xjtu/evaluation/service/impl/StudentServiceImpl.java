@@ -137,4 +137,13 @@ public class StudentServiceImpl implements IStudentService {
 		return 1;
 	}
 
+	@Override
+	@Transactional
+	public Student getByStuNo(String stuno) {
+		// TODO Auto-generated method stub
+		String hql = "from Student where username = ?";
+		Object[] values = {stuno};
+		return studentDAO.getByHQL(hql, values);
+	}
+
 }

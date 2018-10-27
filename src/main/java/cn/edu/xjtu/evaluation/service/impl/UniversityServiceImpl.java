@@ -89,7 +89,7 @@ public class UniversityServiceImpl implements IUniversityService {
 
 	@Override
 	@Transactional
-	public List getAll() {
+	public List<University> getAll() {
 		// TODO Auto-generated method stub
 		return universityDAO.getListByHQL("from University", null);
 	}

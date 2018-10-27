@@ -12,4 +12,5 @@ public interface ISchoolService {
 	public int edit(School school);
 	public School load(Long id);
 	public List<School> getAll();
+	public School getSchool(String name);
 }
