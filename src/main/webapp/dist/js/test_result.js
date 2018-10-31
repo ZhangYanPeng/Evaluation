@@ -36,21 +36,47 @@ function finishTest(){
 	});
 }
 
-var test_report_id;
-
-function set_type(tid){
-	test_report_id = tid;
-	myApp.popover('.popover-test-type', $$('#'+'tr'+tid));
+function getSingleReport(tid){
+	$.ajax({
+		async : false,
+		cache : false,
+		type : 'POST',
+		crossDomain : true,
+		traditional: true,
+		url : baseUrl + "test/getSingleReport",
+		data : {
+			tid : tid,
+			uid : userId
+		},
+		dataType : "json",
+		error : function(e) {
+			console.log(e);
+		},
+		success : function(data){
+			window.location.href=data.path;
+		}
+	});
 }
 
-function test_report(){
-	myApp.closeModal('.popover-test-type');
-	mainView.router.loadPage("result_page/test_report.html?tid="+test_report_id);
-}
-
-function evaluation_report(){
-	myApp.closeModal('.popover-test-type');
-	mainView.router.loadPage("result_page/evaluation_report.html?tid="+test_report_id);
+function getOverallReport(tid){
+	$.ajax({
+		async : false,
+		cache : false,
+		type : 'POST',
+		crossDomain : true,
+		traditional: true,
+		url : baseUrl + "test/getOverallReport",
+		data : {
+			uid : userId
+		},
+		dataType : "json",
+		error : function(e) {
+			console.log(e);
+		},
+		success : function(data){
+			window.location.href=data.path;
+		}
+	});
 }
 
 function calculate_result(tid, type){

@@ -157,7 +157,7 @@ function loadAnswers(type) {
 				d_icon.append(icon);
 				var btn = $("<a></a>").attr('class', 'button').append('查看报告');
 				//btn.attr('href', 'result_page/result_type.html?tid=' + test.id + "&type="+ type);
-				btn.attr('href','javascript:set_type('+test.id+');').attr('id','tr'+test.id);
+				btn.attr('href','javascript:getSingleReport('+test.id+');');
 				d_after.append(btn);
 				d_in.append(d_title).append(d_after);
 				li.append(d_icon).append(d_in);

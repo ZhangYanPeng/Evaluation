@@ -23,8 +23,9 @@
 	<resources mapping="/resources/**" location="/resources/" />
 	<resources mapping="/dist/**" location="/dist/**" />
 	<resources mapping="/audio/**" location="/upload/audio/**" />
-	<resources mapping="/**" location="/dist/**" />
+	<resources mapping="/pdf/**" location="/download/pdf/**" />
 	<resources mapping="/img/**" location="/dist/img/**" />
+	<resources mapping="/**" location="/dist/**" />
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources 
 		in the /WEB-INF/views directory -->
@@ -48,8 +49,8 @@
 		<beans:property name="url"
 			value="jdbc:mysql://localhost:3306/evaluation?useUnicode=true&amp;characterEncoding=UTF-8" />
 		<beans:property name="username" value="root" />
-		<beans:property name="password" value="" />
-		<!-- <beans:property name="password" value="123.com" /> -->
+		<!-- <beans:property name="password" value="" />-->
+		<beans:property name="password" value="123.com" /> 
 		<beans:property name="validationQuery" value="SELECT 1" />
 	</beans:bean>
 	<!-- Hibernate Session Factory -->
@@ -86,6 +87,4 @@
 		<!-- 指定所上传文件的总大小,单位字节。注意maxUploadSize属性的限制不是针对单个文件，而是所有文件的容量之和 -->
 		<beans:property name="maxUploadSize" value="1024000000" />
 	</beans:bean>
-
-
 </beans:beans>
