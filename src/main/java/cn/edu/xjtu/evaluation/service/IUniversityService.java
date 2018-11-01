@@ -12,5 +12,5 @@ public interface IUniversityService {
 	public int edit(University university);
 	public University load(long id);
 	public int update(University university);
-	public List getAll();
+	public List<University> getAll();
 }

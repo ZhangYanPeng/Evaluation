@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.poi.util.SystemOutLogger;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import cn.edu.xjtu.evaluation.common.Constants;
+import cn.edu.xjtu.evaluation.common.Definition;
+import cn.edu.xjtu.evaluation.common.Definition.QUESTION_LEVEL;
+import cn.edu.xjtu.evaluation.common.Definition.QUESTION_TYPE;
 import cn.edu.xjtu.evaluation.entity.Audio;
 import cn.edu.xjtu.evaluation.entity.Exercise;
 import cn.edu.xjtu.evaluation.entity.Intervention;
@@ -57,7 +61,11 @@ public class EnglishController {
 	//test manage
 	@RequestMapping(value = "/list_test" , method = RequestMethod.POST)
 	public @ResponseBody PageResults<Test> listTest(String page) {
-		return testService.list(Integer.valueOf(page));
+		PageResults<Test> pr = testService.list(Integer.valueOf(page));
+		for(Test t : pr.getResults()){
+			t.setParts(null);
+		}
+		return pr;
 	}
 	
 	@RequestMapping(value = "/add_test" , method = RequestMethod.POST)
@@ -140,14 +148,22 @@ public class EnglishController {
 	public @ResponseBody PageResults<Exercise> listExercise(String page, String type) {
 		if(type == "" || type == null)
 			type = "-1";
-		return exerciseService.getPageList(Integer.valueOf(page), Long.valueOf(type));
+		PageResults<Exercise> pr = exerciseService.getPageList(Integer.valueOf(page), Long.valueOf(type));
+		for(Exercise e : pr.getResults()){
+			e.setQuestions(null);
+		}
+		return pr;
 	}
 	
 	@RequestMapping(value = "/listAllExercise" )
 	public @ResponseBody List<Exercise> listAllExercise( String type) {
 		if(type == "" || type == null)
 			type = "-1";
-		return exerciseService.getList(Long.valueOf(type));
+		List<Exercise> le = exerciseService.getList(Long.valueOf(type));
+		for(Exercise e : le){
+			e.setQuestions(null);
+		}
+		return le;
 	}
 	
 	@RequestMapping(value = "/loadExercise" )
@@ -181,12 +197,36 @@ public class EnglishController {
 			}
 			JSONArray option =  jsonObj.getJSONArray("option");
 			JSONArray in_text =  jsonObj.getJSONArray("in_text");
+			JSONArray level,type;
+			if(exer.getQuestions().size()>1){
+				level = jsonObj.getJSONArray("set_level");
+				type = jsonObj.getJSONArray("set_type");
+			}else{
+				level = new JSONArray();
+				type = new JSONArray();
+				level.put(jsonObj.getString("set_level"));
+				type.put(jsonObj.getString("set_type"));
+			}
 			for(Question q : exer.getQuestions()){
 				int qn = q.getQ_num();
 				q.setAnswer(answer.getInt(qn));
 				String op = "";
 				for(int i=qn*5; i<(qn+1)*5; i++){
 					op += "||" + option.getString(i);
+				}
+				switch((String)level.get(qn)){
+					case "easy" : q.setLevel(Definition.QUESTION_LEVEL.easy);break;
+					case "normal" : q.setLevel(Definition.QUESTION_LEVEL.normal);break;
+					case "hard" : q.setLevel(Definition.QUESTION_LEVEL.hard);break;
+					default : q.setLevel(Definition.QUESTION_LEVEL.easy);break;
+				}
+				switch((String)type.get(qn)){
+					case "presentation" : q.setType(Definition.QUESTION_TYPE.presentation);break;
+					case "grammar" : q.setType(Definition.QUESTION_TYPE.grammar);break;
+					case "comprehension" : q.setType(Definition.QUESTION_TYPE.comprehension);break;
+					case "details" : q.setType(Definition.QUESTION_TYPE.details);break;
+					case "inference" : q.setType(Definition.QUESTION_TYPE.inference);break;
+					default : q.setType(Definition.QUESTION_TYPE.presentation);break;
 				}
 				q.setOptions(op);
 				questionService.edit(q);
@@ -247,5 +287,10 @@ public class EnglishController {
 	@RequestMapping(value = "/removeTestExercise" )
 	public @ResponseBody int removeTestExercise(String id, String eid){
 		return testService.removeExercise(Long.valueOf(id), Long.valueOf(eid));
+	}
+	
+	@RequestMapping(value = "/del_audio" )
+	public @ResponseBody int del_audio(String id){
+		return audioService.removeAud(Long.valueOf(id));
 	}
 }

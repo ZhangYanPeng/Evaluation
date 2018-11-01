@@ -6,12 +6,14 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.edu.xjtu.evaluation.common.Constants;
 import cn.edu.xjtu.evaluation.entity.Answer;
 import cn.edu.xjtu.evaluation.entity.EvaluationResult;
 import cn.edu.xjtu.evaluation.entity.OverallReport;
@@ -22,6 +24,8 @@ import cn.edu.xjtu.evaluation.service.IAnswerService;
 import cn.edu.xjtu.evaluation.service.IResultService;
 import cn.edu.xjtu.evaluation.service.ITestService;
 import cn.edu.xjtu.evaluation.service.ITypeService;
+import cn.edu.xjtu.evaluation.support.PageResults;
+import cn.edu.xjtu.evaluation.support.PdfCreator;
 
 @Controller
 @RequestMapping("/test")
@@ -40,6 +44,9 @@ public class TestController {
 			return new ArrayList<Test>();
 		}
 		else{
+			for(Test t : tList){
+				t.setParts(null);
+			}
 			return tList;
 		}
 	}
@@ -91,18 +98,33 @@ public class TestController {
 		return 1;
 	}
 	
-	@RequestMapping(value = "/getTestReport" )
-	public @ResponseBody TestResult getTestReport(String uid, String tid) {
-		return resultService.getTestResult(Long.valueOf(uid), Long.valueOf(tid));
-	}
-	
-	@RequestMapping(value = "/getEvaluationReport" )
-	public @ResponseBody EvaluationResult getEvaluationReport(String uid, String tid) {
-		return resultService.getEvaluationReport(Long.valueOf(uid), Long.valueOf(tid));
+	@RequestMapping(value = "/getSingleReport" )
+	public @ResponseBody String getSingleReport(String uid, String tid, HttpServletRequest request) {
+		String path = request.getSession().getServletContext().getRealPath("/download/pdf/");
+		String filename = "tmp.pdf";
+		try {
+			PdfCreator.createSingleReport(null, path+filename);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		JSONObject obj = new JSONObject();
+		obj.put("path", "pdf/"+filename);
+		return obj.toString();
 	}
 	
 	@RequestMapping(value = "/getOverallReport" )
-	public @ResponseBody OverallReport getOverallReport(String uid) {
-		return resultService.getOverallReport(Long.valueOf(uid));
+	public @ResponseBody String getOverallReport(String uid, HttpServletRequest request) {
+		String path = request.getSession().getServletContext().getRealPath("/download/pdf/");
+		String filename = "tmp.pdf";
+		try {
+			PdfCreator.createOverallReport(null, path + filename);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		JSONObject obj = new JSONObject();
+		obj.put("path", "pdf/" + filename);
+		return obj.toString();
 	}
 }
