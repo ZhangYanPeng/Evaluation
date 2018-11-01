@@ -1,5 +1,6 @@
 package cn.edu.xjtu.evaluation.service.impl;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -110,21 +111,13 @@ public class ExerciseServiceImpl implements IExerciseService {
 
 	@Override
 	@Transactional
-	public List<Exercise> list() {
-		// TODO Auto-generated method stub
-		String hql = "from Exercise";
-		return exerciseDAO.getListByHQL(hql, null);
-	}
-
-	@Override
-	@Transactional
 	public PageResults<Exercise> getPageList(Integer page, long type) {
 		// TODO Auto-generated method stub
 		if( type == -1){
 			String hql = "from Exercise";
 			String countHql = "select count(*) from Exercise";
 			Object[] values = {};
-			return exerciseDAO.findPageByFetchedHql(hql, countHql, page, Constants.PAGE_SIZE, values);
+			return exerciseDAO.findPageByFetchedHql(hql, countHql, page, Constants.PAGE_SIZE, values);		
 		}else{
 			String hql = "from Exercise where type.id = ? ";
 			String countHql = "select count(*) from Exercise where type.id = ? ";

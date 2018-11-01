@@ -11,7 +11,6 @@ public interface IExerciseService {
 	int remove(long id);
 	int edit(Exercise exercise);
 	Exercise get(long id);
-	List<Exercise> list();
 	PageResults<Exercise> getPageList(Integer page, long type);
 	Exercise create();
 	List<Exercise> getList(long type);

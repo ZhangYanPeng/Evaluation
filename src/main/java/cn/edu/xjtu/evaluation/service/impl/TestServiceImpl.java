@@ -2,7 +2,9 @@ package cn.edu.xjtu.evaluation.service.impl;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -93,7 +95,8 @@ public class TestServiceImpl implements ITestService {
 	public Test get(long id) {
 		// TODO Auto-generated method stub
 		try {
-			return testDAO.get(id);
+			Test test = testDAO.get(id);
+			return test;
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();

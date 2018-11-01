@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.edu.xjtu.evaluation.common.Constants;
 import cn.edu.xjtu.evaluation.entity.Answer;
 import cn.edu.xjtu.evaluation.entity.EvaluationResult;
 import cn.edu.xjtu.evaluation.entity.OverallReport;
@@ -23,6 +24,7 @@ import cn.edu.xjtu.evaluation.service.IAnswerService;
 import cn.edu.xjtu.evaluation.service.IResultService;
 import cn.edu.xjtu.evaluation.service.ITestService;
 import cn.edu.xjtu.evaluation.service.ITypeService;
+import cn.edu.xjtu.evaluation.support.PageResults;
 import cn.edu.xjtu.evaluation.support.PdfCreator;
 
 @Controller
@@ -42,6 +44,9 @@ public class TestController {
 			return new ArrayList<Test>();
 		}
 		else{
+			for(Test t : tList){
+				t.setParts(null);
+			}
 			return tList;
 		}
 	}
