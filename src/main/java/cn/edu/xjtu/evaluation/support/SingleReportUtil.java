@@ -32,7 +32,7 @@ public class SingleReportUtil {
 		// step 3
 		document.open();
 
-		SingleReportUtil.createTestReport(document);
+		SingleReportUtil.createEvaluationReport(document);
 		// step 4
 		document.close();
 	}
@@ -67,7 +67,8 @@ public class SingleReportUtil {
 				summary_table_text_cell.setPadding(20);
 				summary_table.addCell(summary_table_text_cell);
 				
-				String pic_path = PicCreator.CreatePiePic();
+				double[] param = new double[]{0.2, 0.4, 0.4 , 0.1, 0.1, 0.8};
+				String pic_path = PicCreator.CreatePiePic(param);
 				PdfPCell summary_pic = new PdfPCell(Image.getInstance(pic_path));
 				summary_pic.setFixedHeight(270);
 				summary_table.addCell(summary_pic);
@@ -100,12 +101,10 @@ public class SingleReportUtil {
 				// 行1
 				PdfPCell r1_cell = PdfCreator.FormatTableCell("题目难度", Element.ALIGN_MIDDLE, Element.ALIGN_CENTER,
 						BaseColor.BLACK, SingleReportUtil.tab_odd);
-				r1_cell.setBackgroundColor(new BaseColor(189, 215, 238));
 				detail_table.addCell(r1_cell);
 				for (int i = 1; i < 17; i++) {
 					PdfPCell r1_cell_tmp = PdfCreator.FormatTableCell("难", Element.ALIGN_MIDDLE, Element.ALIGN_CENTER,
 							BaseColor.BLACK, SingleReportUtil.tab_odd);
-					r1_cell.setBackgroundColor(new BaseColor(189, 215, 238));
 					detail_table.addCell(r1_cell_tmp);
 				}
 			}
@@ -113,12 +112,10 @@ public class SingleReportUtil {
 				// 行2
 				PdfPCell r2_cell = PdfCreator.FormatTableCell("我的答案", Element.ALIGN_MIDDLE, Element.ALIGN_CENTER,
 						BaseColor.BLACK, SingleReportUtil.tab_even);
-				r2_cell.setBackgroundColor(new BaseColor(91, 155, 213));
 				detail_table.addCell(r2_cell);
 				for (int i = 1; i < 17; i++) {
 					PdfPCell r2_cell_tmp = PdfCreator.FormatTableCell("难", Element.ALIGN_MIDDLE, Element.ALIGN_CENTER,
 							BaseColor.BLACK, SingleReportUtil.tab_even);
-					r2_cell.setBackgroundColor(new BaseColor(91, 155, 213));
 					detail_table.addCell(r2_cell_tmp);
 				}
 			}
@@ -126,12 +123,10 @@ public class SingleReportUtil {
 				// 行3
 				PdfPCell r3_cell = PdfCreator.FormatTableCell("正确答案", Element.ALIGN_MIDDLE, Element.ALIGN_CENTER,
 						BaseColor.BLACK, SingleReportUtil.tab_odd);
-				r3_cell.setBackgroundColor(new BaseColor(189, 215, 238));
 				detail_table.addCell(r3_cell);
 				for (int i = 1; i < 17; i++) {
 					PdfPCell r3_cell_tmp = PdfCreator.FormatTableCell("难", Element.ALIGN_MIDDLE, Element.ALIGN_CENTER,
 							BaseColor.BLACK, SingleReportUtil.tab_odd);
-					r3_cell.setBackgroundColor(new BaseColor(189, 215, 238));
 					detail_table.addCell(r3_cell_tmp);
 				}
 			}
@@ -327,7 +322,7 @@ public class SingleReportUtil {
 
 			document.newPage();
 			Paragraph ad_p = new Paragraph(" ");
-			ad_p.setSpacingAfter(50);
+			ad_p.setSpacingAfter(10);
 			document.add(ad_p);
 			{
 				PdfPTable ability_table = new PdfPTable(2);
@@ -390,15 +385,27 @@ public class SingleReportUtil {
 					ability_def_table.addCell(PdfCreator.FormatTableCell("📚", Element.ALIGN_MIDDLE,
 							Element.ALIGN_CENTER, BaseColor.BLACK, BaseColor.WHITE));
 					
-					PdfPCell ability_def_table_cell = new PdfPCell(ability_def_table);
+					PdfPCell ability_def_table_cell = new PdfPCell();
+					ability_def_table_cell.addElement(ability_def_table);
 					ability_def_table_cell.setVerticalAlignment(Element.ALIGN_TOP);
-					ability_def_table_cell.setBorder(0);
+					ability_def_table_cell.setBorderColor(BaseColor.WHITE);
 					ability_table.addCell(ability_def_table_cell);
 				}
 				{
 					// 雷达图
-					PdfPCell pic = new PdfPCell(PdfCreator.FormatTableCell("听力技能掌握概率-雷达图", Element.ALIGN_TOP, Element.ALIGN_CENTER, BaseColor.BLACK, BaseColor.WHITE));
-					pic.setFixedHeight(200);
+					PdfPCell pic = new PdfPCell();
+					Font rada_font = new Font(bfCn_title, 16, Font.BOLD, BaseColor.BLACK);
+					Paragraph rada_text = new Paragraph("听力技能掌握概率-雷达图", rada_font);
+					rada_text.setAlignment(Element.ALIGN_CENTER);
+					rada_text.setSpacingAfter(12);
+					
+					pic.addElement(rada_text);
+					String pic_path = PicCreator.CreateRadPic(new double[]{0,0.2,0.8,0.5,0.3});
+					Image img = Image.getInstance(pic_path);
+					img.scalePercent(10);
+					img.setAlignment(Element.ALIGN_CENTER);
+					pic.addElement(img);
+					pic.setBorderColor(BaseColor.WHITE);
 					ability_table.addCell(pic);
 				}
 				{
