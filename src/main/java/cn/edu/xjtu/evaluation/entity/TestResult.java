@@ -22,6 +22,7 @@ public class TestResult {
 		for( Record rec : answer.getRecords()){
 			if( Integer.parseInt((rec.getResult()).split("\\|\\|")[1]) == rec.getQuestion().getAnswer()){
 				right_sum ++;
+				score += 4;
 				switch(rec.getQuestion().getLevel()){
 					case easy : percents[0] ++; break;
 					case normal : percents[1] ++; break;
@@ -38,11 +39,10 @@ public class TestResult {
 				default : break;
 			}
 		}
-		
 		double total_sum_t = percents[0] + percents[1] + percents[2] ;
-		percents[0] /= total_sum_t/100;
-		percents[1] /= total_sum_t/100;
-		percents[2] /= total_sum_t/100;
+		percents[0] /= total_sum_t;
+		percents[1] /= total_sum_t;
+		percents[2] /= total_sum_t;
 		
 		int rank_t = 0;
 		for( Answer ans : answers){
@@ -62,12 +62,12 @@ public class TestResult {
 				}
 			}
 		}
-		rank = ((double)rank_t) / answers.size();
+		rank = ((double)rank_t) / answers.size()*100+1;
 
 		total_sum_t = percents[3] + percents[4] + percents[5] ;
-		percents[3] /= total_sum_t/100;
-		percents[4] /= total_sum_t/100;
-		percents[5] /= total_sum_t/100;
+		percents[3] /= total_sum_t;
+		percents[4] /= total_sum_t;
+		percents[5] /= total_sum_t;
 	}
 	
 	public int getScore() {

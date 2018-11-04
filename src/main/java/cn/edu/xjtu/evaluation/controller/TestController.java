@@ -101,9 +101,11 @@ public class TestController {
 	@RequestMapping(value = "/getSingleReport" )
 	public @ResponseBody String getSingleReport(String uid, String tid, HttpServletRequest request) {
 		String path = request.getSession().getServletContext().getRealPath("/download/pdf/");
-		String filename = "tmp.pdf";
+		String filename = String.valueOf(uid)+String.valueOf(tid)+"test.pdf";
 		try {
-			PdfCreator.createSingleReport(null, path+filename);
+			PdfCreator.createSingleReport(resultService.getTestResult(Long.valueOf(uid), Long.valueOf(tid)),
+					resultService.getEvaluationReport(Long.valueOf(uid), Long.valueOf(tid)),
+					path+filename, path);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -116,9 +118,9 @@ public class TestController {
 	@RequestMapping(value = "/getOverallReport" )
 	public @ResponseBody String getOverallReport(String uid, HttpServletRequest request) {
 		String path = request.getSession().getServletContext().getRealPath("/download/pdf/");
-		String filename = "tmp.pdf";
+		String filename = String.valueOf(uid)+"overall.pdf";
 		try {
-			PdfCreator.createOverallReport(null, path + filename);
+			PdfCreator.createOverallReport(resultService.getOverallReport(Long.valueOf(uid)), path + filename, path);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
