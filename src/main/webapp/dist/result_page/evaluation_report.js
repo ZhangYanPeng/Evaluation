@@ -33,8 +33,6 @@ function init_evaluation(userid, testid){
 				$("#inter_r_5").append($$("<td></td>").append(data.ability[4][i]));
 			}
 
-
-			console.log(data.inter_sta);
 			var data = [
 				{
 					name : '我的总提示频率',
