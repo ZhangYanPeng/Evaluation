@@ -36,11 +36,7 @@ public class UniversityServiceImpl implements IUniversityService {
 		// TODO Auto-generated method stub
 		try {
 			University university = universityDAO.load(id);
-			if(university.getSchools()==null || university.getSchools().size()==0){
-				universityDAO.delete(university);
-			}else{
-				return -1;
-			}
+			universityDAO.delete(university);
 		} catch (Exception e) {
 			// TODO: handle exception
 			return 0;
@@ -93,7 +89,7 @@ public class UniversityServiceImpl implements IUniversityService {
 
 	@Override
 	@Transactional
-	public List getAll() {
+	public List<University> getAll() {
 		// TODO Auto-generated method stub
 		return universityDAO.getListByHQL("from University", null);
 	}

@@ -61,7 +61,11 @@ public class EnglishController {
 	//test manage
 	@RequestMapping(value = "/list_test" , method = RequestMethod.POST)
 	public @ResponseBody PageResults<Test> listTest(String page) {
-		return testService.list(Integer.valueOf(page));
+		PageResults<Test> pr = testService.list(Integer.valueOf(page));
+		for(Test t : pr.getResults()){
+			t.setParts(null);
+		}
+		return pr;
 	}
 	
 	@RequestMapping(value = "/add_test" , method = RequestMethod.POST)
@@ -144,14 +148,22 @@ public class EnglishController {
 	public @ResponseBody PageResults<Exercise> listExercise(String page, String type) {
 		if(type == "" || type == null)
 			type = "-1";
-		return exerciseService.getPageList(Integer.valueOf(page), Long.valueOf(type));
+		PageResults<Exercise> pr = exerciseService.getPageList(Integer.valueOf(page), Long.valueOf(type));
+		for(Exercise e : pr.getResults()){
+			e.setQuestions(null);
+		}
+		return pr;
 	}
 	
 	@RequestMapping(value = "/listAllExercise" )
 	public @ResponseBody List<Exercise> listAllExercise( String type) {
 		if(type == "" || type == null)
 			type = "-1";
-		return exerciseService.getList(Long.valueOf(type));
+		List<Exercise> le = exerciseService.getList(Long.valueOf(type));
+		for(Exercise e : le){
+			e.setQuestions(null);
+		}
+		return le;
 	}
 	
 	@RequestMapping(value = "/loadExercise" )
@@ -275,5 +287,10 @@ public class EnglishController {
 	@RequestMapping(value = "/removeTestExercise" )
 	public @ResponseBody int removeTestExercise(String id, String eid){
 		return testService.removeExercise(Long.valueOf(id), Long.valueOf(eid));
+	}
+	
+	@RequestMapping(value = "/del_audio" )
+	public @ResponseBody int del_audio(String id){
+		return audioService.removeAud(Long.valueOf(id));
 	}
 }

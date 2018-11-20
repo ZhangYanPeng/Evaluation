@@ -15,4 +15,5 @@ public interface IStudentService {
 	PageResults<Student> list(String str, int page);
 	int delete(long id);
 	int edit(Student student);
+	Student getByStuNo(String stuno);
 }

@@ -14,4 +14,5 @@ public interface IEngClassService {
 	public int importStudent(List<String[]> s_info, long id);
 	public int getStuNum(EngClass ec);
 	public List<EngClass> listAll();
+	public EngClass getByName(String engclass_name);
 }

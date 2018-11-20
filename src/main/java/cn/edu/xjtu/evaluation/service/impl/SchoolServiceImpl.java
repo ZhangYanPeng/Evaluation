@@ -38,11 +38,7 @@ public class SchoolServiceImpl implements ISchoolService {
 		// TODO Auto-generated method stub
 		try {
 			School school = schoolDAO.load(id);
-			if(school.getOrganizations()==null || school.getOrganizations().size()==0){
-				schoolDAO.delete(school);
-			}else{
-				return -1;
-			}
+			schoolDAO.delete(school);
 		} catch (Exception e) {
 			// TODO: handle exception
 			return 0;
@@ -52,19 +48,12 @@ public class SchoolServiceImpl implements ISchoolService {
 
 	@Override
 	@Transactional
-	public PageResults<School> list(int page, long university) {
+	public PageResults<School> list(int page) {
 		// TODO Auto-generated method stub
 		String hql = "from School ";
 		String countHql = "select count(*) from School ";
-		if(university>=0){
-			hql += "where university.id = ?";
-			countHql += "where university.id = ?";
-			Object[] values = {university};
-			return schoolDAO.findPageByFetchedHql(hql, countHql, page, Constants.PAGE_SIZE, values);
-		}else{
-			Object[] values = {};
-			return schoolDAO.findPageByFetchedHql(hql, countHql, page, Constants.PAGE_SIZE, values);
-		}
+		Object[] values = {};
+		return schoolDAO.findPageByFetchedHql(hql, countHql, page, Constants.PAGE_SIZE, values);
 	}
 
 	@Override
@@ -90,11 +79,20 @@ public class SchoolServiceImpl implements ISchoolService {
 
 	@Override
 	@Transactional
-	public List getAll(long u_id) {
+	public List<School> getAll() {
 		// TODO Auto-generated method stub
-		String hqlString = "from School where university.id = ?";
-		Object[] values = {u_id};
+		String hqlString = "from School";
+		Object[] values = {};
 		return schoolDAO.getListByHQL(hqlString, values);
+	}
+
+	@Override
+	@Transactional
+	public School getSchool(String name) {
+		// TODO Auto-generated method stub
+		String hqlString = "from School where name = ?";
+		Object[] values = {name};
+		return schoolDAO.getByHQL(hqlString, values);
 	}
 
 }

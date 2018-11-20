@@ -7,7 +7,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -23,16 +22,11 @@ public class School {
 	private long id;
 	
 	private String name;
-	
 	@OneToMany( fetch = FetchType.LAZY)
-	@JoinColumn( name = "school_id")
+	@JoinColumn( name = "organization_id")
 	@JsonIgnore
-	private Set<Organization> organizations;
+	private Set<Student> students;
 	
-	@ManyToOne( fetch = FetchType.EAGER)
-	private University university;
-	
-
 	public School() {
 		super();
 	}
@@ -53,21 +47,12 @@ public class School {
 		this.name = name;
 	}
 
-	public Set<Organization> getOrganizations() {
-		return organizations;
+	public Set<Student> getStudents() {
+		return students;
 	}
 
-	public void setOrganizations(Set<Organization> organizations) {
-		this.organizations = organizations;
+	public void setStudents(Set<Student> students) {
+		this.students = students;
 	}
-
-	public University getUniversity() {
-		return university;
-	}
-
-	public void setUniversity(University university) {
-		this.university = university;
-	}
-	
 	
 }

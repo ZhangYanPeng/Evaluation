@@ -1,8 +1,10 @@
 package cn.edu.xjtu.evaluation.entity;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class EvaluationResult {
 	private String test;
@@ -13,14 +15,15 @@ public class EvaluationResult {
 	
 	public void getTestInfo(Answer answer, int max_score){
 		OverallPerformance = new String[6];
-		score_statictis = new String[6][answer.getRecords().size()+2];
+		score_statictis = new String[5][answer.getRecords().size()+2];
 		test = answer.getTest().getTitle();
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		OverallPerformance[0] = sdf.format(answer.getStart_time());
 		long consume = answer.getEnd_time().getTime()-answer.getStart_time().getTime();
-		Date date = new Date(consume);
+		Date date = new Date(consume); 
 		SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
+		df.setTimeZone(TimeZone.getTimeZone("1"));
 		OverallPerformance[1] = df.format(date);
 		
 		int origin_score = 0;
@@ -37,10 +40,10 @@ public class EvaluationResult {
 				evaluation_score += 6-(rec.getResult()).split("\\|\\|").length;
 			}
 			percent_score += 4;
-			for(int i=0; i<6; i++){
+			for(int i=0; i<5; i++){
 				score_statictis[i][rec.getNo()] = "";
 			}
-			score_statictis[(rec.getResult()).split("\\|\\|").length-1][rec.getNo()] = "√";
+			score_statictis[(rec.getResult()).split("\\|\\|").length-2][rec.getNo()] = "√";
 			inter_num[(rec.getResult()).split("\\|\\|").length-2] ++;
 		}
 		
@@ -52,15 +55,9 @@ public class EvaluationResult {
 		OverallPerformance[5] = ((Double)potential).toString();
 		
 		for(int i=0; i<5; i++){
-			score_statictis[i+1][answer.getRecords().size()] = ((Integer)inter_num[i]).toString();
-			score_statictis[i+1][answer.getRecords().size()+1] = ((Integer)(inter_num[i] * (4-i))).toString();
+			score_statictis[i][answer.getRecords().size()] = ((Integer)inter_num[i]).toString();
+			score_statictis[i][answer.getRecords().size()+1] = ((Integer)(inter_num[i] * (4-i))).toString();
 		}
-		
-		for(int i=0; i<answer.getRecords().size(); i++ ){
-			score_statictis[0][i] = ((Integer)(i+1)).toString();
-		}
-		score_statictis[0][answer.getRecords().size()] = "答对题数";
-		score_statictis[0][answer.getRecords().size()+1] = "累计分数";
 		
 		//听力技能分析
 		ability = new String[5][3];
@@ -96,7 +93,7 @@ public class EvaluationResult {
 			if(avg_inter_freq[i] == 0)
 				ability[i][2] = "0";
 			else
-				ability[i][2] = ((Double)((double)all_inter_freq[i]/(double)avg_inter_freq[i])).toString();
+				ability[i][2] = String.format("%.2f", ((double)all_inter_freq[i]/(double)avg_inter_freq[i]));
 		}
 		
 		inter_sta = new double[2][5];

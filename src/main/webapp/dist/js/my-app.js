@@ -86,11 +86,39 @@ $$(document).on(
 
 			if (element.id === 'logout') {
 				// log out
-				userId = -1;
-				storeUserIdentification(null, userId, "");
-				initBar();
+				logout();
 			}
 
+			if (element.id === 'register-button') {
+				// log out
+				myApp.closeModal('.login-screen');
+				initBar();
+
+				//初始化学校
+				$$.ajax({
+					async : false,
+					cache : false,
+					type : 'POST',
+					crossDomain : true,
+					url : baseUrl + "student/list_university",
+					data : {
+					},
+					dataType : "json",
+					error : function(e) {
+					},
+					success : function(data) {
+						$$.each(data,function(index,value){
+							var op = $$("<option></option>").attr("value",value.id).append(value.name);
+							$$("#r_university").append(op);
+						});
+					}
+				});
+				myApp.popup('.register-popup'); 
+			}
+
+			if (element.id === 'register') {
+				register();
+			}
 		});
 
 // if logged, close the log in modal

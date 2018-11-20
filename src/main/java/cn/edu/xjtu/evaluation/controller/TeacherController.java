@@ -53,7 +53,11 @@ public class TeacherController {
 	
 	@RequestMapping(value = "/get_exercises", method = RequestMethod.POST)
 	public @ResponseBody PageResults<Exercise> getExercises(String page, String type) {
-		return exerciseService.getPageList(Integer.valueOf(page), Long.valueOf(type));
+		PageResults<Exercise> pr = exerciseService.getPageList(Integer.valueOf(page), Long.valueOf(type));
+		for(Exercise e : pr.getResults()){
+			e.setQuestions(null);
+		}
+		return pr;
 	}
 	
 	
