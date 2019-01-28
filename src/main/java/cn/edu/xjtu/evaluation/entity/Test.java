@@ -26,6 +26,7 @@ public class Test {
 	private String title;
 	private String description;
 	private String remarks;
+	private int testno;
 	
 	@OneToMany( fetch = FetchType.EAGER )
 	@JoinColumn( name = "test_id" )
@@ -103,6 +104,12 @@ public class Test {
 	public void setCollect(int collect) {
 		this.collect = collect;
 	}
-	
-	
+
+	public int getTestno() {
+		return testno;
+	}
+
+	public void setTestno(int testno) {
+		this.testno = testno;
+	}
 }

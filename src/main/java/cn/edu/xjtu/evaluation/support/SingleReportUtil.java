@@ -1,21 +1,14 @@
 package cn.edu.xjtu.evaluation.support;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-
-import com.itextpdf.text.Anchor;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Image;
-import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
 
 import cn.edu.xjtu.evaluation.entity.EvaluationResult;
 import cn.edu.xjtu.evaluation.entity.TestResult;
@@ -47,7 +40,7 @@ public class SingleReportUtil {
 			{
 				PdfPTable summary_table = new PdfPTable(2);
 				summary_table.setWidths(new float[] { (float) 0.35, (float) 0.65 });
-				String result_text = "在本次测试中，\n我的总得分：" + tr.getScore() + "\n在全部做大的学生中，我排在" + tr.getRank() + "%。\n我共答对"
+				String result_text = "在本次测试中，\n我的总得分：" + tr.getScore() + "（试题总分：64分）\n在全部作答的学生中，我排在" + tr.getRank() + "%。\n我共答对"
 						+ tr.getRight_sum() + "道题目，其中不同难度\n题目所占百分比如右图所示。";
 				PdfPCell summary_table_text_cell = PdfCreator.FormatTableCell(result_text, Element.ALIGN_TOP,
 						Element.ALIGN_LEFT, BaseColor.BLACK, BaseColor.WHITE);
@@ -141,7 +134,7 @@ public class SingleReportUtil {
 
 			// 描述
 			Font bfCn_indicator_text = new Font(bfCn_title, 16, Font.BOLD, BaseColor.BLACK);
-			Paragraph overall_table_indicator = new Paragraph("我的整体做大情况如下：", bfCn_indicator_text);
+			Paragraph overall_table_indicator = new Paragraph("我的整体作答情况如下：", bfCn_indicator_text);
 			overall_table_indicator.setAlignment(Element.ALIGN_LEFT);
 			overall_table_indicator.setSpacingBefore(20);
 			overall_table_indicator.setSpacingAfter(20);
@@ -293,66 +286,64 @@ public class SingleReportUtil {
 
 			document.newPage();
 			Paragraph ad_p = new Paragraph(" ");
-			ad_p.setSpacingAfter(10);
 			document.add(ad_p);
 			{
 				PdfPTable ability_table = new PdfPTable(2);
+				ability_table.setWidths(new float[] { (float) 0.6, (float) 0.4});
 				ability_table.setWidthPercentage(100);
 				{
-					PdfPTable ability_def_table = new PdfPTable(4);
+					PdfPTable ability_def_table = new PdfPTable(3);
 					ability_def_table.setWidthPercentage(100);
-					ability_def_table.setWidths(new float[] { (float) 0.3, (float) 0.2, (float) 0.3, (float) 0.2 });
+					ability_def_table.setWidths(new float[] { (float) 0.15, (float) 0.8, (float) 0.05 });
 					ability_def_table.addCell(
 							PdfCreator.FormatTableTitleCell("听力技能", BaseColor.WHITE, SingleReportUtil.tab_title));
 					ability_def_table.addCell(
 							PdfCreator.FormatTableTitleCell("定义", BaseColor.WHITE, SingleReportUtil.tab_title));
 					ability_def_table.addCell(
-							PdfCreator.FormatTableTitleCell("相关题目", BaseColor.WHITE, SingleReportUtil.tab_title));
-					ability_def_table.addCell(
 							PdfCreator.FormatTableTitleCell("指导", BaseColor.WHITE, SingleReportUtil.tab_title));
-
 					ability_def_table.addCell(PdfCreator.FormatTableCell("词汇与表达", Element.ALIGN_MIDDLE,
 							Element.ALIGN_CENTER, BaseColor.BLACK, SingleReportUtil.tab_odd));
-					ability_def_table.addCell(PdfCreator.FormatTableCell("", Element.ALIGN_MIDDLE, Element.ALIGN_CENTER,
-							BaseColor.BLACK, BaseColor.WHITE));
-					ability_def_table.addCell(PdfCreator.FormatTableCell("", Element.ALIGN_MIDDLE, Element.ALIGN_CENTER,
-							BaseColor.BLACK, BaseColor.WHITE));
+					PdfPCell ct1 = PdfCreator.FormatTableCell("1)能理解词汇或短语在具体情境下的意义和用法\r\n2)能识别并理解关键词汇的意义和用法（即有助于确立主题和观点的词汇）\r\n3)能理解常见的固定搭配和习惯性口头表达", Element.ALIGN_MIDDLE, Element.ALIGN_CENTER,
+							BaseColor.BLACK, BaseColor.WHITE);
+					ct1.setHorizontalAlignment(Element.ALIGN_LEFT);
+					ct1.setMinimumHeight(25);
+					ability_def_table.addCell(ct1);
 					ability_def_table.addCell(PdfCreator.FormatTableCell("📚", Element.ALIGN_MIDDLE,
 							Element.ALIGN_CENTER, BaseColor.BLACK, BaseColor.WHITE));
 
 					ability_def_table.addCell(PdfCreator.FormatTableCell("语法", Element.ALIGN_MIDDLE,
 							Element.ALIGN_CENTER, BaseColor.BLACK, SingleReportUtil.tab_odd));
-					ability_def_table.addCell(PdfCreator.FormatTableCell("", Element.ALIGN_MIDDLE, Element.ALIGN_CENTER,
-							BaseColor.BLACK, BaseColor.WHITE));
-					ability_def_table.addCell(PdfCreator.FormatTableCell("", Element.ALIGN_MIDDLE, Element.ALIGN_CENTER,
-							BaseColor.BLACK, BaseColor.WHITE));
+					PdfPCell ct2 = PdfCreator.FormatTableCell("1)能识别和使用主要的句式结构（虚拟语气，倒装句、否定句等）\r\n2)	能通过分析句法结构理解长句和难句的意义\r\n3)能够识别会话或短文中的衔接手段，并借助其获取关键信息", Element.ALIGN_MIDDLE, Element.ALIGN_CENTER,BaseColor.BLACK, BaseColor.WHITE);
+					ct2.setHorizontalAlignment(Element.ALIGN_LEFT);
+					ct2.setMinimumHeight(25);
+					ability_def_table.addCell(ct2);
 					ability_def_table.addCell(PdfCreator.FormatTableCell("📚", Element.ALIGN_MIDDLE,
 							Element.ALIGN_CENTER, BaseColor.BLACK, BaseColor.WHITE));
 
 					ability_def_table.addCell(PdfCreator.FormatTableCell("主旨大意", Element.ALIGN_MIDDLE,
 							Element.ALIGN_CENTER, BaseColor.BLACK, SingleReportUtil.tab_odd));
-					ability_def_table.addCell(PdfCreator.FormatTableCell("", Element.ALIGN_MIDDLE, Element.ALIGN_CENTER,
-							BaseColor.BLACK, BaseColor.WHITE));
-					ability_def_table.addCell(PdfCreator.FormatTableCell("", Element.ALIGN_MIDDLE, Element.ALIGN_CENTER,
-							BaseColor.BLACK, BaseColor.WHITE));
+					PdfPCell ct3 = PdfCreator.FormatTableCell("1)能依据关键信息识别对话或篇章的主题\r\n2)能理解说话者的观点和意图\r\n3)能概括主要内容", Element.ALIGN_MIDDLE, Element.ALIGN_CENTER,BaseColor.BLACK, BaseColor.WHITE);
+					ct3.setHorizontalAlignment(Element.ALIGN_LEFT);
+					ct3.setMinimumHeight(25);
+					ability_def_table.addCell(ct3);
 					ability_def_table.addCell(PdfCreator.FormatTableCell("📚", Element.ALIGN_MIDDLE,
 							Element.ALIGN_CENTER, BaseColor.BLACK, BaseColor.WHITE));
 
 					ability_def_table.addCell(PdfCreator.FormatTableCell("细节", Element.ALIGN_MIDDLE,
 							Element.ALIGN_CENTER, BaseColor.BLACK, SingleReportUtil.tab_odd));
-					ability_def_table.addCell(PdfCreator.FormatTableCell("", Element.ALIGN_MIDDLE, Element.ALIGN_CENTER,
-							BaseColor.BLACK, BaseColor.WHITE));
-					ability_def_table.addCell(PdfCreator.FormatTableCell("", Element.ALIGN_MIDDLE, Element.ALIGN_CENTER,
-							BaseColor.BLACK, BaseColor.WHITE));
+					PdfPCell ct4 = PdfCreator.FormatTableCell("1)能听懂细节并掌握关键信息，如人物、事件、时间等\r\n2)能根据语篇特征区分主要信息和次要信息\r\n3)能区分信息之间的异同", Element.ALIGN_MIDDLE, Element.ALIGN_CENTER,BaseColor.BLACK, BaseColor.WHITE);
+					ct4.setHorizontalAlignment(Element.ALIGN_LEFT);
+					ct4.setMinimumHeight(25);
+					ability_def_table.addCell(ct4);
 					ability_def_table.addCell(PdfCreator.FormatTableCell("📚", Element.ALIGN_MIDDLE,
 							Element.ALIGN_CENTER, BaseColor.BLACK, BaseColor.WHITE));
 
 					ability_def_table.addCell(PdfCreator.FormatTableCell("推理", Element.ALIGN_MIDDLE,
 							Element.ALIGN_CENTER, BaseColor.BLACK, SingleReportUtil.tab_odd));
-					ability_def_table.addCell(PdfCreator.FormatTableCell("", Element.ALIGN_MIDDLE, Element.ALIGN_CENTER,
-							BaseColor.BLACK, BaseColor.WHITE));
-					ability_def_table.addCell(PdfCreator.FormatTableCell("", Element.ALIGN_MIDDLE, Element.ALIGN_CENTER,
-							BaseColor.BLACK, BaseColor.WHITE));
+					PdfPCell ct5 = PdfCreator.FormatTableCell("1)能结合语境、个人知识与经验或社会文化知识理解理解话语的隐含意义\r\n2)能理解话语的交际功能\r\n3)能依据上下文推理不熟悉词汇的意义", Element.ALIGN_MIDDLE, Element.ALIGN_CENTER,BaseColor.BLACK, BaseColor.WHITE);
+					ct5.setHorizontalAlignment(Element.ALIGN_LEFT);
+					ct5.setMinimumHeight(25);
+					ability_def_table.addCell(ct5);
 					ability_def_table.addCell(PdfCreator.FormatTableCell("📚", Element.ALIGN_MIDDLE,
 							Element.ALIGN_CENTER, BaseColor.BLACK, BaseColor.WHITE));
 

@@ -12,77 +12,81 @@
 <script type="text/javascript" src="../js/common.js"></script>
 <script type="text/javascript">
 	var page_num = 1;
-	var total_num = 0;$(document).ready(function(){
+	var total_num = 0;
+	$(document).ready(function(){
 		list( 1);
 	});
 	
 	function list(p) {
-		$
-				.ajax({
-					sync : false,
-					cache : false,
-					type : 'POST',
-					crossDomain : true,
-					url : "list_student",
-					data : {
-						str : $("#str").val(),
-						page : p
-					},
-					dataType : "json",
-					contentType : "application/x-www-form-urlencoded; charset=utf-8",
-					error : function(e) {
-						alert("网络错误，请重试");
-					},
-					success : function(data) {
-						total_num = data.pageCount;
-						page_num=p;
-						$("#page_num").val(p);
+		$.ajax({
+			sync : false,
+			cache : false,
+			type : 'POST',
+			crossDomain : true,
+			url : "list_student",
+			data : {
+				str : $("#str").val(),
+				page : p
+			},
+			dataType : "json",
+			contentType : "application/x-www-form-urlencoded; charset=utf-8",
+			error : function(e) {
+				alert("网络错误，请重试");
+			},
+			success : function(data) {
+				total_num = data.pageCount;
+				page_num=p;
+				$("#page_num").val(p);
 
-						var tab_title = "<tr>"
-								+ "<td width='66px' class='tdColor tdC'>序号</td>"
-								+ "<td width='500px' class='tdColor'>英语班级</td>"
-								+ "<td width='500px' class='tdColor'>学号</td>"
-								+ "<td width='500px' class='tdColor'>姓名</td>"
-								+ "<td width='130px' class='tdColor'>操作</td>"
-								+ "	</tr>";
-						$("#stulist").html(tab_title);
-						
-						$
-								.each(
-										data.results,
-										function(index, value) {
-											var td_id = $('<td></td>').append(
-													value.id);
-											var td_ec = $('<td></td>').append(
-													value.engClass.name);
-											var td_sn = $('<td></td>').append(
-													value.student_no);
-											var td_n = $('<td></td>').append(
-													value.name);
-											var a_edit = $('<a></a>').attr(
-													'href',
-													"studentadd.html?id="
-															+ value.id);
-											a_edit
-													.append("<img class='operation' src='../img/update.png'></a>");
-											var td_op = $('<td></td>')
-													.append(a_edit)
-													.append(
-															"<img class='operation delban' src='../img/delete.png' onclick='javascript:removeStudent("
-																	+ value.id
-																	+ ");' /></td>");
-											var tr = $('<tr></tr>').attr(
-													'height', "40px");
-											tr.append(td_id).append(td_ec)
-													.append(td_sn).append(td_n)
-													.append(td_op);
-											$("#stulist").append(tr);
-										});
-					}
-				});
+				var tab_title = "<tr>"
+				+ "<td width='66px' class='tdColor tdC'>序号</td>"
+				+ "<td width='500px' class='tdColor'>英语班级</td>"
+				+ "<td width='500px' class='tdColor'>学号</td>"
+				+ "<td width='500px' class='tdColor'>姓名</td>"
+				+ "<td width='130px' class='tdColor'>操作</td>"
+				+ "	</tr>";
+				$("#stulist").html(tab_title);
+
+				$.each(
+					data.results,
+					function(index, value) {
+						var td_id = $('<td></td>').append(
+							value.id);
+						var td_ec = $('<td></td>').append(
+							value.engClass.name);
+						var td_sn = $('<td></td>').append(
+							value.student_no);
+						var td_n = $('<td></td>').append(
+							value.name);
+						var a_edit = $('<a></a>').attr(
+							'href',
+							"studentadd.html?id="
+							+ value.id);
+						a_edit
+						.append("<img class='operation' src='../img/update.png'></a>");
+						var td_op = $('<td></td>')
+						.append(a_edit)
+						.append(
+							"<img class='operation delban' src='../img/delete.png' onclick='javascript:removeStudent("
+							+ value.id
+							+ ");' /></td>");
+						var tr = $('<tr></tr>').attr(
+							'height', "40px");
+						tr.append(td_id).append(td_ec)
+						.append(td_sn).append(td_n)
+						.append(td_op);
+						$("#stulist").append(tr);
+					});
+			}
+		});
 	}
 
 	function removeStudent(sid) {
+		var r=confirm("是否确认删除？")
+		if (r!=true)
+		{
+			return;
+		}
 		$.ajax({
 			sync : false,
 			cache : false,

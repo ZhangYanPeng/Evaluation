@@ -24,7 +24,9 @@
 	<resources mapping="/dist/**" location="/dist/**" />
 	<resources mapping="/audio/**" location="/upload/audio/**" />
 	<resources mapping="/pdf/**" location="/download/pdf/**" />
+	<resources mapping="/admin/report/pdf/**" location="/download/pdf/**" />
 	<resources mapping="/img/**" location="/dist/img/**" />
+	<resources mapping="/res/**" location="/res/**" />
 	<resources mapping="/**" location="/dist/**" />
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources 
@@ -50,7 +52,7 @@
 			value="jdbc:mysql://localhost:3306/evaluation?useUnicode=true&amp;characterEncoding=UTF-8" />
 		<beans:property name="username" value="root" />
 		<beans:property name="password" value="" />
-		<!-- <beans:property name="password" value="123.com" /> -->
+		<!-- <beans:property name="password" value="123.com" />--> 
 		<beans:property name="validationQuery" value="SELECT 1" />
 	</beans:bean>
 	<!-- Hibernate Session Factory -->

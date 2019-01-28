@@ -6,6 +6,8 @@ function gettimestr(time){
 }
 
 function finishTest(){
+	$$("#test_id").val( c_test.id);
+	$$("#intervention").attr("style","display:none;");	
 	test_end_time = new Date();
 	$.each($("#audios").children(),function(index,value){
 		value.pause();
@@ -23,6 +25,8 @@ function finishTest(){
 			type : c_type,
 			records : records,
 			reasons : reasons,
+			timecon : timeconsume,
+			timereact: reacttimeconsume,
 			start_time: gettimestr(test_start_time),
 			end_time: gettimestr(test_end_time)
 		},
@@ -32,6 +36,7 @@ function finishTest(){
 		},
 		success : function(data){
 			mainView.router.loadPage("welcome.html");
+			myApp.popup('.popup-rate');
 		}
 	});
 }
@@ -43,17 +48,42 @@ function getSingleReport(tid){
 		type : 'POST',
 		crossDomain : true,
 		traditional: true,
-		url : baseUrl + "test/getSingleReport",
+		url : baseUrl + "test/testResult",
 		data : {
 			tid : tid,
-			uid : userId
+			uid : userId,
+			type : 1
 		},
 		dataType : "json",
 		error : function(e) {
 			console.log(e);
 		},
 		success : function(data){
-			window.location.href=data.path;
+			var t_score=0;
+			if(data.questionaire == null){
+				$$("#test_id").val(tid);
+				myApp.popup('.popup-rate');
+			}else{
+				$.ajax({
+					async : false,
+					cache : false,
+					type : 'POST',
+					crossDomain : true,
+					traditional: true,
+					url : baseUrl+"test/getSingleReport",
+					data : {
+						tid : tid,
+						uid : userId
+					},
+					dataType : "json",
+					error : function(e) {
+						console.log(e);
+					},
+					success : function(data){
+						window.open( data.path);
+					}
+				});
+			}
 		}
 	});
 }
@@ -65,7 +95,7 @@ function getOverallReport(tid){
 		type : 'POST',
 		crossDomain : true,
 		traditional: true,
-		url : baseUrl + "test/getOverallReport",
+		url : baseUrl+"test/getOverallReport",
 		data : {
 			uid : userId
 		},
@@ -74,7 +104,7 @@ function getOverallReport(tid){
 			console.log(e);
 		},
 		success : function(data){
-			window.location.href=data.path;
+			window.open( data.path);
 		}
 	});
 }

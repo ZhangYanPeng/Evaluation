@@ -112,14 +112,14 @@ function initTest(tid, type) {
 						} else {
 							var aop = $("<a></a>").attr('class',
 								'button button-big button-fill');
-							aop.append('开始试听干预诊断');
+							aop.append('开始试听干预诊断').attr("style","background: rgb(17,93,141);");
 							aop.attr('href', 'load_test.html?tid='
 								+ tstid + '&type=' + 1);
 							$("#op").append(aop);
 						}
 					} else {
 						var aop = $("<a></a>").attr('class',
-							'button button-big button-fill');
+							'button button-big button-fill').attr("style","background: rgb(17,93,141);");
 						aop.append('开始试听诊断');
 						aop.attr('href', 'load_test.html?tid=' + tstid
 							+ '&type=' + 1);

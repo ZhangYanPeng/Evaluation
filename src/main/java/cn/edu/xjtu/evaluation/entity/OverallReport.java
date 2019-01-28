@@ -1,5 +1,6 @@
 package cn.edu.xjtu.evaluation.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class OverallReport {
@@ -9,11 +10,20 @@ public class OverallReport {
 	private int[][] score;
 	private double[][] inter_percent;
 	
-	public void init(List<Answer> answers, int[] max_scores){
-		if(answers.size()>3)
-			answers = answers.subList(0, 2);
-		else{
-			while(answers.size()<3)
+	public void init(List<Answer> ansall){
+		List<Answer> answers = new ArrayList<Answer>();
+		for(int i=1; i<4; i++){
+			boolean check = false;
+			int k = 0;
+			for(Answer a : ansall){
+				if(a.getTest().getTestno() == i){
+					answers.add(a);
+					check = true;
+					break;
+				}
+				k++;
+			}
+			if(!check)
 				answers.add(new Answer());
 		}
 		test_name = new String[answers.size()];
@@ -59,14 +69,14 @@ public class OverallReport {
 						origin_score += 4;
 					evaluation_score += 6 - (rec.getResult()).split("\\|\\|").length;
 					inter_num += (rec.getResult()).split("\\|\\|").length - 2;
-					potential = ((double)(2*evaluation_score-origin_score)) / max_scores[i];
+					potential = ((double)(2*evaluation_score-origin_score)) / 64;
 				}
 	
 				test_result[0][2*i] = ((Integer)origin_score).toString();
 	
 				test_result[0][2*i+1] = ((Integer)evaluation_score).toString();
 				test_result[1][2*i+1] = ((Integer)inter_num).toString();
-				test_result[2][2*i+1] = String.format("%.2f", potential);
+				test_result[2][2*i+1] = String.format("%.1f", potential);
 				score[0][i] = origin_score;
 				score[1][i] = evaluation_score;
 				

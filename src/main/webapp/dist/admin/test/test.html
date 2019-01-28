@@ -97,6 +97,11 @@
 		}
 
 		function removeTest(tid) {
+			var r=confirm("是否确认删除？")
+			if (r!=true)
+			{
+				return;
+			}
 			$.ajax({
 				sync : false,
 				cache : false,

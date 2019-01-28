@@ -95,6 +95,7 @@ function initBar() {
 		barString += "<a href='#' class='open-login-screen' >请先登录</a>";
 	} else {
 		barString += user.name ;
+		barString += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 	}
 	$$('#bar_right').html(barString);
 

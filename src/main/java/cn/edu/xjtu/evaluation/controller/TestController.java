@@ -10,21 +10,13 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.edu.xjtu.evaluation.common.Constants;
 import cn.edu.xjtu.evaluation.entity.Answer;
-import cn.edu.xjtu.evaluation.entity.EvaluationResult;
-import cn.edu.xjtu.evaluation.entity.OverallReport;
 import cn.edu.xjtu.evaluation.entity.Test;
-import cn.edu.xjtu.evaluation.entity.TestResult;
-import cn.edu.xjtu.evaluation.entity.Type;
 import cn.edu.xjtu.evaluation.service.IAnswerService;
 import cn.edu.xjtu.evaluation.service.IResultService;
 import cn.edu.xjtu.evaluation.service.ITestService;
-import cn.edu.xjtu.evaluation.service.ITypeService;
-import cn.edu.xjtu.evaluation.support.PageResults;
 import cn.edu.xjtu.evaluation.support.PdfCreator;
 
 @Controller
@@ -72,8 +64,8 @@ public class TestController {
 	}
 	
 	@RequestMapping(value = "/finishTest" )
-	public @ResponseBody int finishTest(HttpServletRequest request, String type, String tid, String uid, String[] records, String[] reasons, String start_time, String end_time) {
-		return testService.finishTest(Integer.valueOf(type), Long.valueOf(tid), Long.valueOf(uid), (String[])records,(String[]) reasons,start_time, end_time);
+	public @ResponseBody int finishTest(HttpServletRequest request, String type, String tid, String uid, String[] records, String[] reasons, String[] timecon, String[] timereact, String start_time, String end_time) {
+		return testService.finishTest(Integer.valueOf(type), Long.valueOf(tid), Long.valueOf(uid), (String[])records,(String[]) reasons,timecon,timereact, start_time, end_time);
 	}
 	
 	@RequestMapping(value = "/testResult" )
@@ -87,14 +79,15 @@ public class TestController {
 	}
 	
 	@RequestMapping(value = "/RateSubmit" )
-	public @ResponseBody int RateSubmit(String ansId, String ques) {
+	public @ResponseBody int RateSubmit(String testId, String userId, String ques) {
 		String questionaire = "";
 		JSONArray jsonArr = new JSONArray(ques);
 		List<Object> quesstr = jsonArr.toList();
 		for(int i=0; i<quesstr.size(); i++){
 			questionaire += (String)quesstr.get(i) + "||";
 		}
-		answerService.FinishQue(Long.valueOf(ansId),questionaire);
+		Answer ans = answerService.getAnswer(Long.valueOf(testId), Long.valueOf(userId), 1);
+		answerService.FinishQue(ans.getId(),questionaire);
 		return 1;
 	}
 	

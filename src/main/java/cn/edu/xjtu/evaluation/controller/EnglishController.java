@@ -23,6 +23,7 @@ import cn.edu.xjtu.evaluation.common.Definition;
 import cn.edu.xjtu.evaluation.common.Definition.QUESTION_LEVEL;
 import cn.edu.xjtu.evaluation.common.Definition.QUESTION_TYPE;
 import cn.edu.xjtu.evaluation.entity.Audio;
+import cn.edu.xjtu.evaluation.entity.EngClassResult;
 import cn.edu.xjtu.evaluation.entity.Exercise;
 import cn.edu.xjtu.evaluation.entity.Intervention;
 import cn.edu.xjtu.evaluation.entity.Part;
@@ -34,6 +35,7 @@ import cn.edu.xjtu.evaluation.service.IExerciseService;
 import cn.edu.xjtu.evaluation.service.IInterventionService;
 import cn.edu.xjtu.evaluation.service.IPartService;
 import cn.edu.xjtu.evaluation.service.IQuestionService;
+import cn.edu.xjtu.evaluation.service.IResultService;
 import cn.edu.xjtu.evaluation.service.ITestService;
 import cn.edu.xjtu.evaluation.service.ITypeService;
 import cn.edu.xjtu.evaluation.support.DealExcel;
@@ -57,6 +59,8 @@ public class EnglishController {
 	IAudioService audioService;
 	@Autowired
 	IInterventionService interventionService;
+	@Autowired
+	IResultService resultService;
 	
 	//test manage
 	@RequestMapping(value = "/list_test" , method = RequestMethod.POST)
@@ -76,6 +80,14 @@ public class EnglishController {
 		t.setCollect(0);
 		t.setId(System.currentTimeMillis());
 		return testService.add(t);
+	}
+	
+	@RequestMapping(value = "/editTest" )
+	public @ResponseBody int editTest(String id, String title, String testno) {
+		Test test = testService.get(Long.valueOf(id));
+		test.setTitle(title);
+		test.setTestno(Integer.valueOf(testno));
+		return testService.updateTest(test);
 	}
 	
 	@RequestMapping(value = "/delete_test" , method = RequestMethod.POST)
