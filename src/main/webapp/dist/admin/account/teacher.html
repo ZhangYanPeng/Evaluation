@@ -17,72 +17,75 @@
 	});
 	
 	function list( p) {
-		$
-				.ajax({
-					sync : false,
-					cache : false,
-					type : 'POST',
-					crossDomain : true,
-					url : "list_teacher",
-					data : {
-						page : p
-					},
-					dataType : "json",
-					contentType : "application/x-www-form-urlencoded; charset=utf-8",
-					error : function(e) {
-						alert("网络错误，请重试");
-					},
-					success : function(data) {
-						total_num = data.pageCount;
-						page_num=p;
-						$("#page_num").val(p);
+		$.ajax({
+			sync : false,
+			cache : false,
+			type : 'POST',
+			crossDomain : true,
+			url : "list_teacher",
+			data : {
+				page : p
+			},
+			dataType : "json",
+			contentType : "application/x-www-form-urlencoded; charset=utf-8",
+			error : function(e) {
+				alert("网络错误，请重试");
+			},
+			success : function(data) {
+				total_num = data.pageCount;
+				page_num=p;
+				$("#page_num").val(p);
 
-						var tab_title = "<tr>"
-								+ "<td width='66px' class='tdColor tdC'>序号</td>"
-								+ "<td width='500px' class='tdColor'>姓名</td>"
-								+ "<td width='500px' class='tdColor'>用户名</td>"
-								+ "<td width='500px' class='tdColor'>密码</td>"
-								+ "<td width='130px' class='tdColor'>操作</td>"
-								+ "	</tr>";
-						$("#teacherlist").html(tab_title);
-						
-						$
-								.each(
-										data.results,
-										function(index, value) {
-											var td_id = $('<td></td>').append(
-													value.id);
-											var td_n = $('<td></td>').append(
-													value.name);
-											var td_un = $('<td></td>').append(
-													value.username);
-											var td_pd = $('<td></td>').append(
-													value.password);
-											var a_edit = $('<a></a>').attr(
-													'href',
-													"teacheradd.html?id="
-															+ value.id);
-											a_edit
-													.append("<img class='operation' src='../img/update.png'></a>");
-											var td_op = $('<td></td>')
-													.append(a_edit)
-													.append(
-															"<img class='operation delban' src='../img/delete.png' onclick='javascript:removeTeacher("
-																	+ value.id
-																	+ ");' /></td>");
-											var tr = $('<tr></tr>').attr(
-													'height', "40px");
-											tr.append(td_id).append(td_n).append(td_un)
-													.append(td_pd)
-													.append(td_op);
-											$("#teacherlist").append(tr);
-										});
-					}
-				});
+				var tab_title = "<tr>"
+				+ "<td width='66px' class='tdColor tdC'>序号</td>"
+				+ "<td width='500px' class='tdColor'>姓名</td>"
+				+ "<td width='500px' class='tdColor'>用户名</td>"
+				+ "<td width='500px' class='tdColor'>密码</td>"
+				+ "<td width='130px' class='tdColor'>操作</td>"
+				+ "	</tr>";
+				$("#teacherlist").html(tab_title);
+
+				$.each(
+					data.results,
+					function(index, value) {
+						var td_id = $('<td></td>').append(
+							value.id);
+						var td_n = $('<td></td>').append(
+							value.name);
+						var td_un = $('<td></td>').append(
+							value.username);
+						var td_pd = $('<td></td>').append(
+							value.password);
+						var a_edit = $('<a></a>').attr(
+							'href',
+							"teacheradd.html?id="
+							+ value.id);
+						a_edit
+						.append("<img class='operation' src='../img/update.png'></a>");
+						var td_op = $('<td></td>')
+						.append(a_edit)
+						.append(
+							"<img class='operation delban' src='../img/delete.png' onclick='javascript:removeTeacher("
+							+ value.id
+							+ ");' /></td>");
+						var tr = $('<tr></tr>').attr(
+							'height', "40px");
+						tr.append(td_id).append(td_n).append(td_un)
+						.append(td_pd)
+						.append(td_op);
+						$("#teacherlist").append(tr);
+					});
+			}
+		});
 	}
 
 	
 	function removeTeacher(tid) {
+		var r=confirm("是否确认删除？")
+		if (r!=true)
+		{
+			return;
+		}
 		$.ajax({
 			sync : false,
 			cache : false,

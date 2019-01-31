@@ -1,6 +1,8 @@
 function startTest(tid){
 	records = new Array();
 	reasons = new Array();
+	timeconsume = new Array();
+	reacttimeconsume = new Array();
 
 	$("load_complete").hide();
 

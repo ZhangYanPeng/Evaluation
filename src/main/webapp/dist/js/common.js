@@ -17,8 +17,10 @@ var c_qno;
 var c_pro;
 
 var c_record="";
-var records="";
-var reasons="";
+var records;
+var reasons;
+var timeconsume;
+var reacttimeconsume;
 
 var load_progress=0;
 

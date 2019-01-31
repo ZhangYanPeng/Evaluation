@@ -13,7 +13,7 @@ public class EvaluationResult {
 	private String[][] ability;
 	private double[][] inter_sta;
 	
-	public void getTestInfo(Answer answer, int max_score){
+	public void getTestInfo(Answer answer){
 		OverallPerformance = new String[6];
 		score_statictis = new String[5][answer.getRecords().size()+2];
 		test = answer.getTest().getTitle();
@@ -47,12 +47,12 @@ public class EvaluationResult {
 			inter_num[(rec.getResult()).split("\\|\\|").length-2] ++;
 		}
 		
-		potential = (2*evaluation_score - origin_score)/max_score;
+		potential = (2*evaluation_score - origin_score)/64.0;
 		
-		OverallPerformance[2] = ((Integer)origin_score).toString();
-		OverallPerformance[3] = ((Integer)origin_score).toString() + "/" + ((Integer)percent_score).toString();
+		OverallPerformance[2] = ((Integer)origin_score).toString()+"/64";
+		OverallPerformance[3] = String.format("%.1f", origin_score / 64.00 * 100)+"/100";
 		OverallPerformance[4] = ((Integer)evaluation_score).toString();
-		OverallPerformance[5] = ((Double)potential).toString();
+		OverallPerformance[5] = String.format("%.1f",potential);
 		
 		for(int i=0; i<5; i++){
 			score_statictis[i][answer.getRecords().size()] = ((Integer)inter_num[i]).toString();
@@ -93,7 +93,7 @@ public class EvaluationResult {
 			if(avg_inter_freq[i] == 0)
 				ability[i][2] = "0";
 			else
-				ability[i][2] = String.format("%.2f", ((double)all_inter_freq[i]/(double)avg_inter_freq[i]));
+				ability[i][2] = String.format("%.1f", ((double)all_inter_freq[i]/(double)avg_inter_freq[i]));
 		}
 		
 		inter_sta = new double[2][5];

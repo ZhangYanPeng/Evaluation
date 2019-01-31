@@ -8,32 +8,49 @@
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<title>大学英语听力评估</title>
 	<!-- Path to Framework7 Library CSS-->
-	<link rel="stylesheet" href="css/framework7.material.min.css">
-	<link rel="stylesheet" href="css/framework7.material.colors.min.css">
+	<link rel="stylesheet" href="./css/framework7.material.min.css">
+	<link rel="stylesheet" href="./css/framework7.material.colors.min.css">
 	<!-- Path to your custom app styles-->
 	<link rel="stylesheet" href="./lib/font-awesome/css/font-awesome.min.css">
-	<link rel="stylesheet" href="css/my-app.css">
+	<link rel="stylesheet" href="./css/my-app.css">
 	<script type="text/javascript" src="lib/jquery/jquery.js"></script>
 	<style>
-		table, td, th
-		{
-			border:1px solid white;
-			width: 300px;
-			text-align:center;
-		}
-		th
-		{
-			background-color:#009688;
-			color:white;
-		}
-		td
-		{
-			background-color:#AAEEDD;
-			color:black;
-		}
-	</style>
+	table, td, th
+	{
+		border:1px solid white;
+		width: 300px;
+		text-align:center;
+	}
+	th
+	{
+		background-color:#009688;
+		color:white;
+	}
+	td
+	{
+		background-color:#AAEEDD;
+		color:black;
+	}
+
+	.questionaire{
+		white-space:normal !important;
+		word-break:break-all !important;
+		word-wrap:break-word !important;
+		margin-right: 50px !important;
+	}
+
+	.page-content
+	{ 
+		background:url('img/background_right_bottom.png;');
+		background-size:cover;
+		padding-top: 80px !important;
+	}
+	.button.active{background:rgb(17, 93, 141);color:#fff !important}
+	.button{border:1px solid #007aff;color:#007aff;text-decoration:none;text-align:center;display:block;border-radius:5px;line-height:27px;box-sizing:border-box;-webkit-appearance:none;-moz-appearance:none;-ms-appearance:none;appearance:none;background:0 0;padding:0 10px;margin:0;height:29px;white-space:nowrap;position:relative;overflow:hidden;text-overflow:ellipsis;font-size:14px;font-family:inherit;cursor:pointer}
+
+</style>
 </head>
-<body class="theme-orange">
+<body class="theme-indigo ">
 	<!-- Status bar overlay for fullscreen mode-->
 	<div class="statusbar-overlay"></div>
 	<!-- Panels overlay-->
@@ -51,24 +68,24 @@
 	<div class="views">
 		<!-- Left view-->
 		<div class="view view-left navbar-through">
-			<div class="navbar">
-				<div class="navbar-inner">
+			<div class="navbar" style="background-color: rgb(17,93,141); height: 100px;">
+				<div class="navbar-inner" >
 					<div class="center sliding"></div>
 				</div>
 			</div>
 			<div class="pages">
 				<div data-page="index-left" class="page">
-					<div class="page-content">
-						<div class="card">
-							<div class="card-header">个人中心</div>
+					<div class="page-content" style="background: rgb(17,93,141); padding-top: 100px;">
+						<div class="card" style="background: rgb(12,24,40); color:white;">
+							<div class="card-header" >个人中心</div>
 							<div class="card-content">
 								<div class="card-content-inner">
-									<p id="user_name"></p>
-									<p id="user_type"></p>
+									<p id="user_name" style="margin-left: 40px;"></p>
+									<p id="user_type" style="margin-left: 40px;"></p>
 									<div id="personal_func">
 										<p class="buttons-row">
-											<a href="info.html" data-view=".view-main" class="button">编辑信息</a> <a href="#"
-											class="button" id="logout">注销</a>
+											<a href="info.html" data-view=".view-main" class="button" style="background: white;color: rgb(12,24,40);">编辑信息</a> <a href="#"
+											class="button" id="logout" style="background: white;color: rgb(12,24,40);">注销</a>
 										</p>
 									</div>
 								</div>
@@ -80,7 +97,7 @@
 								<li class="accordion-item">
 									<a href="#" class="item-content item-link">
 										<div class="item-inner">
-											<div class="item-title">听力诊断</div>
+											<div class="item-title" style="color: #FFFFFF;">听力诊断</div>
 										</div>
 									</a>
 									<div class="accordion-item-content">
@@ -90,7 +107,7 @@
 													<a href="test.html?id=-1&type=0" data-view=".view-main" class="item-link">
 														<div class="item-content">
 															<div class="item-inner">
-																<div class="item-title">认知诊断</div>
+																<div class="item-title" style="color: #FFFFFF;">&nbsp;&nbsp;&nbsp;&nbsp;认知诊断</div>
 															</div>
 														</div>
 													</a>
@@ -102,7 +119,7 @@
 								<li class="accordion-item">
 									<a href="#" class="item-content item-link">
 										<div class="item-inner">
-											<div class="item-title">评估结果</div>
+											<div class="item-title" style="color: #FFFFFF;">评估结果</div>
 										</div>
 									</a>
 									<div class="accordion-item-content">
@@ -112,7 +129,7 @@
 													<a href="test_rlist.html?type=1" data-view=".view-main" class="item-link">
 														<div class="item-content">
 															<div class="item-inner">
-																<div class="item-title">单次测试报告</div>
+																<div class="item-title"  style="color: #FFFFFF;">&nbsp;&nbsp;&nbsp;&nbsp;单次测试报告</div>
 															</div>
 														</div>
 													</a>
@@ -121,7 +138,7 @@
 													<a href="javascript:getOverallReport();" class="item-link">
 														<div class="item-content">
 															<div class="item-inner">
-																<div class="item-title">总结报告</div>
+																<div class="item-title"  style="color: #FFFFFF;">&nbsp;&nbsp;&nbsp;&nbsp;总结报告</div>
 															</div>
 														</div>
 													</a>
@@ -134,7 +151,7 @@
 						</div>
 
 						<!-- for teacher -->
-						<div class="list-block accordion-list" id="tea_func_list">
+						<div class="list-block accordion-list" id="tea_func_list" style="display: none;">
 							<ul>
 								<li class="accordion-item"><a href="#"
 									class="item-content item-link">
@@ -178,9 +195,9 @@
 		</div>
 		<!-- Right view, it is main view-->
 		<div class="view view-main navbar-through">
-			<div class="navbar">
+			<div class="navbar" style="background-color: rgb(17,93,141);height: 100px;">
 				<div class="navbar-inner">
-					<div class="center sliding">听力诊断</div>
+					<div class="center sliding" >听力诊断</div>
 					<div class="right" id="bar_right"></div>
 				</div>
 			</div>
@@ -189,7 +206,7 @@
 				<!-- Page, data-page contains page name-->
 				<div data-page="index-right" class="page">
 					<!-- Scrollable page content-->
-					<div class="page-content">
+					<div class="page-content" style="background:url('img/background_right_bottom.png;');background-size:cover;padding-top: 100px;">
 						<div class="content-block-title" id="test_title"></div>
 						<div class="content-block" align="center">
 							<div>
@@ -216,26 +233,28 @@
 						<form>
 							<div class="list-block" >
 								<ul>
-									<li class="item-content">
-										<div class="item-media">
-											<i class="fa fa-user"></i>
-										</div>
-										<div class="item-inner">
-											<div class="item-title label">账户类型</div>
-											<div class="item-input">
-												<select name="userType" id="userType">
-													<option value="student" selected="selected">学生</option>
-													<option value="teacher">教师</option>
-												</select>
+									<!--
+										<li class="item-content">
+											<div class="item-media">
+												<i class="fa fa-user"></i>
 											</div>
-										</div>
-									</li>
+											<div class="item-inner">
+												<div class="item-title label">账户类型</div>
+												<div class="item-input">
+													<select name="userType" id="userType">
+														<option value="student" selected="selected">学生</option>
+														<option value="teacher">教师</option>
+													</select>
+												</div>
+											</div>
+										</li>
+									-->
 									<li class="item-content">
 										<div class="item-media">
 											<i class="fa fa-user"></i>
 										</div>
 										<div class="item-inner">
-											<div class="item-title label">用户名</div>
+											<div class="item-title label">学号</div>
 											<div class="item-input">
 												<input type="text" name="username" id="username"
 												placeholder="请输入。。。">
@@ -389,31 +408,60 @@
 	</div>
 
 	<!-- 干预弹窗 -->
-	<div class="picker-modal picker-intervention" align="right">
-		<div style="width: 800px; border: solid;">
-			<div class="toolbar">
-				<div class="toolbar-inner">
-					<div class="left"></div>
-					<div class="center">
-						<a href="#" class="close-picker" style="color: white;">
-							隐藏干预
-						</a>
-					</div>
-	        		<div class="right"></div>
+	<div class="picker-modal picker-intervention" align="right" style="width: 800px; border: solid; margin-left: 260px;">
+		<div class="toolbar">
+			<div class="toolbar-inner" style="background-color: rgb(17,93,141);">
+				<div class="left">
+					<a href="#" class="close-picker" style="color: white;">
+						<img src="img/min.png" style="width: 24px;height: 24px;margin-left: 16px;" />
+					</a>
+				</div>
+				<div class="center">
+				</div>
+				<div class="right" id="interslist" style="color: #fff;">
+					<a href="javascript:ViewInter(1);" style="color: #fff;">&nbsp;&nbsp;1&nbsp;&nbsp;</a>
+					<a href="javascript:ViewInter(2);" style="color: #fff;">&nbsp;&nbsp;2&nbsp;&nbsp;</a>
+					<a href="javascript:ViewInter(3);" style="color: #fff;">&nbsp;&nbsp;3&nbsp;&nbsp;</a>
+					<a href="javascript:ViewInter(4);" style="color: #fff;">&nbsp;&nbsp;4&nbsp;&nbsp;</a>
 				</div>
 			</div>
-			<div class="picker-modal-inner" align="left">
-				<div class="content-block">
-					<font size="3" color="black"><p id="inte_text"></p></font>
-					<audio controls="controls" id="i_audio">
-					</audio>
-				</div>
+		</div>
+		<div class="picker-modal-inner" align="left">
+			<div class="content-block">
+				<font size="3" color="black"><p id="inte_text"></p></font>
+				<audio controls="controls" id="i_audio">
+				</audio>
 			</div>
 		</div>
 	</div>
 
-		
+
 	<div id="audios">
+	</div>
+
+	<!-- 回答正确提示 -->
+	<div class="popup ans-right-popup" style="height: 200px;">    
+		<div class="toolbar">
+			<div class="toolbar-inner" style="background-color: rgb(17,93,141);">
+				<div class="left"></div>
+				<div class="center" style="color: #fff">
+					恭喜你答对了！
+				</div>
+				<div class="right"></div>
+			</div>
+		</div>
+		<div class="picker-modal-inner" align="left">
+			<div class="content-block">
+				<div class="row">
+				  <div class="col-50">
+				    <a class="button button-big button-fill" href="javascript:ViewInter(0);" style="background: rgb(17,93,141);">查看干预</a>
+				  </div>
+				  <div class="col-50">
+				    <a class="button button-big button-fill" href="javascript:RightToNextQue();" style="background: rgb(17,93,141);">进入下一题</a>
+				  </div>
+				</div>  
+			</div>
+		</div>
 	</div>
 
 	<!-- questionaire  modal -->
@@ -425,60 +473,76 @@
 					<ul>
 						<li class="item-content">
 							<div class="item-inner">
-								<div >
+								<div class="item-title label questionaire">
 									你学习英语有多长时间了？
-									<input type="text" name="q1" id="q1" placeholder="请输入几年" style="border: solid;">
+								</div>
+								<div class="item-input">
+									<select name="q1" id="q1" style="border: solid;">
+										<option value="0" selected="selected">请选择</option>
+										<option value="1">1-4 年</option>
+										<option value="2">5-8 年</option>
+										<option value="3">9-12 年</option>
+										<option value="4">13-26 年</option>
+									</select>
 								</div>
 							</div>
 						</li>
 						<li class="item-content">
 							<div class="item-inner">
-								<div class="item-title">
+								<div class="item-title label questionaire">
 									你对英语感兴趣的程度：
+								</div>
+								<div class="item-input">
 									<select name="q2" id="q2" style="border: solid;">
 										<option value="0" selected="selected">请选择</option>
-										<option value="1">1</option>
-										<option value="2">2</option>
-										<option value="3">3</option>
-										<option value="4">4</option>
-										<option value="5">5</option>
-										<option value="6">6</option>
+										<option value="1">非常不感兴趣</option>
+										<option value="2">不感兴趣</option>
+										<option value="3">一般兴趣</option>
+										<option value="4">较感兴趣</option>
+										<option value="5">非常感兴趣</option>
 									</select>
 								</div>
 							</div>
 						</li>
 						<li class="item-content" >
 							<div class="item-inner">
-								<div class="item-title"> 
+								<div class="item-title label questionaire">
 									进入大学后，你所在的学校是否有开设专门的英语听力课程？
-									<select name="q3" id="q3" onchange="Q3()" style="border: solid;">
-										<option value="0" selected="selected">请选择</option>
-										<option value="1">否</option>
-										<option value="2">是</option>
-									</select>
+								</div>
+								<div class="item-input">
+									<label class="label-switch">
+										<input type="checkbox" name="q3" id="q3" onchange="Q3()">
+										<div class="checkbox"></div>
+									</label>
 								</div>
 							</div>
 						</li>
 						<li class="item-content" id="q4-content" style="display: none;">
 							<div class="item-inner">
-								<div class="item-title" style="border: solid;"> 
+								<div class="item-title label questionaire""> 
 									所开设课程名称是：
-									<input type="text" name="q4" id="q4" placeholder="请输入。。。">
+								</div>
+								<div class="item-input">
+									<input type="text" name="q4" id="q4" placeholder="请输入。。。" style="border: solid;">
 								</div>
 							</div>
 						</li>
 						<li class="item-content" id="q5-content" style="display: none;">
 							<div class="item-inner">
-								<div class="item-title">
+								<div class="item-title label questionaire">
 									每周开设几节课听力课程？
+								</div>
+								<div class="item-input">
 									<input type="text" name="q5" id="q5" placeholder="请输入。。。" style="border: solid;">
 								</div>
 							</div>
 						</li>
 						<li class="item-content">
 							<div class="item-inner">
-								<div class="item-title">你每周接触英语听力的时间是多久？（包括做听力练习、听英语电台、英语新闻、看英/美剧等的时间）
-									<select name="q6" id="q6" style="border: solid; width: 400 px;">
+								<div class="item-title label questionaire">你每周接触英语听力的时间是多久？（包括做听力练习、听英语电台、英语新闻、看英/美剧等的时间）
+								</div>
+								<div class="item-input">
+									<select name="q6" id="q6" style="border: solid;">
 										<option value="0" selected="selected">请选择</option>
 										<option value="1">0-2小时</option>
 										<option value="2">2-4小时</option>
@@ -491,20 +555,32 @@
 						</li>
 						<li class="item-content">
 							<div class="item-inner">
-								<div class="item-title">你最喜欢的练习英语听力的方式是什么？
-									<input type="text" name="q7" id="q7" placeholder="请输入。。。" style="border: solid;">
+								<div class="item-title label questionaire">你最喜欢的练习英语听力的方式是什么？
+								</div>
+								<div class="item-input">
+									<select name="q7a" id="q7a" style="border: solid;" onchange="Q7()">
+										<option value="0" selected="selected">请选择</option>
+										<option value="看英语新闻">看英语新闻</option>
+										<option value="看英/美剧">看英/美剧</option>
+										<option value="听英文歌">听英文歌</option>
+										<option value="实战做题">实战做题</option>
+										<option value="-1">以上都不是</option>
+									</select>
+									<input type="text" name="q7" id="q7" placeholder="我最喜欢练习英语听力的方式（自由填写）" style="border: solid;display: none;">
 								</div>
 							</div>
 						</li>
 						<li class="item-content">
 							<div class="item-inner">
-								<div class="item-title">
+								<div class="item-title label questionaire">
 									你认为你目前的英语听力能力处于什么水平？
+								</div>
+								<div class="item-input">
 									<select name="q8" id="q8" style="border: solid;">
 										<option value="0" selected="selected">请选择</option>
-										<option value="1">初级</option>
-										<option value="2">中级</option>
-										<option value="3">高级</option>
+										<option value="1">初级：能够进行简单地对话和看懂简单的英文篇章</option>
+										<option value="2">中级：能够较熟练地进行流利的口语交流并具备一定的听说读写能力</option>
+										<option value="3">高级：能够进行流利的口语交流并具备扎实的听说读写能力</option>
 									</select>
 								</div>
 							</div>
@@ -515,6 +591,15 @@
 					<p><a href="javascript:QueSubmit();" class="button button-round">提交</a></p>
 				</div>
 			</form>
+		</div>
+	</div>
+
+	<!-- 预览题目窗格 -->
+	<div class="popover popover-preview" style="width: 600px;">
+		<div class="popover-angle"></div>
+		<div class="popover-inner">
+			<div class="content-block" id="q_op_preview">
+			</div>
 		</div>
 	</div>
 
@@ -533,7 +618,7 @@
 							<div class="item-inner">
 								<div class="item-title">
 									你听力开始之前，我会根据题目来计划我应该如何去听。
-									<select name="rates" id="rates" style="border: solid; width: 400px;" >
+									<select name="rates" style="border: solid; width: 400px;" >
 										<option value="0" selected="selected">请选择</option>
 										<option value="1">1</option>
 										<option value="2">2</option>
@@ -549,7 +634,7 @@
 							<div class="item-inner">
 								<div class="item-title">
 									听力开始之前，我看到题目会回想以前听过的类似内容。
-									<select name="rates" id="rates" style="border: solid; width: 400px;">
+									<select name="rates" style="border: solid; width: 400px;">
 										<option value="0" selected="selected">请选择</option>
 										<option value="1">1</option>
 										<option value="2">2</option>
@@ -565,7 +650,7 @@
 							<div class="item-inner">
 								<div class="item-title">
 									听的过程中,我会时不时问自己是否满意对当前题目的理解。
-									<select name="rates" id="rates" style="border: solid; width: 400px;">
+									<select name="rates" style="border: solid; width: 400px;">
 										<option value="0" selected="selected">请选择</option>
 										<option value="1">1</option>
 										<option value="2">2</option>
@@ -581,7 +666,7 @@
 							<div class="item-inner">
 								<div class="item-title">
 									听的过程中,我头脑里有清晰的听力目标。
-									<select name="rates" id="rates" style="border: solid; width: 400px;">
+									<select name="rates" style="border: solid; width: 400px;">
 										<option value="0" selected="selected">请选择</option>
 										<option value="1">1</option>
 										<option value="2">2</option>
@@ -597,7 +682,7 @@
 							<div class="item-inner">
 								<div class="item-title">
 									听力结束后，我会回想听的过程,并思考下次再听时我可能会做哪些改变。
-									<select name="rates" id="rates" style="border: solid; width: 400px;">
+									<select name="rates" style="border: solid; width: 400px;">
 										<option value="0" selected="selected">请选择</option>
 										<option value="1">1</option>
 										<option value="2">2</option>
@@ -613,7 +698,7 @@
 							<div class="item-inner">
 								<div class="item-title">
 									当听不懂的时候，我对听力内容的注意力会更集中。
-									<select name="rates" id="rates" style="border: solid; width: 400px;">
+									<select name="rates" style="border: solid; width: 400px;">
 										<option value="0" selected="selected">请选择</option>
 										<option value="1">1</option>
 										<option value="2">2</option>
@@ -629,7 +714,7 @@
 							<div class="item-inner">
 								<div class="item-title">
 									当意识到自己走神时,我能立刻重新集中注意力到所听内容上来。
-									<select name="rates" id="rates" style="border: solid; width: 400px;">
+									<select name="rates" style="border: solid; width: 400px;">
 										<option value="0" selected="selected">请选择</option>
 										<option value="1">1</option>
 										<option value="2">2</option>
@@ -645,7 +730,7 @@
 							<div class="item-inner">
 								<div class="item-title">
 									当发现注意力分散时,我努力回到所听内容上来。
-									<select name="rates" id="rates" style="border: solid; width: 400px;">
+									<select name="rates" style="border: solid; width: 400px;">
 										<option value="0" selected="selected">请选择</option>
 										<option value="1">1</option>
 										<option value="2">2</option>
@@ -661,7 +746,7 @@
 							<div class="item-inner">
 								<div class="item-title">
 									我会用我知道的词汇去推断生词的词义。
-									<select name="rates" id="rates" style="border: solid; width: 400px;">
+									<select name="rates" style="border: solid; width: 400px;">
 										<option value="0" selected="selected">请选择</option>
 										<option value="1">1</option>
 										<option value="2">2</option>
@@ -677,7 +762,7 @@
 							<div class="item-inner">
 								<div class="item-title">
 									我把所听到的内容同自己对题目相关的已有知识进行对比。
-									<select name="rates" id="rates" style="border: solid; width: 400px;">
+									<select name="rates" style="border: solid; width: 400px;">
 										<option value="0" selected="selected">请选择</option>
 										<option value="1">1</option>
 										<option value="2">2</option>
@@ -709,7 +794,7 @@
 							<div class="item-inner">
 								<div class="item-title">
 									在意识到自己的理解不对时,我会迅速调整自己的理解。
-									<select name="rates" id="rates" style="border: solid; width: 400px;">
+									<select name="rates" style="border: solid; width: 400px;">
 										<option value="0" selected="selected">请选择</option>
 										<option value="1">1</option>
 										<option value="2">2</option>
@@ -725,7 +810,7 @@
 							<div class="item-inner">
 								<div class="item-title">
 									我利用文章的大意来帮助推断词汇的含义。
-									<select name="rates" id="rates" style="border: solid; width: 400px;">
+									<select name="rates" style="border: solid; width: 400px;">
 										<option value="0" selected="selected">请选择</option>
 										<option value="1">1</option>
 										<option value="2">2</option>
@@ -741,7 +826,7 @@
 							<div class="item-inner">
 								<div class="item-title">
 									我会回想前面听到的内容,帮助自己判断现在所猜测的词汇意义是否正确。
-									<select name="rates" id="rates" style="border: solid; width: 400px;">
+									<select name="rates" style="border: solid; width: 400px;">
 										<option value="0" selected="selected">请选择</option>
 										<option value="1">1</option>
 										<option value="2">2</option>
@@ -757,7 +842,7 @@
 							<div class="item-inner">
 								<div class="item-title">
 									相比英语读、写 、说的能力，我感觉听力更难。
-									<select name="rates" id="rates" style="border: solid; width: 400px;">
+									<select name="rates" style="border: solid; width: 400px;">
 										<option value="0" selected="selected">请选择</option>
 										<option value="1">1</option>
 										<option value="2">2</option>
@@ -773,7 +858,7 @@
 							<div class="item-inner">
 								<div class="item-title">
 									我觉得英语听力对我是个挑战。
-									<select name="rates" id="rates" style="border: solid; width: 400px;">
+									<select name="rates" style="border: solid; width: 400px;">
 										<option value="0" selected="selected">请选择</option>
 										<option value="1">1</option>
 										<option value="2">2</option>
@@ -789,7 +874,7 @@
 							<div class="item-inner">
 								<div class="item-title">
 									我在听英语时感觉很紧张。 
-									<select name="rates" id="rates" style="border: solid; width: 400px;">
+									<select name="rates" style="border: solid; width: 400px;">
 										<option value="0" selected="selected">请选择</option>
 										<option value="1">1</option>
 										<option value="2">2</option>
@@ -805,7 +890,7 @@
 							<div class="item-inner">
 								<div class="item-title">
 									我会一边听一边在头脑中翻译。
-									<select name="rates" id="rates" style="border: solid; width: 400px;">
+									<select name="rates" style="border: solid; width: 400px;">
 										<option value="0" selected="selected">请选择</option>
 										<option value="1">1</option>
 										<option value="2">2</option>
@@ -821,7 +906,7 @@
 							<div class="item-inner">
 								<div class="item-title">
 									听听力时，我会把关键词翻译成中文。
-									<select name="rates" id="rates" style="border: solid; width: 400px;">
+									<select name="rates" style="border: solid; width: 400px;">
 										<option value="0" selected="selected">请选择</option>
 										<option value="1">1</option>
 										<option value="2">2</option>
@@ -837,7 +922,7 @@
 							<div class="item-inner">
 								<div class="item-title">
 									听听力时,我会在头脑中将所听到的逐字翻译。 
-									<select name="rates" id="rates" style="border: solid; width: 400px;">
+									<select name="rates" style="border: solid; width: 400px;">
 										<option value="0" selected="selected">请选择</option>
 										<option value="1">1</option>
 										<option value="2">2</option>

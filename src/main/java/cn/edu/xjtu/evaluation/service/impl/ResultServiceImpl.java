@@ -1,5 +1,6 @@
 package cn.edu.xjtu.evaluation.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,9 +8,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.edu.xjtu.evaluation.dao.impl.AnswerDAOImpl;
+import cn.edu.xjtu.evaluation.dao.impl.EngClassDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.StudentDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.TestDAOImpl;
 import cn.edu.xjtu.evaluation.entity.Answer;
+import cn.edu.xjtu.evaluation.entity.EngClassResult;
 import cn.edu.xjtu.evaluation.entity.EvaluationResult;
 import cn.edu.xjtu.evaluation.entity.OverallReport;
 import cn.edu.xjtu.evaluation.entity.Record;
@@ -26,6 +29,8 @@ public class ResultServiceImpl implements IResultService {
 	StudentDAOImpl studentDAO;
 	@Autowired
 	TestDAOImpl testDAO;
+	@Autowired
+	EngClassDAOImpl engClassDAO;
 	
 	@Override
 	@Transactional
@@ -75,17 +80,8 @@ public class ResultServiceImpl implements IResultService {
 		String hqls = "from Answer where test.id = ?";
 		Object[] values_t = {tid};
 		List<Answer> answers = answerDAO.getListByHQL(hqls,values_t);
-		int max_score=0;
-		for(Answer ans : answers){
-			int score_t = 0;
-			for(Record rec : ans.getRecords()){
-				score_t += 6 - (rec.getResult()).split("\\|\\|").length;
-			}
-			if(score_t>max_score)
-				max_score = score_t;
-		}
 		
-		evaluationResult.getTestInfo(answer,max_score);
+		evaluationResult.getTestInfo(answer);
 		evaluationResult.InitInterNum(answers);
 		return evaluationResult;
 	}
@@ -98,28 +94,112 @@ public class ResultServiceImpl implements IResultService {
 		Object[] values_t = {uid};
 		List<Answer> answers = answerDAO.getListByHQL(hqls,values_t);
 		OverallReport overall_report = new OverallReport();
-		int[] max_scores = new int[answers.size()];
 		
-		int i=0;
-		for(Answer ans : answers){
-			String hql = "from Answer where test.id = ?";
-			Object[] vals ={ans.getTest().getId()};
-			List<Answer> ans_t = answerDAO.getListByHQL(hql,vals);
-			max_scores[i] = 0;
-			for(Answer an : ans_t){
-				int sc = 0;
-				for(Record rec : an.getRecords()){
-					if((rec.getResult()).split("\\|\\|").length == 2)
-						sc += 4;
-				}
-				if(sc>max_scores[i])
-					max_scores[i] = sc;
-			}
-			i++;
-		}
-		
-		overall_report.init(answers, max_scores);
+		overall_report.init(answers);
 		return overall_report;
+	}
+
+	@Override
+	@Transactional
+	public List<EngClassResult> loadResult(Long ecid, Integer tno, int sortby) {
+		// TODO Auto-generated method stub
+		String hql = "from Student where engClass.id = ?";
+		Object[] values = {ecid};
+		List<Student> students = studentDAO.getListByHQL(hql, values);
+		
+		List<EngClassResult> lecr = new ArrayList<EngClassResult>();
+		for(Student student : students){
+			String hqlstring = "from Answer where student.id = ? and test.testno = ?";
+			Object[] vals = {student.getId(), tno};
+			Answer answer = answerDAO.getByHQL(hqlstring, vals);
+			lecr.add(new EngClassResult(student, answer));
+		}
+		if(sortby != 0){
+			for(int i=0; i<lecr.size(); i++){
+				for(int j=i; j<lecr.size(); j++){
+					if( cmp(lecr.get(i), lecr.get(j), sortby) > 0 ){
+						EngClassResult tmp = lecr.get(i);
+						lecr.set(i, lecr.get(j));
+						lecr.set(j, tmp);
+					}
+				}
+			}
+		}
+		return lecr;
+	}
+
+	//sortby < 0 降序  >0 升序
+	//sortby 1 score 2 eval_score 3 potential 4 time_consume 5 ave_time_consume 6 ave_inter_time
+	private int cmp(EngClassResult engClassResult, EngClassResult engClassResult2, int sortby) {
+		// TODO Auto-generated method stub
+		if(sortby > 0){
+			switch(sortby){
+				case 1: 
+					if(engClassResult.getScore() > engClassResult2.getScore())
+						return 1;
+					else
+						return -1;
+				case 2: 
+					if(engClassResult.getEval_score() > engClassResult2.getEval_score())
+						return 1;
+					else
+						return -1;
+				case 3: 
+					if(engClassResult.getPotential() > engClassResult2.getPotential())
+						return 1;
+					else
+						return -1;
+				case 4: 
+					if(engClassResult.getTime_consume_val() > engClassResult2.getTime_consume_val())
+						return 1;
+					else
+						return -1;
+				case 5: 
+					if(engClassResult.getAve_time_consume_val() > engClassResult2.getAve_time_consume_val())
+						return 1;
+					else
+						return -1;
+				case 6: 
+					if(engClassResult.getAve_inter_time_val() > engClassResult2.getAve_inter_time_val())
+						return 1;
+					else
+						return -1;
+			}
+		}else{
+			switch(sortby){
+				case -1: 
+					if(engClassResult.getScore() < engClassResult2.getScore())
+						return 1;
+					else
+						return -1;
+				case -2: 
+					if(engClassResult.getEval_score() < engClassResult2.getEval_score())
+						return 1;
+					else
+						return -1;
+				case -3: 
+					if(engClassResult.getPotential() < engClassResult2.getPotential())
+						return 1;
+					else
+						return -1;
+				case -4: 
+					if(engClassResult.getTime_consume_val() < engClassResult2.getTime_consume_val())
+						return 1;
+					else
+						return -1;
+				case -5: 
+					if(engClassResult.getAve_time_consume_val() < engClassResult2.getAve_time_consume_val())
+						return 1;
+					else
+						return -1;
+				case -6: 
+					if(engClassResult.getAve_inter_time_val() < engClassResult2.getAve_inter_time_val())
+						return 1;
+					else
+						return -1;
+			}
+		}
+		return 0;
 	}
 
 }

@@ -2,35 +2,29 @@
 	<!-- Page, data-page contains page name-->
 	<div data-page="test_content" class="page">
 		<!-- Scrollable page content-->
-		<div class="page-content">
-			<div class="content-block-title" id="t_title"></div>
+		<div class="page-content" >
+			<div class="content-block-title" id="t_title" style="font-size:18px;line-height:20px;"></div>
 			<div class="content-block">
 				<!-- Buttons row as tabs controller -->
-				<p class="buttons-row"  id="part_list">
-				</p>
-				
-				<p id="part_description"></p>
-				
-				<div class="demo-progressbar-inline">
-					<p id="progress"></p>
-					<p>
-						<span data-progress="40" class="progressbar"></span>
-					</p>
-				</div>
+				<canvas id="progress" width="1600" height="80" style="margin: 8px; box-shadow: 0px 1px 3px rgba(0,0,0,0.12), 0px 1px 2px rgba(0,0,0,0.24);">
+				</canvas>
 				
 				<p id="exercise_description"></p>
-				
-				<p id="count">&nbsp;</p>
 
-				<div class="card">
-					<div class="card-header" id="q_text"></div>
+				<div class="card" id="test_text">
+					<div class="card-header" >
+						<a href="#" class="link" id="q_text" style="color: black;"></a>
+						<a href="#" class="link" id="preview" style="color: black;"></a>
+					</div>
 					<div class="card-content">
 						<div class="card-content-inner" id="q_op"></div>
 					</div>
 					<div class="card-footer">
 						<a id="SubmitButton" href="javascript:submitAnswer(1);" class="button active" style="display:none;">提交答案</a>
-						<a id="NextButton" href="javascript:ToNextQue();" class="button active" style="display:none;">下一题</a>
-						<div id="intervention"></div>
+						<a id="NextButton" href="javascript:ToNextQue();"  class="button active" style="display:none;">下一题</a>
+						<div id="intervention" style="display:none;">
+							<a href="#" data-popover=".picker-intervention" class="open-picker button active" >查看提示</a>
+						</div>
 					</div>
 				</div>
 

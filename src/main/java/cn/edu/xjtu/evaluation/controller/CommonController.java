@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.edu.xjtu.evaluation.entity.Admin;
+import cn.edu.xjtu.evaluation.entity.Teacher;
 import cn.edu.xjtu.evaluation.service.IAdminService;
+import cn.edu.xjtu.evaluation.service.ITeacherService;
 
 @Controller
 @RequestMapping("/admin")
@@ -20,6 +22,8 @@ public class CommonController {
 
 	@Autowired
 	IAdminService adminService;
+	@Autowired
+	ITeacherService teacherService;
 
 	// common
 	@RequestMapping(value = "/jump")
@@ -45,6 +49,19 @@ public class CommonController {
 			admin.setId(-1);
 		}
 		return admin;
+	}
+	
+	@RequestMapping(value = "/login_teacher", method = RequestMethod.POST)
+	public @ResponseBody Teacher login_teacher(String username, String password) {
+		Teacher teacher = new Teacher();
+		teacher.setUsername(username);
+		teacher.setPassword(password);
+		teacher = teacherService.login(teacher);
+		if (teacher == null) {
+			teacher = new Teacher();
+			teacher.setId(-1);
+		}
+		return teacher;
 	}
 
 	@RequestMapping(value = "/index")

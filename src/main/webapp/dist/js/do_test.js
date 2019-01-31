@@ -1,47 +1,82 @@
-function presentBaseTest(){
-	$$("#part_list").html("");
-	for( var i=0;i<c_test.parts.length;i++){
-		var a_part = $$("<a></a>").attr('class',"button").attr('id','part'+i).attr('href',"#");
-		$$("#part_list").append(a_part);
-	}
+function presentBaseTest(cqno){
 	for( var i=0;i<c_test.parts.length;i++){
 		var p = c_test.parts[i];
 		var t = c_test.parts[i].partExers[0].exercise.type;
 		$$('#part'+p.p_no).append(t.name);
 	}
-	$$('#t_title').html(c_test.title);
-	if(c_type==1){
-		$$('#t_title').append("(intervention)");
+
+
+	var c=document.getElementById("progress");
+	var ctx=c.getContext("2d");
+
+	$("#progress").attr('width',$$("#test_text").width());
+
+	ctx.fillStyle="#FFFFFF";
+	ctx.fillRect(0,0, $$("#test_text").width(),80);
+
+	var cellw = ($$("#test_text").width()-40)/16.0;
+
+	ctx.moveTo(20,0);
+	ctx.lineTo(20,35);
+	ctx.stroke();
+
+	var t_no = 0;
+	for( var i=0;i<c_test.parts.length;i++){
+		var qsum=0;
+		var e_type = "";
+		for( var j=0;j<c_test.parts.length;j++){
+			var t_part = c_test.parts[j];
+			if(t_part.p_no == i){
+				for(var k=0; k<t_part.partExers.length; k++){
+					var exe = t_part.partExers[k].exercise;
+					qsum = qsum + exe.questions.length;
+				}
+				e_type = t_part.partExers[0].exercise.type.name;
+				break;
+			}
+		}
+
+		ctx.fillStyle="#115D8D";
+		ctx.font="14px Arial";
+		ctx.fillText(e_type,20+cellw*t_no+cellw/2.0*qsum - e_type.length/2*7,20);
+		t_no = t_no + qsum;
+
+		ctx.moveTo(20+cellw*t_no,00);
+		ctx.lineTo(20+cellw*t_no,35);
+		ctx.stroke();
 	}
+	{
+		ctx.fillStyle="#115D8D";
+		for(var i=0; i<16; i++){
+			ctx.rect(20+cellw*i,35, cellw,40);
+			if(i<cqno)
+			{
+				ctx.fillRect(20+cellw*i,35, cellw,40);
+			}
+		}
+		ctx.stroke();
+	}
+	$$('#t_title').html(c_test.title);
 }
 
-
+var starttimeque;
 function playSound(qid){
-	$('#que-'+qid)[0].play();
+	$$("#SubmitButton").attr("disabled","disabled");
+	//$$("#SubmitButton").removeAttr("disabled");
+	var a = setInterval(daojishi, 3000);// 1000毫秒
+	function daojishi() {
+		$('#que-'+qid)[0].play();
+		clearInterval(a);
+	}
+	//$$("#SubmitButton").attr("style","display:none;");
+	//$$("#NextButton").attr("style","display:none;");
+	//$$("#intervention").attr("style","display:none;");	
 }
 
 function count(qid) {
-	return;//不再倒计时
-	if(c_type!=0)
-		return;
-	var t = 18;
-	var a = setInterval(daojishi, 1000);// 1000毫秒
-	function daojishi() {
-		if(qid != c_question.id){
-			clearInterval(a);
-			$$("#count").html("&nbsp;");
-			return;
-		}
-		t--;
-		// 刷新时间显示
-		$$("#count").html("还剩"+t+"秒，请作答！");
-		if (t == -1) {
-			clearInterval(a);
-			$$("#count").html("&nbsp;");
-			if(qid == c_question.id)
-				submitAnswer(0);
-		}
-	}
+	$$("#SubmitButton").attr("style","display:;");
+	starttimeque = new Date();
+	$$("#SubmitButton").removeAttr("disabled");
 }
 
 function findCurrent(){
@@ -62,16 +97,31 @@ function findCurrent(){
 }
 
 function presentQuestion(pno,eno,qno){
-	presentBaseTest();
+	presentBaseTest(c_pro);
 	findCurrent();
 	ButtonSwitch(false);
 
-	$$('#part'+c_part.p_no).attr("class","button active");
-	$$('#progress').html(c_pro+"/"+q_total);
-	myApp.setProgressbar($$('.progressbar'), c_pro*100/q_total);
+	//预览内容
+	if(c_exercise.questions.length>1){
+		$("#preview").html("本大题共包含"+c_exercise.questions.length+"个小题，点击此处对应题号预览题目选项：&nbsp;&nbsp;&nbsp;&nbsp;")
+		for(var qno = 0; qno<c_exercise.questions.length; qno++){
+			for( var ei=0; ei<c_exercise.questions.length; ei++){
+				var ques = c_exercise.questions[ei];
+				if(ques.q_num == qno){
+					var href = $("<a></a>").attr("href","#").attr("class","open-preivew").attr("id","preview-op").attr("style","color:rgb(17,93,141);").append(c_pro-c_qno+qno+1);
+					var preview = $("<p></p>").append($("<strong></strong>").append(href));
+					$("#preview").append(href);
+					$("#preview").append("&nbsp;&nbsp;&nbsp;&nbsp;");
+				}
+			}
+		}
+	}else{
+		$("#preview").html("");
+	}
+
 	$$('#exercise_description').html(c_exercise.description);
 	
-	$$('#q_text').html((c_pro+1)+".");
+	$$('#q_text').html("第"+(c_pro+1)+"题");
 	var options = c_question.options.split("||");
 	$$('#q_op').html("");
 	for(var i=1; i<options.length; i++){
@@ -82,7 +132,6 @@ function presentQuestion(pno,eno,qno){
 	}
 	
 	if(c_type==1){
-		$$('#intervention').html('<a href="#" data-popover=".picker-intervention" class="open-picker">查看干预</a>');
 		$$('#inte_text').html("");
 		$$('#i_audio').hide();
 	}
@@ -90,17 +139,18 @@ function presentQuestion(pno,eno,qno){
 	$.each($("#audios").children(),function(index,value){
 		value.pause();
 	});
+	$$("#intervention").attr("style","display:none;");	
 	playSound(c_question.id);
 }
 
+var time_st;
 function submitAnswer(t){
-	$$('#inte_text').html("");
 	var op = $("input[name='answer']:checked").val();  
 	if(op == undefined && t!=0){
 		alert("请作答!");
 		return;
 	}
-	
+
 	if(t==0 &&op == undefined){
 		op=-1;
 	}
@@ -115,25 +165,40 @@ function submitAnswer(t){
 	}else{
 		// intervention
 		c_record = c_record + "||" +op;
+		if(c_record.split("||").length == 2){
+			var endtimeqeu = new Date();
+			reacttimeconsume[c_pro] = endtimeqeu - starttimeque;
+		}
 		if(op == c_question.answer){
 			if(c_record.split("||").length == 2){
 				reasonQue(0);
 				records[c_pro] = c_record;
 				c_record="";
 				ButtonSwitch(true);
+				myApp.popup('.ans-right-popup');
+				timeconsume[c_pro]=0;
 			}else{
+				timeconsume[c_pro]=(new Date()).getTime()-time_st.getTime();
 				reasonQue(1);
 				records[c_pro] = c_record;
 				c_record="";
+				myApp.popup('.ans-right-popup');
 				if(c_test.collect == 0)
 					ButtonSwitch(true);
 			}
 		}else{
+			time_st = new Date();
+			$("input[name='answer']:checked").attr('disabled','true');
+			$("input[name='answer']:checked").each(function(){
+				$(this)[0].checked = false;
+			});
+
 			alert("很遗憾，回答错误！");
 			if(c_record.split("||").length > c_question.interventions.length + 1){
 				reasonQue(0)
 				records[c_pro] = c_record;
 				c_record="";
+				ButtonSwitch(true);
 			}
 			else{
 				interventnionQue(c_record.split("||").length-1);
@@ -154,6 +219,11 @@ function ButtonSwitch(check){
 	}
 }
 
+function RightToNextQue(){
+	myApp.closeModal($$(".ans-right-popup"));
+	ToNextQue();
+}
+
 function ToNextQue(){
 	c_pro = c_pro+1;
 	if( c_pro == q_total ){
@@ -169,6 +239,8 @@ function ToNextQue(){
 			c_pno = c_pno+1;
 		}
 	}
+	if( $$(".picker-intervention").css('display') != 'none')
+		myApp.closeModal('.picker-intervention')
 	presentQuestion();
 }
 
@@ -187,6 +259,9 @@ function reasonSubmit(){
 }
 
 function interventnionQue(num){
+	$$("#interslist").attr("style","display:none;");
+
+	$$('#inte_text').html("");
 	for(var i=0; i<c_question.interventions.length;i++){
 		var intervention = c_question.interventions[i];
 		if(intervention.level==num-1){
@@ -200,5 +275,16 @@ function interventnionQue(num){
 			break;
 		}
 	}
+
+	$$("#intervention").attr("style","display:;");	
 	myApp.pickerModal('.picker-intervention', $$('#intervention'));
+}
+
+function ViewInter(num){
+	if(num == 0){
+		myApp.closeModal($$(".ans-right-popup"));
+		num=1;
+	}
+	interventnionQue(num);
+	$$("#interslist").attr("style","display:;");
 }

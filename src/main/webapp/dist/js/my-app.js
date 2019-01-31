@@ -77,8 +77,8 @@ $$(document).on(
 			var element = e.srcElement;
 			if (element.id === 'log-in-button') {
 				// log in
-				login($$("#username").val(), $$("#password").val(), $$(
-						'#userType').val());
+				//login($$("#username").val(), $$("#password").val(), '#userType').val());
+				login($$("#username").val(), $$("#password").val(),'student');
 				if (userId > 0) {
 					myApp.closeModal('.login-screen');
 				}
@@ -118,6 +118,23 @@ $$(document).on(
 
 			if (element.id === 'register') {
 				register();
+			}
+
+			if(element.id === 'preview-op') {
+				qno = element.text - c_pro - 1;
+				for( var ei=0; ei<c_exercise.questions.length; ei++){
+					var ques = c_exercise.questions[ei];
+					if(ques.q_num == qno){
+						$$('#q_op_preview').html("");
+						var options = ques.options.split("||");
+						for(var i=1; i<options.length; i++){
+							var p_op = $$("<p></p>");
+							p_op.append(options[i]);
+							$$('#q_op_preview').append(p_op);
+						}
+					}
+				}
+			    myApp.popover('.popover-preview', $$("#preview"));
 			}
 		});
 

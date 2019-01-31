@@ -15,4 +15,7 @@ public interface IEngClassService {
 	public int getStuNum(EngClass ec);
 	public List<EngClass> listAll();
 	public EngClass getByName(String engclass_name);
+	public List<String> getInfo(Long eid);
+	public String[][] getTestInfo(Long engid, Integer testno);
+	public String[][] getAbilityInfo(Long engid, Integer testno);
 }

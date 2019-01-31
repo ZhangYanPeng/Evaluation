@@ -8,12 +8,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.edu.xjtu.evaluation.common.Constants;
+import cn.edu.xjtu.evaluation.dao.impl.AnswerDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.EngClassDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.SchoolDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.StudentDAOImpl;
+import cn.edu.xjtu.evaluation.dao.impl.TestDAOImpl;
+import cn.edu.xjtu.evaluation.entity.Answer;
 import cn.edu.xjtu.evaluation.entity.EngClass;
+import cn.edu.xjtu.evaluation.entity.Record;
 import cn.edu.xjtu.evaluation.entity.School;
 import cn.edu.xjtu.evaluation.entity.Student;
+import cn.edu.xjtu.evaluation.entity.Test;
 import cn.edu.xjtu.evaluation.service.IEngClassService;
 import cn.edu.xjtu.evaluation.support.PageResults;
 
@@ -25,6 +30,10 @@ public class EngClassServiceImpl implements IEngClassService {
 	StudentDAOImpl studentDAO;
 	@Autowired
 	SchoolDAOImpl schoolDAO;
+	@Autowired
+	AnswerDAOImpl answerDAO;
+	@Autowired
+	TestDAOImpl testDAO;
 	
 	@Override
 	@Transactional
@@ -151,6 +160,102 @@ public class EngClassServiceImpl implements IEngClassService {
 		String hql = "from EngClass where name = ?";
 		Object[] values = {engclass_name};
 		return engClassDAO.getByHQL(hql, values);
+	}
+
+	@Override
+	@Transactional
+	public List<String> getInfo(Long eid) {
+		// TODO Auto-generated method stub
+		EngClass ec = engClassDAO.get(eid);
+		List<String> info = new ArrayList<String>();
+		info.add(ec.getUniversity().getName());
+		info.add(ec.getName());
+		info.add(String.valueOf(ec.getStudents().size()));
+		return info;
+	}
+
+	@Override
+	@Transactional
+	public String[][] getTestInfo(Long engid, Integer testno) {
+		// TODO Auto-generated method stub
+		String hql = "from Answer where test.testno = ? and student.engClass.id = ?";
+		Object[] values = {testno, engid};
+		List<Answer> answers = answerDAO.getListByHQL(hql, values);
+		int[][] sta = new int[5][16];
+		for(Answer ans : answers){
+			for(Record rec : ans.getRecords()){
+				sta[rec.getResult().split("\\|\\|").length-2][rec.getNo()] ++;
+			}
+		}
+		String[][] result = new String[6][17];
+		for(int i=0;i<5;i++){
+			int sum_t = 0;
+			for(int j=0;j<16; j++){
+				result[i][j] = String.valueOf(sta[i][j]);
+				sum_t += sta[i][j];
+			}
+			result[i][16] = String.valueOf(sum_t);
+		}
+		for(int j=0;j<16; j++){
+			double ave_t = 0;
+			for(int i=0;i<5;i++)
+				ave_t += sta[i][j]*i;
+			ave_t = ave_t/answers.size();
+			result[5][j] = String.format("%.2f", ave_t);
+		}
+		return result;
+	}
+
+	@Override
+	@Transactional
+	public String[][] getAbilityInfo(Long engid, Integer testno) {
+		// TODO Auto-generated method stub
+		String[][] result = new String[5][3];
+		String hql = "from Answer where test.testno = ? and student.engClass.id = ?";
+		Object[] values = {testno, engid};
+		List<Answer> answers = answerDAO.getListByHQL(hql, values);
+		if(answers.size() == 0)
+			return result;
+		else{
+			int[] all_inter_freq = new int[5];
+			int[] avg_inter_freq = new int[5];
+			for(int i=0; i<5; i++){
+				all_inter_freq[i] = 0;
+				avg_inter_freq[i] = 0;
+				for(int j=0; j<3; j++)
+					result[i][j] = "";
+			}
+			for(int i=0; i<answers.size(); i++){
+				Answer ans = answers.get(i);
+				for( Record rec : ans.getRecords()){
+					int ab_t;
+					switch(rec.getQuestion().getType()){
+						case presentation: ab_t=0; break;
+						case grammar: ab_t=1; break;
+						case comprehension: ab_t=2; break;
+						case details: ab_t=3; break;
+						case inference: ab_t=4; break;
+						default : ab_t=0; break;
+					}
+					if(i==0){
+						if(result[ab_t][0] == "")
+							result[ab_t][0] = ((Integer)(rec.getNo()+1)).toString();
+						else
+							result[ab_t][0] += "、" + ((Integer)(rec.getNo()+1)).toString();
+					}
+					all_inter_freq[ab_t] += (rec.getResult()).split("\\|\\|").length - 2;
+					avg_inter_freq[ab_t] ++;
+				}
+			}
+			for(int i=0; i<5; i++){
+				result[i][1] = ((Integer)all_inter_freq[i]).toString();
+				if(avg_inter_freq[i] == 0)
+					result[i][2] = "0";
+				else
+					result[i][2] = String.format("%.2f", ((double)all_inter_freq[i]/(double)avg_inter_freq[i]));
+			}
+		}
+		return result;
 	}
 
 }

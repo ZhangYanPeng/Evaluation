@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.edu.xjtu.evaluation.dao.impl.StudentDAOImpl;
@@ -31,8 +32,10 @@ public class StudentController {
 	@Autowired
 	IEngClassService engClassService;
 
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	@RequestMapping(value = "/login")
 	public @ResponseBody Student login(String username, String password) {
+		System.out.println(username);
+		System.out.println(password);
 		Student student = new Student();
 		student.setUsername(username);
 		student.setPassword(password);
@@ -44,7 +47,7 @@ public class StudentController {
 		return student;
 	}
 	
-	@RequestMapping(value = "/QueSubmit", method = RequestMethod.POST)
+	@RequestMapping(value = "/QueSubmit")
 	public @ResponseBody int QueSubmit(String userId, String questionaire) {
 		Student student = studentService.get(Long.valueOf(userId));
 		student.setQuestionaire(questionaire);
@@ -52,7 +55,7 @@ public class StudentController {
 		return 1;
 	}
 	
-	@RequestMapping(value = "/modifypassword", method = RequestMethod.POST)
+	@RequestMapping(value = "/modifypassword")
 	public @ResponseBody int modifyPassword(String id, String password) {
 		Student std = studentService.get(Long.valueOf(id));
 		std.setPassword(password);

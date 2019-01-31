@@ -1,0 +1,242 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>学院管理</title>
+<link rel="stylesheet" type="text/css" href="../css/css.css" />
+<link rel="stylesheet" href="../css/jqpagination.css" />
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script src="../js/jquery.jqpagination.js"></script>
+<!-- <script type="text/javascript" src="js/page.js" ></script> -->
+<script type="text/javascript" src="../js/init.js"></script>
+<script type="text/javascript" src="../js/common.js"></script>
+<script type="text/javascript" src="../js/ichart/ichart.1.2.min.js"></script> 
+<script type="text/javascript" src="loaddata.js"></script> 
+<script type="text/javascript" src="drawpic.js"></script> 
+<script type="text/javascript">
+	var eid;
+	var sort_param;
+	var test_param;
+
+	var studata;
+	var testdata;
+
+	$(document).ready(function() {
+		sort_param = new Array(1,2,3,4,5,6);
+		eid = getQueryString("id");
+		init();
+	});
+
+	function init(){
+		$.ajax({
+			sync : false,
+			cache : false,
+			type : 'POST',
+			crossDomain : true,
+			url : "load_info",
+			data : {
+				engid : eid
+			},
+			dataType : "json",
+			contentType : "application/x-www-form-urlencoded;charset=utf-8",
+			error : function(e) {
+				alert("网络错误，请重试");
+			},
+			success : function(data) {
+				$("#info").html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;学校：" + data[0] +"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;班级编号："  + data[1] + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;总人数：" + data[2] );
+			}
+		});
+	}
+
+	function loaddata(){
+		$("#student_report").attr("style","display: none;");
+		$("#test_report").attr("style","display: none;");
+		$("#ability_report").attr("style","display: none;");
+		if($("#type").val() == 0)
+			return;
+		if($("#testno").val() == 0)
+			return;
+		else if($("#type").val() == 1){
+			$("#student_report").attr("style","display: block;");
+			loadStuData(1)
+		}else if($("#type").val() == 2){
+			$("#test_report").attr("style","display: block;");
+			loadTestData($("#testno").val());
+		}else if($("#type").val() == 3){
+			$("#ability_report").attr("style","display: block;");
+			loadAbilityData($("#testno").val());
+		}
+	}
+
+	function formatTimeStr(timeval){
+		var hour,min,sec;
+		hour = parseInt(timeval / 3600 / 1000);
+		if(hour < 10)
+			hour = "0" + hour;
+		timeval = timeval - hour*3600*1000;
+		min = parseInt( timeval / 60 / 1000);
+		if(min < 10)
+			min = "0" + min;
+		timeval = timeval - min*60*1000;
+		sec = parseInt( timeval /  1000);
+		if(sec < 10)
+			sec = "0" + sec;
+		timestr = hour +":" + min+":" + sec;
+		return timestr;
+	}
+
+	function sort(pi){
+		sort_param[pi] = - sort_param[pi];
+		loadStuData(sort_param[pi]);
+	}
+		
+	</script>
+</head>
+
+<body>
+	<div id="pageAll">
+		<div class="pageTop">
+			<div class="page">
+				<img src="../img/coin02.png" /><span><a href="#">首页</a>&nbsp;-&nbsp;-</span>&nbsp;班级报告
+			</div>
+		</div>
+
+		<div class="page">
+			<!-- user页面样式 -->
+			<div class="cfD">
+				<div class="cfD">
+					<div style="margin-top: 30px; width: 700px; height:30px; color: white; font-size: 20px; background-color: rgb(67, 144, 185);margin-bottom:20px;" id="info"></div>
+					<select class="userinput" id="testno" onchange="javascript:loaddata();">
+						<option value="0" selected="selected">————请选择试题————</option>
+						<option value="1">Test 1</option>
+						<option value="2">Test 2</option>
+						<option value="3">Test 3</option>
+					</select>
+					<select class="userinput" id="type" onchange="javascript:loaddata();">
+						<option value="0" selected="selected">——未指定报告类型——</option>
+						<option value="1">学生</option>
+						<option value="2">试题</option>
+						<option value="3">技能</option>
+					</select>
+				</div>
+			</div>
+			<!-- user 表格 显示 -->
+			<div id="student_report" style="display: none;">
+				<div class="conShow">
+					<table border="1" cellspacing="0" cellpadding="0">
+						<tr>
+							<td class='tdColor'  colspan="8" style="background-color: #4390b9;"><font color="white">查看</font></td>
+						</tr>
+						<tr>
+							<td width='150px' class='tdColor'>学生编号</td>
+							<td width='150px' class='tdColor'>学生姓名</td>
+							<td width='150px' class='tdColor'>
+								诊断成绩
+								<br/>
+								<a href="javascript:sort(0);">排序 ↑↓</a>
+								<a href="javascript:drawScorePic();">图表</a>
+							</td>
+							<td width='150px' class='tdColor'>
+								动态评估成绩
+								<br/>
+								<a href="javascript:sort(1);">排序 ↑↓</a>
+								<a href="#">图表</a>
+							</td>
+							<td width='150px' class='tdColor'>
+								学习潜能分数
+								<br/>
+								<a href="javascript:sort(2);">排序 ↑↓</a>
+								<a href="#">图表</a>
+							</td>
+							<td width='150px' class='tdColor'>
+								测试时长
+								<br/>
+								<a href="javascript:sort(3);">排序 ↑↓</a>
+								<a href="#">图表</a>
+							</td>
+							<td width='150px' class='tdColor'>
+								总体平均
+								<br/>
+								反应时长
+								<br/>
+								<a href="javascript:sort(4);">排序 ↑↓</a>
+								<a href="#">图表</a>
+							</td>
+							<td width='150px' class='tdColor'>
+								干预平均
+								<br/>
+								反应时长
+								<br/>
+								<a href="javascript:sort(5);">排序 ↑↓</a>
+								<a href="#">图表</a>
+							</td>
+						</tr>
+					</table>
+					<table id="reportcontent" border="1" cellspacing="0" cellpadding="0">
+					</table>
+					<table border="1" cellspacing="0" cellpadding="0" id="ave_sta" style="display: none;">
+						<tr>
+							<td width='300px' class='tdColor' rowspan="2" style="background-color: #4390b9;">
+								<font color="white">班级平均值</font>
+							</td>
+							<td width='150px' class='tdColor' style="background-color: #4390b9;">
+								<font color="white">诊断成绩</font>
+							</td>
+							<td width='150px' class='tdColor' style="background-color: #4390b9;">
+								<font color="white">动态评估成绩</font>
+							</td>
+							<td width='150px' class='tdColor' style="background-color: #4390b9;">
+								<font color="white">学习潜能分数</font>
+							</td>
+							<td width='150px' class='tdColor' style="background-color: #4390b9;">
+								<font color="white">测试时长</font>
+							</td>
+							<td width='150px' class='tdColor' style="background-color: #4390b9;">
+								<font color="white">
+									总体平均
+									<br/>
+									反应时长
+								</font>
+							</td>
+							<td width='150px' class='tdColor' style="background-color: #4390b9;">
+								<font color="white">
+									干预平均
+									<br/>
+									反应时长
+								</font>
+							</td>
+						</tr>
+						<tr id="ave_table">
+						</tr>
+					</table>
+
+					<div id="stuCanvas">
+					</div>
+				</div>
+			</div>
+			
+			<div id="test_report" style="display: none;">
+				<div class="conShow">
+					<table border="1" cellspacing="0" cellpadding="0" id="tcon_tab">
+					</table>
+					<div id="testCanvas"></div>
+				</div>
+			</div>
+			
+			<div id="ability_report" style="display: none;">
+				<div class="conShow">
+					<table border="1" cellspacing="0" cellpadding="0" id="acon_tab">
+					</table>
+				</div>
+				<div id="interCanvas">
+				</div>
+			</div>
+
+		</div>
+		<!-- user 表格 显示 end-->
+	</div>
+	<!-- user页面样式end -->
+
+	<!-- 删除弹出框  end-->
+</body>
+</html>

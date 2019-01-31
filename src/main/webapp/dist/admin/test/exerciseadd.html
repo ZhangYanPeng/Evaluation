@@ -258,12 +258,21 @@ function save() {
 		dataType : "json",
 		contentType : "application/x-www-form-urlencoded; charset=utf-8",
 		error : function(e) {
+			console.log(e);
 			alert("网络错误，请重试");
 		},
 		success : function(data) {
+			sleep(2);
 			init();
 		}
 	});
+}
+
+function sleep(delay) {
+  var start = (new Date()).getTime();
+  while ((new Date()).getTime() - start < delay) {
+    continue;
+  }
 }
 
 $.fn.serializeObject = function()

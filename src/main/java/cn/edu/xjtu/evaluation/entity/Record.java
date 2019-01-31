@@ -21,13 +21,23 @@ public class Record {
 	private String result;
 	private String reason;
 	private int no;
-	
+	private long timecon;
+	private long timereact;
+
 	@ManyToOne( fetch = FetchType.LAZY )
 	@JsonIgnore
 	private Answer answer;
 	
 	@ManyToOne( fetch = FetchType.LAZY )
 	private Question question;
+	
+	public long getTimecon() {
+		return timecon;
+	}
+
+	public void setTimecon(long timecon) {
+		this.timecon = timecon;
+	}
 	
 	public int getNo() {
 		return no;
@@ -79,6 +89,14 @@ public class Record {
 
 	public void setQuestion(Question question) {
 		this.question = question;
+	}
+
+	public long getTimereact() {
+		return timereact;
+	}
+
+	public void setTimereact(long timereact) {
+		this.timereact = timereact;
 	}
 	
 	

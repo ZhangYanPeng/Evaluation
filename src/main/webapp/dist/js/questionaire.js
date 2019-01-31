@@ -1,10 +1,22 @@
 function Q3(){
-	if($$("#q3").val() == 2){
+	if($$("#q3")[0].checked == true){
 		$$("#q4-content").show();
 		$$("#q5-content").show();
 	}else{
 		$$("#q4-content").hide();
 		$$("#q5-content").hide();
+	}
+}
+
+function Q7(){
+	if($$("#q7a").val() == '-1'){
+		$$("#q7").val("");
+		$$("#q7").show();
+	}else{
+		if($$("#q7a").val() != '0'){
+			$$("#q7").val($$("#q7a").val());
+		}
+		$$("#q7").hide();
 	}
 }
 
@@ -56,7 +68,7 @@ function QueSubmit(){
 
 function RateSubmit(){
 	var questionaire = new Array();
-	$$("input[name='rates']").each(function(i, el) {
+	$$("select[name='rates']").each(function(i, el) {
 		questionaire[i] =$(this).val();
 	});
 
@@ -69,7 +81,8 @@ function RateSubmit(){
 		url : baseUrl + "test/RateSubmit",
 		contentType: "application/x-www-form-urlencoded; charset=utf-8", 
 		data : {
-			ansId : $$("#test_id").val(),
+			testId : $$("#test_id").val(),
+			userId : userId,
 			ques : JSON.stringify(questionaire)
 		},
 		dataType : "json",

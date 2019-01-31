@@ -2,9 +2,7 @@ package cn.edu.xjtu.evaluation.service.impl;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -168,7 +166,7 @@ public class TestServiceImpl implements ITestService {
 
 	@Override
 	@Transactional
-	public int finishTest(int type, long tid, long uid, String[] records, String[] reasons, String stime, String etime) {
+	public int finishTest(int type, long tid, long uid, String[] records, String[] reasons, String[] timecon, String[] timereact, String stime, String etime) {
 		// TODO Auto-generated method stub
 		Answer answer = new Answer();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d H:m:s");
@@ -204,6 +202,8 @@ public class TestServiceImpl implements ITestService {
 							record.setQuestion(q);
 							record.setResult(records[i]);
 							record.setReason(reasons[i]);
+							record.setTimecon(Long.valueOf(timecon[i]));
+							record.setTimecon(Long.valueOf(timereact[i]));
 							record.setNo(i);
 							recordDAO.save(record);
 							c_qn++;
@@ -333,6 +333,32 @@ public class TestServiceImpl implements ITestService {
 		}
 
 		return 0;
+	}
+
+	@Override
+	@Transactional
+	public int updateTest(Test test) {
+		// TODO Auto-generated method stub
+		if(test.getTestno()>0){
+			String hqlString = "from Test where testno = ?";
+			Object[] values = { test.getTestno() };
+			List<Test> ts = testDAO.getListByHQL(hqlString, values);
+			for(Test t : ts){
+				t.setTestno(0);
+				testDAO.update(t);
+			}
+		}
+		testDAO.update(test);
+		return 0;
+	}
+
+	@Override
+	@Transactional
+	public Test getByTestNo(String testno) {
+		// TODO Auto-generated method stub
+		String hqlString = "from Test where testno = ?";
+		Object[] values = { Integer.valueOf(testno) };
+		return testDAO.getByHQL(hqlString, values);
 	}
 
 }

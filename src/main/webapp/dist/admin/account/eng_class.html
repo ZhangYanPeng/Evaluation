@@ -82,7 +82,7 @@
 							var td_u = $('<td></td>').append(
 								value.university.name);
 							var td_n = $('<td></td>').append(
-								value.name);
+								value.name).append($('<a></a>').append("&nbsp;&nbsp;&nbsp;查看报告").attr("href","../report/class_report.html?id="+value.id));
 							var td_st = $('<td></td>');
 							if (value.stu_num == 0) {
 								td_st.append("尚未导入学生");
@@ -181,6 +181,12 @@
 		}
 
 		function removeEngClass(eid) {
+			var r=confirm("是否确认删除？")
+			if (r!=true)
+			{
+				return;
+			}
+
 			$.ajax({
 				sync : false,
 				cache : false,
@@ -253,7 +259,7 @@
 							<input class="userinput" id="cname" type="text"
 							placeholder="输入 班级名" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a
 							href="javascript:add()"><button class="userbtn"
-							disabled="disabled">新增</button></a>
+							disabled="disabled">新增</button></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 						</div>
 					</form>
 				</div>
@@ -271,6 +277,14 @@
 						href="#" class="next" onclick="javascript:next();">&rsaquo;</a> <a
 						href="#" class="last" onclick="javascript:last();">&raquo;</a>
 					</div>
+				</div>
+				<div class="conform">
+					<form>
+						<div class="cfD">
+							<a href="../../res/templet.xlsx"><button class="userbtn"
+							disabled="disabled">下载学生名单模板</button></a>
+						</div>
+					</form>
 				</div>
 			</div>
 			<!-- user 表格 显示 end-->

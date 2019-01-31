@@ -33,6 +33,7 @@
 				success : function(data) {
 					$("#id").val(data.id);
 					$("#title").val(data.title);
+					$("#testno").val(data.testno);
 					var tab_title = "<tr>"
 						+ "<td width='200px' class='tdColor tdC'>序号</td>"
 						+ "<td width='200px' class='tdColor tdC'>类型</td>"
@@ -192,6 +193,28 @@
 			});
 		}
 
+		function editTest(){
+			$.ajax({
+				sync : true,
+				cache : false,
+				type : 'POST',
+				crossDomain : true,
+				url : "editTest",
+				data : {
+					id : $("#id").val(),
+					title :  $("#title").val(),
+					testno :  $("#testno").val()
+				},
+				dataType : "json",
+				contentType : "application/x-www-form-urlencoded; charset=utf-8",
+				error : function(e) {
+					alert("网络错误，请重试");
+				},
+				success : function(data) {
+					init();
+				}
+			});
+		}
 		
 	</script>
 </head>
@@ -216,11 +239,28 @@
 								&nbsp;&nbsp;&nbsp;&nbsp;试题名称<input class="input3" id="title" name="title" type="text" />
 							</div>
 							<div class="bbD">
+								&nbsp;&nbsp;&nbsp;&nbsp;试题选择<select  class="input3" id="testno" name="testno">
+									<option value="0">其他试题</option>
+									<option value="1">Test 1</option>
+									<option value="2">Test 2</option>
+									<option value="3">Test 3</option>
+								</select>
+							</div>
+							<div class="bbD">
+								<div class="bbDP" style="height: 40px;">
+									<button class="btn_ok btn_yes" href="#" onclick="javascript:editTest();" style="height: 35px; padding: 0; margin: 0;">提交修改</button>
+								</div>
+							</div>
+							<div class="bbD">
 								&nbsp;&nbsp;&nbsp;&nbsp;题目类型<select class="input3" name="type" id="type" onchange="javascript:loadExercise();"></select>
 								&nbsp;&nbsp;&nbsp;&nbsp;习题名称<select class="input3" name="exercise" id="exercise" >
 									<option>-------请选择习题类型--------</option>
 								</select>
-								<button class="btn_ok btn_yes" href="#" onclick="javascript:addExercise();">添加习题</button>
+							</div>
+							<div class="bbD">
+								<div class="bbDP" style="height: 40px;">
+									<button class="btn_ok btn_yes" href="#" onclick="javascript:addExercise();" style="height: 35px; padding: 0; margin: 0;">添加习题</button>
+								</div>
 							</div>
 							<div class="conShow">
 								<table id="partlist">
