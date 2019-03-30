@@ -64,9 +64,8 @@ function drawInterPic(){
 	var data = new Array();
 
 	for(var i=0; i<16; i++){
-		data[i] = {name : "Q"+i, value : testdata[5][i], color:'#76a871' };
+		data[i] = {name : "Q"+(i+1), value : testdata[5][i], color:'#76a871' };
 	}	
-	console.log(data);
 
 	var chart = new iChart.Column2D({
 		render : 'testCanvas',
@@ -141,8 +140,8 @@ function drawQuePic(qi){
 
 function getReport(stuno){
 	$("#stuCanvas").html("");
-	var a_single = $("<a></a>").attr("href","javascript:loadSignleReport("+stuno+");").append($("<button></button>").attr("class","userbtn").attr("disabled","disabled").append("本次成绩"));
-	var a_all = $("<a></a>").attr("href","javascript:loadOverallReport("+stuno+");").append($("<button></button>").attr("class","userbtn").attr("disabled","disabled").append("三次成绩"));
+	var a_single = $("<a></a>").attr("href","javascript:loadSignleReport('"+stuno+"');").append($("<button></button>").attr("class","userbtn").append("本次成绩"));
+	var a_all = $("<a></a>").attr("href","javascript:loadOverallReport('"+stuno+"');").append($("<button></button>").attr("class","userbtn").append("三次成绩"));
 	var cfd = $("<div></div>").attr("class","cfD").append(a_single).append(a_all);
 	var div = $("<div></div>").attr("class","conform").append(cfd);
 	$("#stuCanvas").append(div);
@@ -165,7 +164,6 @@ function loadSignleReport(stuno){
 			console.log(e);
 		},
 		success : function(data){
-			console.log(data.path);
 			window.location.href=data.path;
 		}
 	});

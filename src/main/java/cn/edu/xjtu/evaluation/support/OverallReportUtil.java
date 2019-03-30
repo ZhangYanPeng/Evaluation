@@ -44,24 +44,24 @@ public class OverallReportUtil {
 			cell0.setRowspan(2);
 			test_table.addCell(cell0);
 			for(int i=0; i<3; i++){
-				PdfPCell tncell = PdfCreator.FormatMiniTableTitleCell(overallReport.getTest_name()[i], BaseColor.BLACK, OverallReportUtil.tab_title);
+				PdfPCell tncell = PdfCreator.FormatMiniTableTitleCell(overallReport.getTest_name()[i], BaseColor.WHITE, OverallReportUtil.tab_title);
 				tncell.setColspan(2);
 				test_table.addCell(tncell);
 			}
-			test_table.addCell(PdfCreator.FormatMiniTableTitleCell("原始\n成绩\n（NDA1）", BaseColor.BLACK, OverallReportUtil.tab_title));
-			test_table.addCell(PdfCreator.FormatMiniTableTitleCell("动态\n评估\n成绩\n（DA1）", BaseColor.BLACK, OverallReportUtil.tab_title));
-			test_table.addCell(PdfCreator.FormatMiniTableTitleCell("原始\n成绩\n（NDA2）", BaseColor.BLACK, OverallReportUtil.tab_title));
-			test_table.addCell(PdfCreator.FormatMiniTableTitleCell("动态\n评估\n成绩\n（DA2）", BaseColor.BLACK, OverallReportUtil.tab_title));
-			test_table.addCell(PdfCreator.FormatMiniTableTitleCell("原始\n成绩\n（NDA3）", BaseColor.BLACK, OverallReportUtil.tab_title));
-			test_table.addCell(PdfCreator.FormatMiniTableTitleCell("动态\n评估\n成绩\n（DA3）", BaseColor.BLACK, OverallReportUtil.tab_title));
+			test_table.addCell(PdfCreator.FormatMiniTableTitleCell("原始\n成绩\n（NDA1）", BaseColor.WHITE, OverallReportUtil.tab_title));
+			test_table.addCell(PdfCreator.FormatMiniTableTitleCell("动态\n评估\n成绩\n（DA1）", BaseColor.WHITE, OverallReportUtil.tab_title));
+			test_table.addCell(PdfCreator.FormatMiniTableTitleCell("原始\n成绩\n（NDA2）", BaseColor.WHITE, OverallReportUtil.tab_title));
+			test_table.addCell(PdfCreator.FormatMiniTableTitleCell("动态\n评估\n成绩\n（DA2）", BaseColor.WHITE, OverallReportUtil.tab_title));
+			test_table.addCell(PdfCreator.FormatMiniTableTitleCell("原始\n成绩\n（NDA3）", BaseColor.WHITE, OverallReportUtil.tab_title));
+			test_table.addCell(PdfCreator.FormatMiniTableTitleCell("动态\n评估\n成绩\n（DA3）", BaseColor.WHITE, OverallReportUtil.tab_title));
 			
-			test_table.addCell(PdfCreator.FormatTableTitleCell("分数", BaseColor.BLACK, OverallReportUtil.tab_title));
+			test_table.addCell(PdfCreator.FormatTableTitleCell("分数", BaseColor.WHITE, OverallReportUtil.tab_title));
 			for(int i=0; i<6; i++)
 				test_table.addCell(PdfCreator.FormatTableCell(overallReport.getTest_result()[0][i], Element.ALIGN_MIDDLE, Element.ALIGN_CENTER, BaseColor.BLACK, BaseColor.WHITE));
-			test_table.addCell(PdfCreator.FormatTableTitleCell("总提示频率", BaseColor.BLACK, OverallReportUtil.tab_title));
+			test_table.addCell(PdfCreator.FormatTableTitleCell("总提示频率", BaseColor.WHITE, OverallReportUtil.tab_title));
 			for(int i=0; i<6; i++)
 				test_table.addCell(PdfCreator.FormatTableCell(overallReport.getTest_result()[1][i], Element.ALIGN_MIDDLE, Element.ALIGN_CENTER, BaseColor.BLACK, BaseColor.WHITE));
-			test_table.addCell(PdfCreator.FormatTableTitleCell("学习潜能分数", BaseColor.BLACK, OverallReportUtil.tab_title));
+			test_table.addCell(PdfCreator.FormatTableTitleCell("学习潜能分数", BaseColor.WHITE, OverallReportUtil.tab_title));
 			for(int i=0; i<6; i++)
 				test_table.addCell(PdfCreator.FormatTableCell(overallReport.getTest_result()[2][i], Element.ALIGN_MIDDLE, Element.ALIGN_CENTER, BaseColor.BLACK, BaseColor.WHITE));
 			
@@ -94,28 +94,28 @@ public class OverallReportUtil {
 			PdfPTable test_table = new PdfPTable(5);
 			test_table.setWidthPercentage(100);
 			test_table.setWidths(new float[] { (float) 0.28, (float) 0.18, (float) 0.18, (float) 0.18, (float) 0.18});
-			test_table.addCell(PdfCreator.FormatTableTitleCell("听力技能", BaseColor.BLACK, OverallReportUtil.tab_title));
+			test_table.addCell(PdfCreator.FormatTableTitleCell("听力技能", BaseColor.WHITE, OverallReportUtil.tab_title));
 			for(int i=0; i<3; i++){
-				test_table.addCell(PdfCreator.FormatMiniTableTitleCell(overallReport.getTest_name()[i], BaseColor.BLACK, OverallReportUtil.tab_title));
+				test_table.addCell(PdfCreator.FormatMiniTableTitleCell(overallReport.getTest_name()[i], BaseColor.WHITE, OverallReportUtil.tab_title));
 			}
-			test_table.addCell(PdfCreator.FormatMiniTableTitleCell("总提示频率", BaseColor.BLACK, OverallReportUtil.tab_title));
-			test_table.addCell(PdfCreator.FormatTableCell("词汇与表达", Element.ALIGN_MIDDLE, Element.ALIGN_CENTER, BaseColor.BLACK, OverallReportUtil.tab_odd));
+			test_table.addCell(PdfCreator.FormatMiniTableTitleCell("总提示频率", BaseColor.WHITE, OverallReportUtil.tab_title));
+			test_table.addCell(PdfCreator.FormatTableCell("词汇与表达", Element.ALIGN_MIDDLE, Element.ALIGN_CENTER, BaseColor.WHITE, OverallReportUtil.tab_odd));
 			for(int i=0; i<4; i++){
 				test_table.addCell(PdfCreator.FormatTableCell(overallReport.getInter_freq()[0][i], Element.ALIGN_MIDDLE, Element.ALIGN_CENTER, BaseColor.BLACK, BaseColor.WHITE));
 			}
-			test_table.addCell(PdfCreator.FormatTableCell("语法", Element.ALIGN_MIDDLE, Element.ALIGN_CENTER, BaseColor.BLACK, OverallReportUtil.tab_odd));
+			test_table.addCell(PdfCreator.FormatTableCell("语法", Element.ALIGN_MIDDLE, Element.ALIGN_CENTER, BaseColor.WHITE, OverallReportUtil.tab_odd));
 			for(int i=0; i<4; i++){
 				test_table.addCell(PdfCreator.FormatTableCell(overallReport.getInter_freq()[1][i], Element.ALIGN_MIDDLE, Element.ALIGN_CENTER, BaseColor.BLACK, BaseColor.WHITE));
 			}
-			test_table.addCell(PdfCreator.FormatTableCell("主旨大意", Element.ALIGN_MIDDLE, Element.ALIGN_CENTER, BaseColor.BLACK, OverallReportUtil.tab_odd));
+			test_table.addCell(PdfCreator.FormatTableCell("主旨大意", Element.ALIGN_MIDDLE, Element.ALIGN_CENTER, BaseColor.WHITE, OverallReportUtil.tab_odd));
 			for(int i=0; i<4; i++){
 				test_table.addCell(PdfCreator.FormatTableCell(overallReport.getInter_freq()[2][i], Element.ALIGN_MIDDLE, Element.ALIGN_CENTER, BaseColor.BLACK, BaseColor.WHITE));
 			}
-			test_table.addCell(PdfCreator.FormatTableCell("细节", Element.ALIGN_MIDDLE, Element.ALIGN_CENTER, BaseColor.BLACK, OverallReportUtil.tab_odd));
+			test_table.addCell(PdfCreator.FormatTableCell("细节", Element.ALIGN_MIDDLE, Element.ALIGN_CENTER, BaseColor.WHITE, OverallReportUtil.tab_odd));
 			for(int i=0; i<4; i++){
 				test_table.addCell(PdfCreator.FormatTableCell(overallReport.getInter_freq()[3][i], Element.ALIGN_MIDDLE, Element.ALIGN_CENTER, BaseColor.BLACK, BaseColor.WHITE));
 			}
-			test_table.addCell(PdfCreator.FormatTableCell("推理", Element.ALIGN_MIDDLE, Element.ALIGN_CENTER, BaseColor.BLACK, OverallReportUtil.tab_odd));
+			test_table.addCell(PdfCreator.FormatTableCell("推理", Element.ALIGN_MIDDLE, Element.ALIGN_CENTER, BaseColor.WHITE, OverallReportUtil.tab_odd));
 			for(int i=0; i<4; i++){
 				test_table.addCell(PdfCreator.FormatTableCell(overallReport.getInter_freq()[4][i], Element.ALIGN_MIDDLE, Element.ALIGN_CENTER, BaseColor.BLACK, BaseColor.WHITE));
 			}
