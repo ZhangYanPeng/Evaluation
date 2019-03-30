@@ -203,7 +203,7 @@ public class TestServiceImpl implements ITestService {
 							record.setResult(records[i]);
 							record.setReason(reasons[i]);
 							record.setTimecon(Long.valueOf(timecon[i]));
-							record.setTimecon(Long.valueOf(timereact[i]));
+							record.setTimereact(Long.valueOf(timereact[i]));
 							record.setNo(i);
 							recordDAO.save(record);
 							c_qn++;
