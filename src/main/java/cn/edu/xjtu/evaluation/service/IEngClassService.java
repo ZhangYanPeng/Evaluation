@@ -2,7 +2,10 @@ package cn.edu.xjtu.evaluation.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import cn.edu.xjtu.evaluation.entity.EngClass;
+import cn.edu.xjtu.evaluation.entity.EngClassResult;
 import cn.edu.xjtu.evaluation.support.PageResults;
 
 public interface IEngClassService {
@@ -18,4 +21,6 @@ public interface IEngClassService {
 	public List<String> getInfo(Long eid);
 	public String[][] getTestInfo(Long engid, Integer testno);
 	public String[][] getAbilityInfo(Long engid, Integer testno);
+	public void outputData(String id, HttpServletRequest request);
+	List<EngClassResult> loadResult(Long ecid, Integer tno, int sortby);
 }

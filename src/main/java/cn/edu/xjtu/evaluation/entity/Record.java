@@ -60,7 +60,7 @@ public class Record {
 	}
 
 	public String getResult() {
-		return result;
+		return result.replace("\"", "");
 	}
 
 	public void setResult(String result) {

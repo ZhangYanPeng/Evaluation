@@ -3,6 +3,8 @@ package cn.edu.xjtu.evaluation.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,12 +17,14 @@ import cn.edu.xjtu.evaluation.dao.impl.StudentDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.TestDAOImpl;
 import cn.edu.xjtu.evaluation.entity.Answer;
 import cn.edu.xjtu.evaluation.entity.EngClass;
+import cn.edu.xjtu.evaluation.entity.EngClassResult;
 import cn.edu.xjtu.evaluation.entity.Record;
 import cn.edu.xjtu.evaluation.entity.School;
 import cn.edu.xjtu.evaluation.entity.Student;
 import cn.edu.xjtu.evaluation.entity.Test;
 import cn.edu.xjtu.evaluation.service.IEngClassService;
 import cn.edu.xjtu.evaluation.support.PageResults;
+import cn.edu.xjtu.evaluation.support.XlsxCreator;
 
 @Service
 public class EngClassServiceImpl implements IEngClassService {
@@ -256,6 +260,53 @@ public class EngClassServiceImpl implements IEngClassService {
 			}
 		}
 		return result;
+	}
+	
+	@Override
+	@Transactional
+	public List<EngClassResult> loadResult(Long ecid, Integer tno, int sortby) {
+		// TODO Auto-generated method stub
+		String hql = "from Student where engClass.id = ?";
+		Object[] values = {ecid};
+		List<Student> students = studentDAO.getListByHQL(hql, values);
+		
+		List<EngClassResult> lecr = new ArrayList<EngClassResult>();
+		for(Student student : students){
+			String hqlstring = "from Answer where student.id = ? and test.testno = ?";
+			Object[] vals = {student.getId(), tno};
+			Answer answer = answerDAO.getByHQL(hqlstring, vals);
+			lecr.add(new EngClassResult(student, answer));
+		}
+		return lecr;
+	}
+	
+	@Override
+	@Transactional
+	public void outputData(String id, HttpServletRequest request) {
+		// TODO Auto-generated method stub
+
+		EngClass engclass = get(Long.valueOf(id));
+		List<List> stulist = new ArrayList();
+		List<String[][]> testlist = new ArrayList();
+		List<String[][]> ablist = new ArrayList();
+		
+		for(int i = 1; i<4; i++){
+			List<EngClassResult> ls = loadResult(engclass.getId(), i, 0);
+			stulist.add(ls);
+			String[][] lt = getTestInfo(engclass.getId(), i);
+			testlist.add(lt);
+			String[][] la = getAbilityInfo(engclass.getId(), i);
+			ablist.add(la);
+		}
+		
+		String path = request.getSession().getServletContext().getRealPath("/download/xlsx/");
+		String filename = String.valueOf(engclass.getId())+"data.xls";
+		try {
+			XlsxCreator.createOuputData(engclass, stulist, testlist, ablist, path + filename);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

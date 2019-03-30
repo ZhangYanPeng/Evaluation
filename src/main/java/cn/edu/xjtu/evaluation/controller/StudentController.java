@@ -34,8 +34,6 @@ public class StudentController {
 
 	@RequestMapping(value = "/login")
 	public @ResponseBody Student login(String username, String password) {
-		System.out.println(username);
-		System.out.println(password);
 		Student student = new Student();
 		student.setUsername(username);
 		student.setPassword(password);

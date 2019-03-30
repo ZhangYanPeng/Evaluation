@@ -63,7 +63,7 @@ public class EnglishController {
 	IResultService resultService;
 	
 	//test manage
-	@RequestMapping(value = "/list_test" , method = RequestMethod.POST)
+	@RequestMapping(value = "/list_test" )
 	public @ResponseBody PageResults<Test> listTest(String page) {
 		PageResults<Test> pr = testService.list(Integer.valueOf(page));
 		for(Test t : pr.getResults()){
@@ -72,7 +72,7 @@ public class EnglishController {
 		return pr;
 	}
 	
-	@RequestMapping(value = "/add_test" , method = RequestMethod.POST)
+	@RequestMapping(value = "/add_test" )
 	public @ResponseBody Test addTest(String name) {
 		Test t = new Test();
 		t.setTitle(name);
@@ -90,17 +90,17 @@ public class EnglishController {
 		return testService.updateTest(test);
 	}
 	
-	@RequestMapping(value = "/delete_test" , method = RequestMethod.POST)
+	@RequestMapping(value = "/delete_test" )
 	public @ResponseBody int deleteTest(String id) {
 		return testService.remove(Long.valueOf(id));
 	}
 	
-	@RequestMapping(value = "/choose" , method = RequestMethod.POST)
+	@RequestMapping(value = "/choose" )
 	public @ResponseBody int chooseTest(String id) {
 		return testService.chooseTest(Long.valueOf(id));
 	}
 	
-	@RequestMapping(value = "/collect" , method = RequestMethod.POST)
+	@RequestMapping(value = "/collect" )
 	public @ResponseBody int collect(String id, String state) {
 		return testService.collect(Long.valueOf(id),Integer.valueOf(state));
 	}

@@ -33,7 +33,7 @@ function loadStuData(s){
 					ave_param[4] = ave_param[4] + value.ave_time_consume_val;
 					ave_param[5] = ave_param[5] + value.ave_inter_time_val;
 					var td1 = $("<td></td>").attr("width","150px").attr("class","tdColor").append(value.student_no);
-					var td2 = $("<td></td>").attr("width","150px").attr("class","tdColor").append($("<a></a>").attr("href","javascript:getReport("+value.student_no+");").append(value.student_name));
+					var td2 = $("<td></td>").attr("width","150px").attr("class","tdColor").append($("<a></a>").attr("href","javascript:getReport('"+value.student_no+"');").append(value.student_name));
 					var td3 = $("<td></td>").attr("width","150px").attr("class","tdColor").append(value.score);
 					var td4 = $("<td></td>").attr("width","150px").attr("class","tdColor").append(value.eval_score);
 					var td5 = $("<td></td>").attr("width","150px").attr("class","tdColor").append(value.potential.toFixed(2));

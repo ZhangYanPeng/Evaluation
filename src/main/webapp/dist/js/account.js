@@ -169,7 +169,6 @@ function saveinfo(){
 
 function register(){
 	var regdata = myApp.formToJSON("#register-form");
-	console.log(regdata);
 	if(regdata.r_password != regdata.r_repassword){
 		myApp.alert("两次输入密码不一致！","提示");
 		return;

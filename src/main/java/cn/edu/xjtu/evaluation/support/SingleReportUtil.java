@@ -94,10 +94,15 @@ public class SingleReportUtil {
 				detail_table.addCell(r2_cell);
 				for (int i = 0; i < 16; i++) {
 					BaseColor c;
-					if(results[1][i].compareTo(results[2][i]) != 0)
+					int style;
+					if(results[1][i].compareTo(results[2][i]) != 0){
 						c = BaseColor.RED;
-					else
+						style = Font.BOLD;
+					}
+					else{
 						c = BaseColor.BLACK;
+						style = Font.NORMAL;
+					}
 					PdfPCell r2_cell_tmp = PdfCreator.FormatTableCell(results[1][i], Element.ALIGN_MIDDLE, Element.ALIGN_CENTER,
 							c, SingleReportUtil.tab_even);
 					detail_table.addCell(r2_cell_tmp);

@@ -17,9 +17,9 @@ public interface ITestService {
 	PageResults<Test> list(Integer page);
 	int importTest(Test test);
 	int chooseTest(long id);
-	int check(Integer type, Long tid, Long uid);
+	int check(Long tid, Long uid);
 	Test getChoose();
-	int finishTest(int type, long tid, long uid, String[] records, String[] reasons, String[] timecon, String[] timereact, String stime, String etime);
+	int finishTest(long tid, long uid, String[] records, String[] reasons, String[] timecon, String[] timereact, String stime, String etime);
 	List<Part> loadParts(Long id);
 	List<Exercise> loadExercises(Long id);
 	List<Question> loadQuestions(Long id);
@@ -29,4 +29,6 @@ public interface ITestService {
 	int removeExercise(long id, long eid);
 	int updateTest(Test test);
 	Test getByTestNo(String testno);
+	String checkAnswer(Long tid, Long uid);
+	List<Test> getAllValidTests();
 }

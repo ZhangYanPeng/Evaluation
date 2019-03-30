@@ -58,6 +58,7 @@ public class ReportController {
 		Student student = studentService.getByStuNo(stu);
 		Test test = testService.getByTestNo(testno);
 		String path = request.getSession().getServletContext().getRealPath("/download/pdf/");
+		System.out.println(student.getId());
 		String filename = String.valueOf(student.getId())+String.valueOf(test.getId())+"test.pdf";
 		try {
 			PdfCreator.createSingleReport(resultService.getTestResult(Long.valueOf(student.getId()), Long.valueOf(test.getId())),

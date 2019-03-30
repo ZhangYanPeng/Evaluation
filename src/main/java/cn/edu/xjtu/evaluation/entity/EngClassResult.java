@@ -1,9 +1,5 @@
 package cn.edu.xjtu.evaluation.entity;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.TimeZone;
-
 public class EngClassResult {
 	String student_no;
 	String student_name;
