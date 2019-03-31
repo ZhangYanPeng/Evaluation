@@ -302,7 +302,7 @@ public class EngClassServiceImpl implements IEngClassService {
 		String path = request.getSession().getServletContext().getRealPath("/download/xlsx/");
 		String filename = String.valueOf(engclass.getId())+"data.xls";
 		try {
-			XlsxCreator.createOuputData(engclass, stulist, testlist, ablist, path + filename);
+			XlsxCreator.createOuputData(engclass, stulist, testlist, ablist, path+"/" + filename);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
