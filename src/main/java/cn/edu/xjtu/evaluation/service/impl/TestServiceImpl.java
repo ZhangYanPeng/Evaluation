@@ -2,6 +2,7 @@ package cn.edu.xjtu.evaluation.service.impl;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -146,10 +147,10 @@ public class TestServiceImpl implements ITestService {
 
 	@Override
 	@Transactional
-	public int check(Integer type, Long tid, Long uid) {
+	public int check(Long tid, Long uid) {
 		// TODO Auto-generated method stub
-		String hql = "from Answer where type = ? and student.id = ? and test.id = ?";
-		Object[] values = { type, uid, tid };
+		String hql = "from Answer where student.id = ? and test.id = ?";
+		Object[] values = { uid, tid };
 		Answer a = answerDAO.getByHQL(hql, values);
 		if (a == null)
 			return 0;
@@ -166,7 +167,7 @@ public class TestServiceImpl implements ITestService {
 
 	@Override
 	@Transactional
-	public int finishTest(int type, long tid, long uid, String[] records, String[] reasons, String[] timecon, String[] timereact, String stime, String etime) {
+	public int finishTest(long tid, long uid, String[] records, String[] reasons, String[] timecon, String[] timereact, String stime, String etime) {
 		// TODO Auto-generated method stub
 		Answer answer = new Answer();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d H:m:s");
@@ -177,7 +178,6 @@ public class TestServiceImpl implements ITestService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		answer.setType(type);
 		answer.setTest(testDAO.get(tid));
 		answer.setStudent(studentDAO.get(uid));
 		answerDAO.save(answer);
@@ -203,7 +203,7 @@ public class TestServiceImpl implements ITestService {
 							record.setResult(records[i]);
 							record.setReason(reasons[i]);
 							record.setTimecon(Long.valueOf(timecon[i]));
-							record.setTimecon(Long.valueOf(timereact[i]));
+							record.setTimereact(Long.valueOf(timereact[i]));
 							record.setNo(i);
 							recordDAO.save(record);
 							c_qn++;
@@ -359,6 +359,31 @@ public class TestServiceImpl implements ITestService {
 		String hqlString = "from Test where testno = ?";
 		Object[] values = { Integer.valueOf(testno) };
 		return testDAO.getByHQL(hqlString, values);
+	}
+
+	@Override
+	@Transactional
+	public String checkAnswer(Long tid, Long uid) {
+		// TODO Auto-generated method stub
+		String hql = "from Answer where test.id = ? and student.id = ? ";
+		Object[] values = {tid, uid};
+		return answerDAO.getByHQL(hql, values).getQuestionaire();
+	}
+
+
+	@Override
+	@Transactional
+	public List<Test> getAllValidTests() {
+		// TODO Auto-generated method stub
+		List<Test> tests = new ArrayList();
+		String hql = "from Test where test.testno = ?";
+		Object[] values = {1};
+		tests.add(testDAO.getByHQL(hql, values));
+		values = new Object[]{2};
+		tests.add(testDAO.getByHQL(hql, values));
+		values = new Object[]{3};
+		tests.add(testDAO.getByHQL(hql, values));
+		return tests;
 	}
 
 }

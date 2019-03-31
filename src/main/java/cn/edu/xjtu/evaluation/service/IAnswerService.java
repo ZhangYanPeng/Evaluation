@@ -11,7 +11,8 @@ public interface IAnswerService {
 	Answer get(long id);
 	List getByStudent(Student student);
 	List getByTest(Test test);
-	Answer getAnswer(Long tid, Long uid, Integer type);
-	List<Answer> getAnswers(Long uid, Integer type);
+	Answer getAnswer(Long tid, Long uid);
+	List<Answer> getAnswers(Long uid);
 	int FinishQue(Long id, String ques);
+	List<Test> loadAnsweredTest(Long uid);
 }

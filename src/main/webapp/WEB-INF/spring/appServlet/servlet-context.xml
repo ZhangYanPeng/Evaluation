@@ -25,6 +25,7 @@
 	<resources mapping="/audio/**" location="/upload/audio/**" />
 	<resources mapping="/pdf/**" location="/download/pdf/**" />
 	<resources mapping="/admin/report/pdf/**" location="/download/pdf/**" />
+	<resources mapping="/admin/account/xlsx/**" location="/download/xlsx/**" />
 	<resources mapping="/img/**" location="/dist/img/**" />
 	<resources mapping="/res/**" location="/res/**" />
 	<resources mapping="/**" location="/dist/**" />
@@ -49,10 +50,10 @@
 		destroy-method="close">
 		<beans:property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<beans:property name="url"
-			value="jdbc:mysql://localhost:3306/evaluation?useUnicode=true&amp;characterEncoding=UTF-8" />
+			value="jdbc:mysql://202.117.216.251:3306/evaluation?useUnicode=true&amp;characterEncoding=UTF-8" />
 		<beans:property name="username" value="root" />
-		<beans:property name="password" value="" />
-		<!-- <beans:property name="password" value="123.com" />--> 
+		<!-- <beans:property name="password" value="" />-->
+		<beans:property name="password" value="123.com" />
 		<beans:property name="validationQuery" value="SELECT 1" />
 	</beans:bean>
 	<!-- Hibernate Session Factory -->

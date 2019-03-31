@@ -38,7 +38,7 @@ public class CommonController {
 		return url;
 	}
 
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	@RequestMapping(value = "/login")
 	public @ResponseBody Admin login(String username, String password) {
 		Admin admin = new Admin();
 		admin.setUsername(username);
@@ -51,7 +51,7 @@ public class CommonController {
 		return admin;
 	}
 	
-	@RequestMapping(value = "/login_teacher", method = RequestMethod.POST)
+	@RequestMapping(value = "/login_teacher")
 	public @ResponseBody Teacher login_teacher(String username, String password) {
 		Teacher teacher = new Teacher();
 		teacher.setUsername(username);

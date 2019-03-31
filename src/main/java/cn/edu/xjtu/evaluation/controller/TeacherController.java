@@ -31,7 +31,7 @@ public class TeacherController {
 	@Autowired
 	IEngClassService engClassService;
 
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	@RequestMapping(value = "/login")
 	public @ResponseBody Teacher login(String username, String password) {
 		Teacher teacher = new Teacher();
 		teacher.setUsername(username);
@@ -44,7 +44,7 @@ public class TeacherController {
 		return teacher;
 	}
 
-	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	@RequestMapping(value = "/register")
 	public @ResponseBody Teacher register(String username, String password, String name) {
 		Teacher teacher = new Teacher();
 		teacher.setName(name);
@@ -61,7 +61,7 @@ public class TeacherController {
 		}
 	}
 	
-	@RequestMapping(value = "/get_exercises", method = RequestMethod.POST)
+	@RequestMapping(value = "/get_exercises")
 	public @ResponseBody PageResults<Exercise> getExercises(String page, String type) {
 		PageResults<Exercise> pr = exerciseService.getPageList(Integer.valueOf(page), Long.valueOf(type));
 		for(Exercise e : pr.getResults()){
@@ -75,7 +75,7 @@ public class TeacherController {
 		return universityService.getAll();
 	}
 	
-	@RequestMapping(value = "/list_engclass" , method = RequestMethod.POST)
+	@RequestMapping(value = "/list_engclass" )
 	public @ResponseBody PageResults<EngClass> listEngClass(String page, String university) {
 		PageResults<EngClass> tmp =  engClassService.list(Integer.valueOf(page), Long.valueOf(university));
 		for( EngClass ec : tmp.getResults()){

@@ -46,6 +46,27 @@
 			});
 		}
 
+		function outport(eid){
+			$.ajax({
+				sync : false,
+				cache : false,
+				type : 'POST',
+				crossDomain : true,
+				url : "outport",
+				data : {
+					id : eid
+				},
+				dataType : "json",
+				contentType : "application/x-www-form-urlencoded;charset=utf-8",
+				error : function(e) {
+					alert("网络错误，请重试");
+				},
+				success : function(data) {
+					window.location.href=data.path;
+				}
+			});
+		}
+
 		function list(p) {
 			$.ajax({
 				sync : false,
@@ -82,7 +103,8 @@
 							var td_u = $('<td></td>').append(
 								value.university.name);
 							var td_n = $('<td></td>').append(
-								value.name).append($('<a></a>').append("&nbsp;&nbsp;&nbsp;查看报告").attr("href","../report/class_report.html?id="+value.id));
+								value.name).append($('<a></a>').append("&nbsp;&nbsp;&nbsp;查看报告").attr("href","../report/class_report.html?id="+value.id)).
+								append($('<a></a>').append("&nbsp;&nbsp;&nbsp;导出数据").attr("href","javascript:outport("+value.id+");"));
 							var td_st = $('<td></td>');
 							if (value.stu_num == 0) {
 								td_st.append("尚未导入学生");

@@ -1,5 +1,6 @@
 package cn.edu.xjtu.evaluation.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,19 +66,19 @@ public class AnswerServiceImpl implements IAnswerService {
 
 	@Override
 	@Transactional
-	public Answer getAnswer(Long tid, Long uid, Integer type) {
+	public Answer getAnswer(Long tid, Long uid) {
 		// TODO Auto-generated method stub
-		String hql = "from Answer where test.id = ? and student.id = ? and type = ?";
-		Object[] values = {tid, uid, type};
+		String hql = "from Answer where test.id = ? and student.id = ? ";
+		Object[] values = {tid, uid};
 		return answerDAO.getByHQL(hql, values);
 	}
 
 	@Override
 	@Transactional
-	public List<Answer> getAnswers(Long uid, Integer type) {
+	public List<Answer> getAnswers(Long uid) {
 		// TODO Auto-generated method stub
-		String hql = "from Answer where student.id = ? and type = ?";
-		Object[] values = {uid, type};
+		String hql = "from Answer where student.id = ? ";
+		Object[] values = {uid};
 		return answerDAO.getListByHQL(hql, values);
 	}
 
@@ -91,6 +92,19 @@ public class AnswerServiceImpl implements IAnswerService {
 		answer.setQuestionaire(ques);
 		answerDAO.update(answer);
 		return 0;
+	}
+
+	@Override
+	@Transactional
+	public List<Test> loadAnsweredTest(Long uid) {
+		// TODO Auto-generated method stub
+		String hql = "from Answer where student.id = ? ";
+		Object[] values = {uid};
+		List<Answer> answers = answerDAO.getListByHQL(hql, values);
+		List<Test> tests = new ArrayList();
+		for( int i=0; i<answers.size(); i++)
+			tests.add(answers.get(i).getTest());
+		return tests;
 	}
 
 }

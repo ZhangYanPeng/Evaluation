@@ -1,0 +1,194 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>问卷管理</title>
+<link rel="stylesheet" type="text/css" href="../css/css.css" />
+<link rel="stylesheet" href="../css/jqpagination.css" />
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script src="../js/jquery.jqpagination.js"></script>
+<!-- <script type="text/javascript" src="js/page.js" ></script> -->
+<script type="text/javascript" src="../js/init.js"></script>
+<script type="text/javascript" src="../js/common.js"></script>
+<script type="text/javascript">
+	var page_num = 1;
+	var total_num = 0;
+	$(document).ready(function(){
+		list( 1);
+	});
+	
+	function list(p) {
+		$.ajax({
+			sync : false,
+			cache : false,
+			type : 'POST',
+			crossDomain : true,
+			url : "../account/list_student",
+			data : {
+				str : $("#str").val(),
+				page : p
+			},
+			dataType : "json",
+			contentType : "application/x-www-form-urlencoded; charset=utf-8",
+			error : function(e) {
+				alert("网络错误，请重试");
+			},
+			success : function(data) {
+				total_num = data.pageCount;
+				page_num=p;
+				$("#page_num").val(p);
+
+				var tab_title = "<tr>"
+				+ "<td width='66px' class='tdColor tdC'>序号</td>"
+				+ "<td width='100px' class='tdColor'>英语班级</td>"
+				+ "<td width='200px' class='tdColor'>学号</td>"
+				+ "<td width='150px' class='tdColor'>姓名</td>"
+				+ "<td width='600px' class='tdColor'>问卷</td>"
+				+ "	</tr>";
+				$("#stulist").html(tab_title);
+
+				$.each(
+					data.results,
+					function(index, value) {
+						var td_id = $('<td></td>').append(
+							value.id);
+						var td_ec = $('<td></td>').append(
+							value.engClass.name);
+						var td_sn = $('<td></td>').append(
+							value.student_no);
+						var td_n = $('<td></td>').append(
+							value.name);
+
+						var q_info = "问卷:";
+						if(value.questionaire !=null){
+							var oldstr = "";
+							var newstr = value.questionaire;
+							while(oldstr != newstr){
+								oldstr = newstr;
+								newstr = newstr.replace("||",";\t");
+							}
+							q_info = q_info + newstr;
+							q_info = q_info + loadAllQues(value.id);
+						}
+						else
+							q_info = q_info + "尚未填写";
+
+						var td_op = $('<td></td>').append(q_info).attr("style","vertical-align:middle; text-align:left;");
+						var tr = $('<tr></tr>').attr(
+							'height', "40px");
+						tr.append(td_id).append(td_ec)
+						.append(td_sn).append(td_n)
+						.append(td_op);
+						$("#stulist").append(tr);
+					});
+			}
+		});
+	}
+
+	function loadAllQues(sid){
+		var re = "";
+		$.ajax({
+			async : false,
+			cache : false,
+			type : 'GET',
+			crossDomain : true,
+			url : "../account/getAnswers",
+			data : {
+				uid : sid
+			},
+			dataType : "json",
+			contentType : "application/x-www-form-urlencoded; charset=utf-8",
+			error : function(e) {
+				alert("网络错误，请重试");
+			},
+			success : function(data) {
+				$.each(data,function(index, value) {
+					re = re + '<br/>'
+					re = re + '测试名称：' + value.test.title + "&nbsp;&nbsp;";
+					if(value.questionaire != null){
+						re = re + '问卷：' + value.questionaire;
+					}else{
+						re = re + '问卷：' + '尚未填写';
+					}
+				});
+			}
+		});
+		console.log(re);
+		return re;
+	}
+
+	function first() {
+		if (page_num == 1)
+			return;
+		page_num = 1;
+		list( 1);
+	}
+
+	function previous() {
+		if (page_num == 1)
+			return;
+		page_num = page_num - 1;
+		list(page_num);
+	}
+
+	function next() {
+		if (page_num == total_num)
+			return;
+		page_num = page_num + 1;
+		list( page_num);
+	}
+
+	function last() {
+		if (page_num == total_num)
+			return;
+		page_num = total_num;
+		list(page_num);
+	}
+</script>
+</head>
+
+<body>
+	<div id="pageAll">
+		<div class="pageTop">
+			<div class="page">
+				<img src="../img/coin02.png" /><span><a href="#">首页</a>&nbsp;-&nbsp;-</span>&nbsp;管理员管理
+			</div>
+		</div>
+
+		<div class="page">
+			<!-- user页面样式 -->
+			<div class="connoisseur">
+				<div class="conform">
+					<form>
+						<div class="cfD">
+							<input class="userinput" id="str" type="text" placeholder="输入学号或班级号码" />&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;
+							<a href="javascript:list(1);"><button class="userbtn"
+							disabled="disabled">搜索</button></a>
+							<a href="studentadd.html?id=-1"><button class="userbtn"
+						disabled="disabled">新增</button></a>
+						</div>
+					</form>
+				</div>
+				<!-- user 表格 显示 -->
+				<div class="conShow">
+					<table id="stulist" border="1" cellspacing="0" cellpadding="0">
+					</table>
+				</div>
+				<div class="paging">
+					<div class="pagination">
+						<a href="#" class="first" onclick="javascript:first();">&laquo;</a>
+						<a href="#" class="previous" onclick="javascript:previous();">&lsaquo;</a>
+						<input id="page_num" type="text" readonly="readonly" /> <a
+							href="#" class="next" onclick="javascript:next();">&rsaquo;</a> <a
+							href="#" class="last" onclick="javascript:last();">&raquo;</a>
+					</div>
+				</div>
+			</div>
+			<!-- user 表格 显示 end-->
+		</div>
+		<!-- user页面样式end -->
+	</div>
+
+	<!-- 删除弹出框  end-->
+</body>
+</html>

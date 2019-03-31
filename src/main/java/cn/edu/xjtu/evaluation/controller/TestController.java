@@ -44,8 +44,13 @@ public class TestController {
 	}
 	
 	@RequestMapping(value = "/getStatus" )
-	public @ResponseBody int getStatus(String type, String tid, String uid) {
-		return testService.check(Integer.valueOf(type),Long.valueOf(tid),Long.valueOf(uid));
+	public @ResponseBody int getStatus(String tid, String uid) {
+		return testService.check(Long.valueOf(tid),Long.valueOf(uid));
+	}
+	
+	@RequestMapping(value = "/getAnswerStatus" )
+	public @ResponseBody String getAnswerStatus(String tid, String uid) {
+		return testService.checkAnswer(Long.valueOf(tid),Long.valueOf(uid));
 	}
 	
 	@RequestMapping(value = "/loadTest" )
@@ -64,30 +69,29 @@ public class TestController {
 	}
 	
 	@RequestMapping(value = "/finishTest" )
-	public @ResponseBody int finishTest(HttpServletRequest request, String type, String tid, String uid, String[] records, String[] reasons, String[] timecon, String[] timereact, String start_time, String end_time) {
-		return testService.finishTest(Integer.valueOf(type), Long.valueOf(tid), Long.valueOf(uid), (String[])records,(String[]) reasons,timecon,timereact, start_time, end_time);
+	public @ResponseBody int finishTest(HttpServletRequest request, String tid, String uid, String[] records, String[] reasons, String[] timecon, String[] timereact, String start_time, String end_time) {
+		return testService.finishTest(Long.valueOf(tid), Long.valueOf(uid), (String[])records,(String[]) reasons,timecon,timereact, start_time, end_time);
 	}
 	
 	@RequestMapping(value = "/testResult" )
-	public @ResponseBody Answer testResult(String type, String tid, String uid) {
-		return answerService.getAnswer(Long.valueOf(tid),Long.valueOf(uid),Integer.valueOf(type));
+	public @ResponseBody Answer testResult(String tid, String uid) {
+		return answerService.getAnswer(Long.valueOf(tid),Long.valueOf(uid));
 	}
 	
 	@RequestMapping(value = "/getAnswers" )
-	public @ResponseBody List<Answer> getAnswers(String type, String uid) {
-		return answerService.getAnswers(Long.valueOf(uid),Integer.valueOf(type));
+	public @ResponseBody List<Answer> getAnswers( String uid) {
+		return answerService.getAnswers(Long.valueOf(uid));
+	}
+	
+	@RequestMapping(value = "/loadAnsweredTest" )
+	public @ResponseBody List<Test> loadAnsweredTest( String uid) {
+		return answerService.loadAnsweredTest(Long.valueOf(uid));
 	}
 	
 	@RequestMapping(value = "/RateSubmit" )
 	public @ResponseBody int RateSubmit(String testId, String userId, String ques) {
-		String questionaire = "";
-		JSONArray jsonArr = new JSONArray(ques);
-		List<Object> quesstr = jsonArr.toList();
-		for(int i=0; i<quesstr.size(); i++){
-			questionaire += (String)quesstr.get(i) + "||";
-		}
-		Answer ans = answerService.getAnswer(Long.valueOf(testId), Long.valueOf(userId), 1);
-		answerService.FinishQue(ans.getId(),questionaire);
+		Answer ans = answerService.getAnswer(Long.valueOf(testId), Long.valueOf(userId));
+		answerService.FinishQue(ans.getId(),ques);
 		return 1;
 	}
 	
@@ -118,8 +122,7 @@ public class TestController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		JSONObject obj = new JSONObject();
-		obj.put("path", "pdf/" + filename);
-		return obj.toString();
+		return request.getScheme()+"://"+request.getServerName()+":"+  
+                request.getServerPort()+request.getContextPath()+"/" + "pdf/" + filename;
 	}
 }

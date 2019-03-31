@@ -49,6 +49,22 @@ public class PdfCreator {
 		document.close();
 	}
 	
+	public static PdfPCell FormatTableCell(String text, int Ver_Align, int Hor_Align, BaseColor tcolor, BaseColor bcolor, int style) throws DocumentException, IOException{
+		BaseFont bfCn_title = BaseFont.createFont("C:/WINDOWS/Fonts/SIMYOU.TTF", BaseFont.IDENTITY_H,BaseFont.NOT_EMBEDDED);
+		Font FontCn_title = new Font(bfCn_title, 12, style, tcolor );  
+		
+		Paragraph p = new Paragraph(text, FontCn_title);
+		p.setAlignment(Element.ALIGN_CENTER);
+		PdfPCell pc = new PdfPCell(p);
+		pc.setUseAscender(true);
+		pc.setVerticalAlignment(Ver_Align);
+		pc.setHorizontalAlignment(Hor_Align);
+		pc.setBackgroundColor(bcolor);
+		pc.setFixedHeight(25);
+		pc.setBorderColor(BaseColor.WHITE );
+		return pc;
+	}
+	
 	public static PdfPCell FormatTableCell(String text, int Ver_Align, int Hor_Align, BaseColor tcolor, BaseColor bcolor) throws DocumentException, IOException{
 		BaseFont bfCn_title = BaseFont.createFont("C:/WINDOWS/Fonts/SIMYOU.TTF", BaseFont.IDENTITY_H,BaseFont.NOT_EMBEDDED);
 		Font FontCn_title = new Font(bfCn_title, 12, Font.NORMAL, tcolor );  

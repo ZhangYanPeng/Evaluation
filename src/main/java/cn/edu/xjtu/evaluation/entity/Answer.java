@@ -26,7 +26,6 @@ public class Answer {
 	private long id;
 	
 	private String questionaire;
-	
 	private int type;
 	
 	private Date start_time;
@@ -45,6 +44,7 @@ public class Answer {
 
 	public Answer() {
 		super();
+		type = 1;
 	}
 
 	public long getId() {
@@ -79,14 +79,6 @@ public class Answer {
 		this.test = test;
 	}
 
-	public int getType() {
-		return type;
-	}
-
-	public void setType(int type) {
-		this.type = type;
-	}
-
 	public String getQuestionaire() {
 		return questionaire;
 	}
@@ -110,6 +102,13 @@ public class Answer {
 	public void setEnd_time(Date end_time) {
 		this.end_time = end_time;
 	}
-	
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
 	
 }

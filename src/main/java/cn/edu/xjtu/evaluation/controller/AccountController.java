@@ -1,11 +1,13 @@
 package cn.edu.xjtu.evaluation.controller;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.FileUtils;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,18 +16,26 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import cn.edu.xjtu.evaluation.entity.Answer;
 import cn.edu.xjtu.evaluation.entity.EngClass;
+import cn.edu.xjtu.evaluation.entity.EngClassResult;
 import cn.edu.xjtu.evaluation.entity.School;
 import cn.edu.xjtu.evaluation.entity.Student;
 import cn.edu.xjtu.evaluation.entity.Teacher;
+import cn.edu.xjtu.evaluation.entity.Test;
 import cn.edu.xjtu.evaluation.entity.University;
+import cn.edu.xjtu.evaluation.service.IAnswerService;
 import cn.edu.xjtu.evaluation.service.IEngClassService;
+import cn.edu.xjtu.evaluation.service.IResultService;
 import cn.edu.xjtu.evaluation.service.ISchoolService;
 import cn.edu.xjtu.evaluation.service.IStudentService;
 import cn.edu.xjtu.evaluation.service.ITeacherService;
+import cn.edu.xjtu.evaluation.service.ITestService;
 import cn.edu.xjtu.evaluation.service.IUniversityService;
 import cn.edu.xjtu.evaluation.support.DealExcel;
 import cn.edu.xjtu.evaluation.support.PageResults;
+import cn.edu.xjtu.evaluation.support.PdfCreator;
+import cn.edu.xjtu.evaluation.support.XlsxCreator;
 
 @Controller
 @RequestMapping(value="/admin/account")
@@ -41,6 +51,12 @@ public class AccountController {
 	IUniversityService universityService;
 	@Autowired
 	IStudentService studentService;
+	@Autowired
+	IAnswerService answerService;
+	@Autowired
+	ITestService testService;
+	@Autowired
+	IResultService resultService;
 
 	// account manage
 	@RequestMapping(value = "/list_university")
@@ -144,7 +160,7 @@ public class AccountController {
 	}
 
 	// english class manage
-	@RequestMapping(value = "/list_engclass" , method = RequestMethod.POST)
+	@RequestMapping(value = "/list_engclass" )
 	public @ResponseBody PageResults<EngClass> listEngClass(String page, String university) {
 		PageResults<EngClass> tmp =  engClassService.list(Integer.valueOf(page), Long.valueOf(university));
 		for( EngClass ec : tmp.getResults()){
@@ -166,7 +182,7 @@ public class AccountController {
 		return engClassService.remove(Long.valueOf(id));
 	}
 	
-	@RequestMapping(value = "/get_all_engclass" , method = RequestMethod.POST)
+	@RequestMapping(value = "/get_all_engclass" )
 	public @ResponseBody List<EngClass> getAllEngclass() {
 		return engClassService.listAll();
 	}
@@ -191,22 +207,22 @@ public class AccountController {
 	
 	
 	//student mange
-	@RequestMapping(value = "/list_student" , method = RequestMethod.POST)
+	@RequestMapping(value = "/list_student" )
 	public @ResponseBody PageResults<Student> listStudent(String str,String page) {
 		return studentService.list(str, Integer.valueOf(page));
 	}
 	
-	@RequestMapping(value = "/delete_student" , method = RequestMethod.POST)
+	@RequestMapping(value = "/delete_student" )
 	public @ResponseBody int deleteStudent(String id) {
 		return studentService.delete(Long.valueOf(id));
 	}
 	
-	@RequestMapping(value = "/load_student" , method = RequestMethod.POST)
+	@RequestMapping(value = "/load_student" )
 	public @ResponseBody Student loadStudent(String id) {
 		return studentService.get(Long.valueOf(id));
 	}
 	
-	@RequestMapping(value = "/edit_student" , method = RequestMethod.POST)
+	@RequestMapping(value = "/edit_student" )
 	public @ResponseBody int editStudent(String id, String name, String student_no, String password, String organization, String engClass) {
 		long sid = Long.valueOf(id);
 		Student student = new Student();
@@ -223,5 +239,21 @@ public class AccountController {
 		}else{
 			return studentService.edit(student);
 		}
+	}
+	
+	@RequestMapping(value = "/getAnswers" )
+	public @ResponseBody List<Answer> getAnswers( String uid) {
+		return answerService.getAnswers(Long.valueOf(uid));
+	}
+	
+	@RequestMapping(value = "/outport" )
+	public @ResponseBody String outPort(String id, HttpServletRequest request) {
+		EngClass engclass = engClassService.get(Long.valueOf(id));
+		engClassService.outputData(id, request);
+
+		String filename = String.valueOf(engclass.getId())+"data.xls";
+		JSONObject obj = new JSONObject();
+		obj.put("path", "xlsx/" + filename);
+		return obj.toString();
 	}
 }
