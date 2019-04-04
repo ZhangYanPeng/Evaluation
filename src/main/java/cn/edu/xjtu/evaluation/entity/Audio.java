@@ -32,7 +32,7 @@ public class Audio {
 	
 	@OneToOne
 	@JsonIgnore
-	private Part Part;
+	private Part part;
 
 	public long getId() {
 		return id;
@@ -82,10 +82,10 @@ public class Audio {
 	}
 
 	public Part getPart() {
-		return Part;
+		return part;
 	}
 
-	public void setPart(Part part) {
-		Part = part;
+	public void setPart(Part p) {
+		part = p;
 	}
 }
