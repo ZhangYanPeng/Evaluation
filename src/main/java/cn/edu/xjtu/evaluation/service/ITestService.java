@@ -19,7 +19,7 @@ public interface ITestService {
 	int chooseTest(long id);
 	int check(Long tid, Long uid);
 	Test getChoose();
-	int finishTest(long tid, long uid, String[] records, String[] reasons, String[] timecon, String[] timereact, String stime, String etime);
+	int finishTest(long tid, long uid, String[] records, String[] reasons, String[] timecon, String[] timereact, String stime, String etime, String states);
 	List<Part> loadParts(Long id);
 	List<Exercise> loadExercises(Long id);
 	List<Question> loadQuestions(Long id);

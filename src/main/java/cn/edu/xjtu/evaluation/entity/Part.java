@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -31,6 +32,10 @@ public class Part {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JsonIgnore
 	private Test test;
+
+	@OneToOne
+	private Audio directAudio;
+	private String directStr;
 	
 	@OneToMany( fetch = FetchType.EAGER )
 	@JoinColumn( name = "part_id" )
@@ -78,5 +83,21 @@ public class Part {
 
 	public void setP_no(int p_no) {
 		this.p_no = p_no;
+	}
+
+	public Audio getDirectAudio() {
+		return directAudio;
+	}
+
+	public void setDirectAudio(Audio directAudio) {
+		this.directAudio = directAudio;
+	}
+
+	public String getDirectStr() {
+		return directStr;
+	}
+
+	public void setDirectStr(String directStr) {
+		this.directStr = directStr;
 	}
 }

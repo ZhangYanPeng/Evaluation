@@ -13,6 +13,6 @@ public interface IAnswerService {
 	List getByTest(Test test);
 	Answer getAnswer(Long tid, Long uid);
 	List<Answer> getAnswers(Long uid);
-	int FinishQue(Long id, String ques);
+	int FinishQue(Long id, String ques, String q_v);
 	List<Test> loadAnsweredTest(Long uid);
 }

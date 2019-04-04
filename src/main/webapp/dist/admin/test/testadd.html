@@ -44,7 +44,19 @@
 						$.each(data.parts, function(index,value){
 							if(value.p_no == i){
 								var td_part = $("<td></td>").append("Section "+(value.p_no+1));
-								var td_type = $("<td></td>").append((value.partExers[0]).exercise.type.name);
+								var td_type = $("<td></td>").append((value.partExers[0]).exercise.type.name).append("<br/>")
+									.append($("<textarea></textarea>").attr('width','300px').attr('height','150px').attr('id','part'+value.id+'str').val(value.directStr)).append("<br/>")
+									.append("<a href='javascript:uploadDirecSrc("+value.id +");' >上传</a>").append("<br/>");
+
+								if(value.audio != null ){
+									var aud_in = $("<audio></audio>").attr('src',value.directAudio.src).attr('controls','controls');
+									var aud_del = $("<a></a>").attr('href',"javascript:del_aud("+value.directAudio.id+");").append("删除");
+									td_type.append(aud_in);
+									td_type.append($("<br/>"));
+									td_type.append(aud_del);
+								}else{
+									td_type.append("<input type='file' id='qa"+value.id+"' name='qa"+value.id+"' class='file' />").append("<br/>").append("<a href='javascript:upload("+value.id+",2"+");' >上传</a>");
+								}
 
 								var tab_etitle = "<tr>"
 									+ "<td width='100px' class='tdColor tdC'>序号</td>"
@@ -74,6 +86,85 @@
 					}
 				}
 			});
+		}
+
+		function uploadDirecSrc(pid){
+			$.ajax({
+				sync : false,
+				cache : false,
+				type : 'GET',
+				crossDomain : true,
+				url : "editDirecStr",
+				data : {
+					direc :  $('#'+'part'+pid+'str').val(), 
+					id : pid},
+				dataType : "json",
+				contentType : "application/x-www-form-urlencoded; charset=utf-8",
+				error : function(e) {
+					alert("网络错误，请重试");
+				},
+				success : function(data) {
+					init();
+				}
+			});
+		}
+
+		function del_aud(aud_id){
+			$.ajax({
+				sync : false,
+				cache : false,
+				type : 'POST',
+				crossDomain : true,
+				url : "del_audio",
+				data : {id : aud_id},
+				dataType : "json",
+				contentType : "application/x-www-form-urlencoded; charset=utf-8",
+				error : function(e) {
+					alert("网络错误，请重试");
+				},
+				success : function(data) {
+					init();
+				}
+			});
+		}
+
+		function upload(aid,t){
+			var feid = "";
+			if(t == 0){
+				if( $("#qa"+aid).val() =="" ){
+					alert("请选择文件");
+					return;
+				}
+				feid = feid + "qa"+aid;
+			}else{
+				if( $("#ia"+aid).val() =="" ){
+					alert("请选择文件");
+					return;
+				}
+				feid = feid + "ia"+aid;
+			}
+			$.ajaxFileUpload({
+				type : 'post',
+						url : 'uploadAudio', //用于文件上传的服务器端请求地址
+						secureuri : false, //是否需要安全协议，一般设置为false
+						fileElementId : feid, //文件上传域的ID
+						data : {
+							id : aid,
+							type : t
+						},//要传到后台的参数，没有可以不写  
+						async : false,
+						dataType : 'json',
+						processData : false,
+						contentType : false,
+						success : function(data) //服务器成功响应处理函数
+						{
+							init(); 
+						},
+						error : function(data, status, e)//服务器响应失败处理函数
+						{
+							console.log(data,status,e);
+						}
+					});
 		}
 
 		function loadType(){

@@ -26,7 +26,10 @@ public class Answer {
 	private long id;
 	
 	private String questionaire;
+	private String q_version;
 	private int type;
+	
+	private String states;
 	
 	private Date start_time;
 	private Date end_time;
@@ -110,5 +113,20 @@ public class Answer {
 	public void setType(int type) {
 		this.type = type;
 	}
-	
+
+	public String getQ_version() {
+		return q_version;
+	}
+
+	public void setQ_version(String q_version) {
+		this.q_version = q_version;
+	}
+
+	public String getStates() {
+		return states;
+	}
+
+	public void setStates(String states) {
+		this.states = states;
+	}
 }

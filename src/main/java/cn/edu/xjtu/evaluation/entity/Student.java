@@ -33,6 +33,8 @@ public class Student {
 	private String password;
 	private String major;
 	private String questionaire;
+	private String questionaireBF;
+	private String questionaireAF;
 	
 	private int english_level;// -1：未知 0：未通过四级 1：通过4级 2：通过六级 
 	
@@ -172,4 +174,22 @@ public class Student {
 	public void setSchool(School school) {
 		this.school = school;
 	}
+
+	public String getQuestionaireBF() {
+		return questionaireBF;
+	}
+
+	public void setQuestionaireBF(String questionaireBF) {
+		this.questionaireBF = questionaireBF;
+	}
+
+	public String getQuestionaireAF() {
+		return questionaireAF;
+	}
+
+	public void setQuestionaireAF(String questionaireAF) {
+		this.questionaireAF = questionaireAF;
+	}
+	
+	
 }

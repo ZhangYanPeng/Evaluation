@@ -23,6 +23,7 @@
 	<resources mapping="/resources/**" location="/resources/" />
 	<resources mapping="/dist/**" location="/dist/**" />
 	<resources mapping="/audio/**" location="/upload/audio/**" />
+	<resources mapping="/sample/**" location="/upload/sample/**" />
 	<resources mapping="/pdf/**" location="/download/pdf/**" />
 	<resources mapping="/admin/report/pdf/**" location="/download/pdf/**" />
 	<resources mapping="/admin/account/xlsx/**" location="/download/xlsx/**" />

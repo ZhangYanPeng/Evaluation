@@ -9,14 +9,27 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import cn.edu.xjtu.evaluation.entity.Answer;
+import cn.edu.xjtu.evaluation.entity.Audio;
+import cn.edu.xjtu.evaluation.entity.Intervention;
+import cn.edu.xjtu.evaluation.entity.Part;
+import cn.edu.xjtu.evaluation.entity.Question;
+import cn.edu.xjtu.evaluation.entity.Student;
 import cn.edu.xjtu.evaluation.entity.Test;
 import cn.edu.xjtu.evaluation.service.IAnswerService;
+import cn.edu.xjtu.evaluation.service.IAudioService;
+import cn.edu.xjtu.evaluation.service.IPartService;
 import cn.edu.xjtu.evaluation.service.IResultService;
+import cn.edu.xjtu.evaluation.service.IStudentService;
 import cn.edu.xjtu.evaluation.service.ITestService;
+import cn.edu.xjtu.evaluation.service.impl.StudentServiceImpl;
 import cn.edu.xjtu.evaluation.support.PdfCreator;
 
 @Controller
@@ -28,6 +41,12 @@ public class TestController {
 	IAnswerService answerService;
 	@Autowired
 	IResultService resultService;
+	@Autowired
+	IAudioService audioService;
+	@Autowired
+	IPartService partService;
+	@Autowired
+	IStudentService studentService;
 	
 	@RequestMapping(value = "/getAllTest" )
 	public @ResponseBody List<Test> listTest() {
@@ -68,9 +87,21 @@ public class TestController {
 		}
 	}
 	
+	@RequestMapping(value = "/submitQuestionaire" )
+	public @ResponseBody int submitQuestionaire(String uid, int quesn, String ques) {
+		Student stu = studentService.get(Long.valueOf(uid));
+		if(quesn == 0){
+			stu.setQuestionaireBF(ques);
+			return studentService.edit(stu);
+		}else{
+			stu.setQuestionaireAF(ques);
+			return studentService.edit(stu);
+		}
+	}
+	
 	@RequestMapping(value = "/finishTest" )
-	public @ResponseBody int finishTest(HttpServletRequest request, String tid, String uid, String[] records, String[] reasons, String[] timecon, String[] timereact, String start_time, String end_time) {
-		return testService.finishTest(Long.valueOf(tid), Long.valueOf(uid), (String[])records,(String[]) reasons,timecon,timereact, start_time, end_time);
+	public @ResponseBody int finishTest(HttpServletRequest request, String tid, String uid, String[] records, String[] reasons, String[] timecon, String[] timereact, String start_time, String end_time, String states) {
+		return testService.finishTest(Long.valueOf(tid), Long.valueOf(uid), (String[])records,(String[]) reasons,timecon,timereact, start_time, end_time, states);
 	}
 	
 	@RequestMapping(value = "/testResult" )
@@ -89,9 +120,9 @@ public class TestController {
 	}
 	
 	@RequestMapping(value = "/RateSubmit" )
-	public @ResponseBody int RateSubmit(String testId, String userId, String ques) {
+	public @ResponseBody int RateSubmit(String testId, String userId, String ques, String q_v) {
 		Answer ans = answerService.getAnswer(Long.valueOf(testId), Long.valueOf(userId));
-		answerService.FinishQue(ans.getId(),ques);
+		answerService.FinishQue(ans.getId(),ques,q_v);
 		return 1;
 	}
 	
@@ -125,4 +156,5 @@ public class TestController {
 		return request.getScheme()+"://"+request.getServerName()+":"+  
                 request.getServerPort()+request.getContextPath()+"/" + "pdf/" + filename;
 	}
+
 }

@@ -20,6 +20,26 @@ public class PartServiceImpl implements IPartService{
 		partDAO.save(part);
 		return 0;
 	}
+
+	@Override
+	@Transactional
+	public Part load(long id) {
+		// TODO Auto-generated method stub
+		return partDAO.get(id);
+	}
+
+	@Override
+	@Transactional
+	public int edit(Part part) {
+		// TODO Auto-generated method stub
+		try {
+			partDAO.update(part);
+		} catch (Exception e) {
+			// TODO: handle exception
+			return 0;
+		}
+		return 1;
+	}
 	
 	
 

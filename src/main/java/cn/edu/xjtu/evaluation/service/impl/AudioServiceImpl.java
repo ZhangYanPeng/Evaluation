@@ -10,9 +10,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import cn.edu.xjtu.evaluation.dao.impl.AudioDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.InterventionDAOImpl;
+import cn.edu.xjtu.evaluation.dao.impl.PartDAOImpl;
 import cn.edu.xjtu.evaluation.dao.impl.QuestionDAOImpl;
 import cn.edu.xjtu.evaluation.entity.Audio;
 import cn.edu.xjtu.evaluation.entity.Intervention;
+import cn.edu.xjtu.evaluation.entity.Part;
 import cn.edu.xjtu.evaluation.entity.Question;
 import cn.edu.xjtu.evaluation.service.IAudioService;
 
@@ -25,6 +27,8 @@ public class AudioServiceImpl implements IAudioService{
 	QuestionDAOImpl questionDAO;
 	@Autowired
 	InterventionDAOImpl interventionDAO;
+	@Autowired
+	PartDAOImpl partDAO;
 	
 	@Override
 	@Transactional
@@ -63,6 +67,15 @@ public class AudioServiceImpl implements IAudioService{
 		Object[] values = {id};
 		return audioDAO.getByHQL(hql, values);
 	}
+	
+	@Override
+	@Transactional
+	public Audio getByPa(long id) {
+		// TODO Auto-generated method stub
+		String hql = "from Audio where part.id = ?";
+		Object[] values = {id};
+		return audioDAO.getByHQL(hql, values);
+	}
 
 	@Override
 	@Transactional
@@ -86,6 +99,10 @@ public class AudioServiceImpl implements IAudioService{
 			Intervention i = audio.getIntervention();
 			i.setAudio(null);
 			interventionDAO.update(i);
+		}else if(audio.getPart() !=null){
+			Part p = audio.getPart();
+			p.setDirectAudio(null);
+			partDAO.update(p);
 		}
 		File file=new File(audio.getPath());
         if( file.exists()&&file.isFile() )
@@ -93,5 +110,4 @@ public class AudioServiceImpl implements IAudioService{
 		audioDAO.delete(audio);
 		return 0;
 	}
-
 }

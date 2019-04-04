@@ -257,7 +257,7 @@ public class EnglishController {
 	}
 	
 	@RequestMapping(value = "/uploadAudio")
-	public @ResponseBody int uploadPic(@RequestParam String id, @RequestParam String type, HttpServletRequest request){
+	public @ResponseBody int uploadAudio(@RequestParam String id, @RequestParam String type, HttpServletRequest request){
 		Audio audio = new Audio();
 		int t = Integer.valueOf(type);
 		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
@@ -286,9 +286,27 @@ public class EnglishController {
 				audioService.save(audio, aud);
 				intervention.setAudio(audioService.getByIn(intervention.getId()));
 				interventionService.edit(intervention);
+			}else if(t == 2 && key.contains("pa")){
+				aud = mfmap.getFirst(key);
+				Part part = partService.load(Long.valueOf(id));
+				audio.setPart(part);
+				String originalFilename = aud.getOriginalFilename();
+				String genePath = request.getSession().getServletContext().getRealPath("/upload/audio/");
+				audio.setSrc(request.getContextPath()+"/audio/"+originalFilename);
+				audio.setPath(genePath+"/"+originalFilename);
+				audioService.save(audio, aud);
+				part.setDirectAudio(audioService.getByPa(part.getId()));
+				partService.edit(part);
 			}
 		}
 		return 0;
+	}
+
+	@RequestMapping(value = "/editPartDirection" )
+	public @ResponseBody int editPartDirection(String id, String direc){
+		Part p = partService.load(Long.valueOf(id));
+		p.setDirectStr(direc);
+		return partService.edit(p);
 	}
 	
 	@RequestMapping(value = "/addTestExercise" )
@@ -304,5 +322,12 @@ public class EnglishController {
 	@RequestMapping(value = "/del_audio" )
 	public @ResponseBody int del_audio(String id){
 		return audioService.removeAud(Long.valueOf(id));
+	}
+	
+	@RequestMapping(value = "/editDirecStr" )
+	public @ResponseBody int editDirecStr(String direc, String id){
+		Part p = partService.load(Long.valueOf(id));
+		p.setDirectStr(direc);
+		return partService.edit(p);
 	}
 }

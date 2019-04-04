@@ -84,12 +84,11 @@ public class AnswerServiceImpl implements IAnswerService {
 
 	@Override
 	@Transactional
-	public int FinishQue(Long id, String ques) {
-		// TODO Auto-generated method stub
-
+	public int FinishQue(Long id, String ques, String q_v) {
 		// TODO Auto-generated method stub
 		Answer answer = answerDAO.load(id);
 		answer.setQuestionaire(ques);
+		answer.setQ_version(q_v);
 		answerDAO.update(answer);
 		return 0;
 	}

@@ -29,6 +29,10 @@ public class Audio {
 	@OneToOne
 	@JsonIgnore
 	private Intervention intervention;
+	
+	@OneToOne
+	@JsonIgnore
+	private Part Part;
 
 	public long getId() {
 		return id;
@@ -76,7 +80,12 @@ public class Audio {
 	public void setSrc(String src) {
 		this.src = src;
 	}
-	
-	
-	
+
+	public Part getPart() {
+		return Part;
+	}
+
+	public void setPart(Part part) {
+		Part = part;
+	}
 }

@@ -167,13 +167,14 @@ public class TestServiceImpl implements ITestService {
 
 	@Override
 	@Transactional
-	public int finishTest(long tid, long uid, String[] records, String[] reasons, String[] timecon, String[] timereact, String stime, String etime) {
+	public int finishTest(long tid, long uid, String[] records, String[] reasons, String[] timecon, String[] timereact, String stime, String etime,String states) {
 		// TODO Auto-generated method stub
 		Answer answer = new Answer();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d H:m:s");
 		try {
 			answer.setStart_time(sdf.parse(stime));
 			answer.setEnd_time(sdf.parse(etime));
+			answer.setStates(states);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
