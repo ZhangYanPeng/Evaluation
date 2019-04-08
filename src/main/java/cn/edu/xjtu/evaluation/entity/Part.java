@@ -35,6 +35,7 @@ public class Part {
 
 	@OneToOne
 	private Audio directAudio;
+	@Column(length=10000)
 	private String directStr;
 	
 	@OneToMany( fetch = FetchType.EAGER )
