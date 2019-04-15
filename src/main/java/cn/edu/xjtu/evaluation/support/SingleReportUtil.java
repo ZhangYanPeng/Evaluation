@@ -297,15 +297,14 @@ public class SingleReportUtil {
 				ability_table.setWidths(new float[] { (float) 0.6, (float) 0.4});
 				ability_table.setWidthPercentage(100);
 				{
-					PdfPTable ability_def_table = new PdfPTable(3);
+					PdfPTable ability_def_table = new PdfPTable(2);
 					ability_def_table.setWidthPercentage(100);
-					ability_def_table.setWidths(new float[] { (float) 0.15, (float) 0.8, (float) 0.05 });
+					ability_def_table.setWidths(new float[] { (float) 0.15, (float) 0.8});
 					ability_def_table.addCell(
 							PdfCreator.FormatTableTitleCell("听力技能", BaseColor.WHITE, SingleReportUtil.tab_title));
 					ability_def_table.addCell(
 							PdfCreator.FormatTableTitleCell("定义", BaseColor.WHITE, SingleReportUtil.tab_title));
-					ability_def_table.addCell(
-							PdfCreator.FormatTableTitleCell("指导", BaseColor.WHITE, SingleReportUtil.tab_title));
+					
 					ability_def_table.addCell(PdfCreator.FormatTableCell("词汇与表达", Element.ALIGN_MIDDLE,
 							Element.ALIGN_CENTER, BaseColor.BLACK, SingleReportUtil.tab_odd));
 					PdfPCell ct1 = PdfCreator.FormatTableCell("1)能理解词汇或短语在具体情境下的意义和用法\r\n2)能识别并理解关键词汇的意义和用法（即有助于确立主题和观点的词汇）\r\n3)能理解常见的固定搭配和习惯性口头表达", Element.ALIGN_MIDDLE, Element.ALIGN_CENTER,
@@ -313,8 +312,6 @@ public class SingleReportUtil {
 					ct1.setHorizontalAlignment(Element.ALIGN_LEFT);
 					ct1.setMinimumHeight(25);
 					ability_def_table.addCell(ct1);
-					ability_def_table.addCell(PdfCreator.FormatTableCell("📚", Element.ALIGN_MIDDLE,
-							Element.ALIGN_CENTER, BaseColor.BLACK, BaseColor.WHITE));
 
 					ability_def_table.addCell(PdfCreator.FormatTableCell("语法", Element.ALIGN_MIDDLE,
 							Element.ALIGN_CENTER, BaseColor.BLACK, SingleReportUtil.tab_odd));
@@ -322,8 +319,6 @@ public class SingleReportUtil {
 					ct2.setHorizontalAlignment(Element.ALIGN_LEFT);
 					ct2.setMinimumHeight(25);
 					ability_def_table.addCell(ct2);
-					ability_def_table.addCell(PdfCreator.FormatTableCell("📚", Element.ALIGN_MIDDLE,
-							Element.ALIGN_CENTER, BaseColor.BLACK, BaseColor.WHITE));
 
 					ability_def_table.addCell(PdfCreator.FormatTableCell("主旨大意", Element.ALIGN_MIDDLE,
 							Element.ALIGN_CENTER, BaseColor.BLACK, SingleReportUtil.tab_odd));
@@ -331,8 +326,6 @@ public class SingleReportUtil {
 					ct3.setHorizontalAlignment(Element.ALIGN_LEFT);
 					ct3.setMinimumHeight(25);
 					ability_def_table.addCell(ct3);
-					ability_def_table.addCell(PdfCreator.FormatTableCell("📚", Element.ALIGN_MIDDLE,
-							Element.ALIGN_CENTER, BaseColor.BLACK, BaseColor.WHITE));
 
 					ability_def_table.addCell(PdfCreator.FormatTableCell("细节", Element.ALIGN_MIDDLE,
 							Element.ALIGN_CENTER, BaseColor.BLACK, SingleReportUtil.tab_odd));
@@ -340,8 +333,6 @@ public class SingleReportUtil {
 					ct4.setHorizontalAlignment(Element.ALIGN_LEFT);
 					ct4.setMinimumHeight(25);
 					ability_def_table.addCell(ct4);
-					ability_def_table.addCell(PdfCreator.FormatTableCell("📚", Element.ALIGN_MIDDLE,
-							Element.ALIGN_CENTER, BaseColor.BLACK, BaseColor.WHITE));
 
 					ability_def_table.addCell(PdfCreator.FormatTableCell("推理", Element.ALIGN_MIDDLE,
 							Element.ALIGN_CENTER, BaseColor.BLACK, SingleReportUtil.tab_odd));
@@ -349,8 +340,6 @@ public class SingleReportUtil {
 					ct5.setHorizontalAlignment(Element.ALIGN_LEFT);
 					ct5.setMinimumHeight(25);
 					ability_def_table.addCell(ct5);
-					ability_def_table.addCell(PdfCreator.FormatTableCell("📚", Element.ALIGN_MIDDLE,
-							Element.ALIGN_CENTER, BaseColor.BLACK, BaseColor.WHITE));
 
 					PdfPCell ability_def_table_cell = new PdfPCell();
 					ability_def_table_cell.addElement(ability_def_table);

@@ -104,6 +104,11 @@ public class TestController {
 		return testService.finishTest(Long.valueOf(tid), Long.valueOf(uid), (String[])records,(String[]) reasons,timecon,timereact, start_time, end_time, states);
 	}
 	
+	@RequestMapping(value = "/tmpFinishTest" )
+	public @ResponseBody int tmpFinishTest(HttpServletRequest request, String tid, String uid, String[] records, String[] reasons, String[] timecon, String[] timereact, String start_time, String end_time, String states) {
+		return testService.tmpFinishTest(Long.valueOf(tid), Long.valueOf(uid), (String[])records,(String[]) reasons,timecon,timereact, start_time, end_time, states);
+	}
+	
 	@RequestMapping(value = "/testResult" )
 	public @ResponseBody Answer testResult(String tid, String uid) {
 		return answerService.getAnswer(Long.valueOf(tid),Long.valueOf(uid));

@@ -154,6 +154,8 @@ public class TestServiceImpl implements ITestService {
 		Answer a = answerDAO.getByHQL(hql, values);
 		if (a == null)
 			return 0;
+		else if(a.getRecords().size() < 16)
+			return 0;
 		return 1;
 	}
 
@@ -387,4 +389,74 @@ public class TestServiceImpl implements ITestService {
 		return tests;
 	}
 
+	@Override
+	@Transactional
+	public int tmpFinishTest(long tid, long uid, String[] records, String[] reasons, String[] timecon, String[] timereact, String stime, String etime,String states) {
+		// TODO Auto-generated method stub
+		String hql = "from Answer where student.id = ? and test.id = ?";
+		Object[] values = { uid, tid };
+		Answer answer = answerDAO.getByHQL(hql, values);
+		if(answer == null)
+			answer = new Answer();
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d H:m:s");
+		try {
+			answer.setStart_time(sdf.parse(stime));
+			answer.setEnd_time(sdf.parse(etime));
+			answer.setStates(states);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		answer.setTest(testDAO.get(tid));
+		answer.setStudent(studentDAO.get(uid));
+		answerDAO.saveOrUpdate(answer);
+		int c_pn=0;
+		int c_en=0;
+		int c_qn=0;
+		boolean check = true;
+		for(int i=0; i<records.length; i++){
+			check = true;
+			for (Part p : testDAO.get(tid).getParts()) {
+				if(!check)
+					break;
+				for (PartExer pe : p.getPartExers() ) {
+					if(!check)
+						break;
+					for (Question q : pe.getExercise().getQuestions()) {
+						if(!check)
+							break;
+						if(p.getP_no()==c_pn && pe.getE_no()==c_en && q.getQ_num()==c_qn){
+							answer = answerDAO.getByHQL(hql, values);
+							String hqlr = "from Record where answer.id = ? and question.id = ?";
+							Object[] valuers = { answer.getId(), q.getId() };
+							Record record = recordDAO.getByHQL(hqlr, valuers);
+							if(record == null)
+								record = new Record();
+							record.setAnswer(answer);
+							record.setQuestion(q);
+							record.setResult(records[i]);
+							record.setReason(reasons[i]);
+							record.setTimecon(Long.valueOf(timecon[i]));
+							record.setTimereact(Long.valueOf(timereact[i]));
+							record.setNo(i);
+							recordDAO.saveOrUpdate(record);
+							c_qn++;
+							if(c_qn == pe.getExercise().getQuestions().size()){
+								c_qn=0;
+								c_en++;
+								if(c_en == p.getPartExers().size()){
+									c_en=0;
+									c_pn++;
+								}
+							}
+							check = false;
+							break;
+						}
+					}
+				}
+			}
+		}
+		return 0;
+	}
 }

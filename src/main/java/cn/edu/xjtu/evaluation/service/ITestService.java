@@ -31,4 +31,5 @@ public interface ITestService {
 	Test getByTestNo(String testno);
 	String checkAnswer(Long tid, Long uid);
 	List<Test> getAllValidTests();
+	int tmpFinishTest(long tid, long uid, String[] records, String[] reasons, String[] timecon, String[] timereact, String stime, String etime, String states);
 }
