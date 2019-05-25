@@ -252,6 +252,7 @@ public class EngClassServiceImpl implements IEngClassService {
 				}
 			}
 			for(int i=0; i<5; i++){
+				avg_inter_freq[i] = avg_inter_freq[i] / answers.size();
 				result[i][1] = ((Integer)all_inter_freq[i]).toString();
 				if(avg_inter_freq[i] == 0)
 					result[i][2] = "0";

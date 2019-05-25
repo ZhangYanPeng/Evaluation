@@ -32,6 +32,8 @@ public class XlsxCreator {
 		createAbSheet(wb, ablist,engclass);
 		createQuesSheet(wb, engclass);
 		createAnswerSheet(wb, answers,engclass);
+		createDeAnswerSheet(wb, answers,engclass);
+		createDeInterSheet(wb, answers,engclass);
 		createEvalSheet(wb,answers,engclass);
 		createFeedBackSheet(wb,engclass);
 	    //第六步将生成excel文件保存到指定路径下  
@@ -45,7 +47,7 @@ public class XlsxCreator {
 	} 
 	private static void createAnswerSheet(HSSFWorkbook wb, List<Answer> answers, EngClass engclass) {
 		//第二步创建sheet  
-        HSSFSheet sheet = wb.createSheet("具体作答情况");  
+        HSSFSheet sheet = wb.createSheet("总体作答情况");  
           
         //创建表头
         //第四步创建单元格   
@@ -109,6 +111,135 @@ public class XlsxCreator {
         }
 	}
 
+	private static void createDeAnswerSheet(HSSFWorkbook wb, List<Answer> answers, EngClass engclass) {
+		//第二步创建sheet  
+        HSSFSheet sheet = wb.createSheet("具体作答");  
+          
+        //创建表头
+        //第四步创建单元格   
+        {
+            HSSFRow row = sheet.createRow(0);  
+            HSSFCellStyle  style = wb.createCellStyle();      
+            style.setAlignment(HSSFCellStyle.ALIGN_CENTER);  //居中  
+            style.setFillForegroundColor((short)39);
+        	String[] title = {"个人信息","学校","学科","班级","学号","姓名"};
+        	for(int i=0; i<title.length; i++){
+                HSSFCell cell1 = row.createCell(i); //第一个单元格  
+                cell1.setCellValue(title[i]);  
+                cell1.setCellStyle(style); 
+        	}
+        	for(int i=0; i<3; i++){
+                HSSFCell cell1 = row.createCell(6+18*i); //第一个单元格  
+                cell1.setCellValue("");  
+                cell1.setCellStyle(style); 
+
+                HSSFCell cell2 = row.createCell(7+18*i);
+                cell2.setCellValue("TEST" + (i+1));  
+                cell2.setCellStyle(style); 
+                
+                for(int j=1; j<17; j++){
+                	HSSFCell cell3 = row.createCell(7+j+18*i);
+                    cell3.setCellValue("题目" + j);  
+                    cell3.setCellStyle(style); 
+                }
+        	}
+        }
+        
+        int rown = 0;
+        for(Student stu : engclass.getStudents()){
+        	rown++;
+            HSSFRow row = sheet.createRow(rown);  
+        	row.createCell(0).setCellValue("");
+        	row.createCell(1).setCellValue(stu.getEngClass().getUniversity().getName());
+        	row.createCell(2).setCellValue(stu.getSchool().getName());
+        	row.createCell(3).setCellValue(stu.getEngClass().getName());
+        	row.createCell(4).setCellValue(stu.getStudent_no());
+        	row.createCell(5).setCellValue(stu.getName());
+
+        	for(int i=0; i<3; i++){
+        		for(Answer ans : answers){
+        			if(ans.getStudent().getStudent_no() == stu.getStudent_no() && ans.getTest().getTestno() == (i+1)){
+        				List<Record> records = SortAnswer(ans);
+        				for(int j=1; j<17; j++){
+                        	HSSFCell cell3 = row.createCell(7+j+18*i);
+                        	String str = records.get(j-1).getResult();
+                        	str = str.replaceAll("\\|", "");
+                        	str = str.substring(0, 1);
+                        	str = str.replace("1", "A");
+                        	str = str.replace("2", "B");
+                        	str = str.replace("3", "C");
+                        	str = str.replace("4", "D");
+                        	str = str.replace("5", "E");
+                            cell3.setCellValue(str);  
+                        }
+        			}
+        		}
+        	}
+        }
+	}
+
+	private static void createDeInterSheet(HSSFWorkbook wb, List<Answer> answers, EngClass engclass) {
+		//第二步创建sheet  
+        HSSFSheet sheet = wb.createSheet("具体提示");  
+          
+        //创建表头
+        //第四步创建单元格   
+        {
+            HSSFRow row = sheet.createRow(0);  
+            HSSFCellStyle  style = wb.createCellStyle();      
+            style.setAlignment(HSSFCellStyle.ALIGN_CENTER);  //居中  
+            style.setFillForegroundColor((short)39);
+        	String[] title = {"个人信息","学校","学科","班级","学号","姓名"};
+        	for(int i=0; i<title.length; i++){
+                HSSFCell cell1 = row.createCell(i); //第一个单元格  
+                cell1.setCellValue(title[i]);  
+                cell1.setCellStyle(style); 
+        	}
+        	for(int i=0; i<3; i++){
+                HSSFCell cell1 = row.createCell(6+18*i); //第一个单元格  
+                cell1.setCellValue("");  
+                cell1.setCellStyle(style); 
+
+                HSSFCell cell2 = row.createCell(7+18*i);
+                cell2.setCellValue("TEST" + (i+1));  
+                cell2.setCellStyle(style); 
+                
+                for(int j=1; j<17; j++){
+                	HSSFCell cell3 = row.createCell(7+j+18*i);
+                    cell3.setCellValue("题目" + j);  
+                    cell3.setCellStyle(style); 
+                }
+        	}
+        }
+        
+        int rown = 0;
+        for(Student stu : engclass.getStudents()){
+        	rown++;
+            HSSFRow row = sheet.createRow(rown);  
+        	row.createCell(0).setCellValue("");
+        	row.createCell(1).setCellValue(stu.getEngClass().getUniversity().getName());
+        	row.createCell(2).setCellValue(stu.getSchool().getName());
+        	row.createCell(3).setCellValue(stu.getEngClass().getName());
+        	row.createCell(4).setCellValue(stu.getStudent_no());
+        	row.createCell(5).setCellValue(stu.getName());
+
+        	for(int i=0; i<3; i++){
+        		for(Answer ans : answers){
+        			if(ans.getStudent().getStudent_no() == stu.getStudent_no() && ans.getTest().getTestno() == (i+1)){
+        				List<Record> records = SortAnswer(ans);
+        				for(int j=1; j<17; j++){
+                        	HSSFCell cell3 = row.createCell(7+j+18*i);
+                        	String str = records.get(j-1).getResult();
+                        	Integer a = str.split("\\|\\|").length-2;
+                            cell3.setCellValue(a.toString());  
+                        }
+        			}
+        		}
+        	}
+        }
+	}
+
+	
 	private static void createEvalSheet(HSSFWorkbook wb, List<Answer> answers, EngClass engclass) {
 		//第二步创建sheet  
         HSSFSheet sheet = wb.createSheet("评价试题");  
@@ -338,7 +469,7 @@ public class XlsxCreator {
 
 	private static void createAbSheet(HSSFWorkbook wb, List<String[][]> ablist, EngClass engclass) {
 		// TODO Auto-generated method stub
-		HSSFSheet sheet = wb.createSheet("技能"); 
+		HSSFSheet sheet = wb.createSheet("总体技能"); 
 		int tn=0;
 		for(String[][] testdata : ablist){
 			{
@@ -371,7 +502,7 @@ public class XlsxCreator {
 
 	private static void createTstSheet(HSSFWorkbook wb, List<String[][]> testlist, EngClass engclass) {
 		// TODO Auto-generated method stub
-		HSSFSheet sheet = wb.createSheet("试题"); 
+		HSSFSheet sheet = wb.createSheet("总体试题"); 
 		int tn=0;
 		for(String[][] testdata : testlist){
 			{
