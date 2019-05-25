@@ -282,6 +282,24 @@ public class EngClassServiceImpl implements IEngClassService {
 	
 	@Override
 	@Transactional
+	public List<Answer> loadAsnwers(Long ecid) {
+		// TODO Auto-generated method stub
+		String hql = "from Student where engClass.id = ?";
+		Object[] values = {ecid};
+		List<Student> students = studentDAO.getListByHQL(hql, values);
+		
+		List<Answer> lecr = new ArrayList<Answer>();
+		for(Student student : students){
+			String hqlstring = "from Answer where student.id = ?";
+			Object[] vals = {student.getId()};
+			List<Answer> answer = answerDAO.getListByHQL(hqlstring, vals);
+			lecr.addAll(answer);
+		}
+		return lecr;
+	}
+	
+	@Override
+	@Transactional
 	public void outputData(String id, HttpServletRequest request) {
 		// TODO Auto-generated method stub
 
@@ -302,7 +320,7 @@ public class EngClassServiceImpl implements IEngClassService {
 		String path = request.getSession().getServletContext().getRealPath("/download/xlsx/");
 		String filename = String.valueOf(engclass.getId())+"data.xls";
 		try {
-			XlsxCreator.createOuputData(engclass, stulist, testlist, ablist, path+"/" + filename);
+			XlsxCreator.createOuputData(engclass, stulist, testlist, ablist, loadAsnwers(engclass.getId()), path+"/" + filename);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -3,6 +3,7 @@ package cn.edu.xjtu.evaluation.entity;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -32,9 +33,14 @@ public class Student {
 	private String student_no;
 	private String password;
 	private String major;
+	@Column(length=10000)
 	private String questionaire;
+	@Column(length=10000)
 	private String questionaireBF;
+	@Column(length=10000)
 	private String questionaireAF;
+	@Column(length=10000)
+	private String systemFeedback;
 	
 	private int english_level;// -1：未知 0：未通过四级 1：通过4级 2：通过六级 
 	
@@ -190,6 +196,12 @@ public class Student {
 	public void setQuestionaireAF(String questionaireAF) {
 		this.questionaireAF = questionaireAF;
 	}
-	
-	
+
+	public String getSystemFeedback() {
+		return systemFeedback;
+	}
+
+	public void setSystemFeedback(String systemFeedback) {
+		this.systemFeedback = systemFeedback;
+	}
 }

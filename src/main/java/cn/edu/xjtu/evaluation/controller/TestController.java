@@ -99,6 +99,13 @@ public class TestController {
 		}
 	}
 	
+	@RequestMapping(value = "/submitSystemFeedback" )
+	public @ResponseBody int submitSystemFeedback(String uid, String ques) {
+		Student stu = studentService.get(Long.valueOf(uid));
+		stu.setSystemFeedback(ques);
+		return studentService.edit(stu);
+	}
+	
 	@RequestMapping(value = "/finishTest" )
 	public @ResponseBody int finishTest(HttpServletRequest request, String tid, String uid, String[] records, String[] reasons, String[] timecon, String[] timereact, String start_time, String end_time, String states) {
 		return testService.finishTest(Long.valueOf(tid), Long.valueOf(uid), (String[])records,(String[]) reasons,timecon,timereact, start_time, end_time, states);
